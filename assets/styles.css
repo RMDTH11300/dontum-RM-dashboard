@@ -178,7 +178,6 @@ tbody tr:hover { background: #f6fbff; }
 .cell-title { min-width: 310px; max-width: 520px; }
 .cell-sub { min-width: 190px; max-width: 300px; color: #526375; }
 .cell-unit { min-width: 170px; }
-.cell-status { min-width: 160px; }
 .ellipsis-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .badge {
   display: inline-flex; align-items: center; min-height: 26px; padding: 3px 9px;

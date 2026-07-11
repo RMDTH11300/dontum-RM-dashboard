@@ -206,7 +206,10 @@ function applyIncidentFilters() {
     if (mainUnit && String(row[mainUnitIdx] ?? "ไม่ระบุ") !== mainUnit) return false;
     if (month && String(fiscalMonthFromDate(row[dateIdx])) !== month) return false;
     if (query) {
-      const haystack = normalize(row.filter(v => v !== null && v !== "").join(" "));
+      const statusIdx = state.meta.headers.indexOf("สถานะ");
+      const haystack = normalize(row
+        .filter((v, i) => i !== statusIdx && v !== null && v !== "")
+        .join(" "));
       if (!haystack.includes(query)) return false;
     }
     return true;
@@ -225,7 +228,6 @@ function renderIncidentTable() {
     severity: "ความรุนแรง",
     unit: "หน่วยงานที่บันทึกรายงาน",
     location: "สถานที่เกิดเหตุ",
-    status: "สถานะ",
   };
 
   el("incidentTbody").innerHTML = pageItems.length ? pageItems.map((item, offset) => {
@@ -241,10 +243,9 @@ function renderIncidentTable() {
       <td><span class="sev ${isHighSeverity(severity) ? "high" : ""}">${escapeHtml(severity ?? "–")}</span></td>
       <td class="cell-unit">${escapeHtml(valueAt(item, fields.unit) || "–")}</td>
       <td>${escapeHtml(valueAt(item, fields.location) || "–")}</td>
-      <td class="cell-status"><div class="ellipsis-2">${escapeHtml(valueAt(item, fields.status) || "–")}</div></td>
       <td><button class="detail-btn" data-row-index="${globalIndex}">เปิดดู</button></td>
     </tr>`;
-  }).join("") : `<tr><td colspan="9" class="chart-empty">ไม่พบข้อมูลตามเงื่อนไข</td></tr>`;
+  }).join("") : `<tr><td colspan="8" class="chart-empty">ไม่พบข้อมูลตามเงื่อนไข</td></tr>`;
 
   el("resultCount").textContent = `${fmt.format(state.filteredRows.length)} รายการ`;
   el("dataSourceLabel").textContent = state.selectedYear === "all" ? "ข้อมูลปีงบประมาณ 2566–2569" : `ข้อมูลปีงบประมาณ ${state.selectedYear}`;
@@ -280,6 +281,7 @@ function openDetail(index) {
   el("dialogTitle").textContent = title;
   const longFields = new Set(["สรุปประเด็นปัญหา","รายละเอียดการเกิด","การจัดการเบื้องต้น","ข้อเสนอแนะเพื่อการแก้ไข","สรุปการแก้ไขของกลุ่ม/หน่วยงานหลัก","การร่วมแก้ไขของกลุ่ม/หน่วยงานร่วม","การแก้ไขของกรรมการความเสี่ยง","มีการแก้ไขปัญหาอย่างไร","การทำ RCA/Contributing Factor อะไร อย่างไร","มีการปรับ/พัฒนาระบบ อะไร อย่างไร"]);
   el("dialogContent").innerHTML = state.meta.headers.map((header, i) => {
+    if (header === "สถานะ") return "";
     let value = item.row[i];
     if (value === null || value === "") return "";
     if (header.startsWith("วันที่")) value = formatThaiDate(value);
@@ -343,9 +345,15 @@ function csvCell(value) {
 }
 
 function exportFilteredCsv() {
-  const headers = ["ปีงบประมาณ", ...state.meta.headers];
+  const visibleIndexes = state.meta.headers
+    .map((header, index) => ({ header, index }))
+    .filter(column => column.header !== "สถานะ");
+  const headers = ["ปีงบประมาณ", ...visibleIndexes.map(column => column.header)];
   const lines = [headers.map(csvCell).join(",")];
-  for (const item of state.filteredRows) lines.push([item.fy, ...item.row].map(csvCell).join(","));
+  for (const item of state.filteredRows) {
+    const visibleRow = visibleIndexes.map(column => item.row[column.index]);
+    lines.push([item.fy, ...visibleRow].map(csvCell).join(","));
+  }
   const blob = new Blob(["\ufeff" + lines.join("\r\n")], {type: "text/csv;charset=utf-8"});
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

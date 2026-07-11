@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dashboard ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม แยกตามปีงบประมาณ">
+  <title>Dashboard ความเสี่ยง | โรงพยาบาลดอนตูม</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div id="loading" class="loading-screen" role="status">
+    <div class="loader"></div>
+    <strong>กำลังโหลดข้อมูลความเสี่ยง…</strong>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">RM</div>
+      <div>
+        <h1>Dashboard ระบบบริหารความเสี่ยง</h1>
+        <p>โรงพยาบาลดอนตูม</p>
+      </div>
+    </div>
+    <div class="year-control">
+      <label for="yearSelect">ปีงบประมาณ</label>
+      <select id="yearSelect"></select>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="เมนูหลัก">
+    <button class="tab active" data-view="dashboard">ภาพรวม</button>
+    <button class="tab" data-view="incidents">ค้นหาอุบัติการณ์</button>
+    <button class="tab" data-view="profile">Risk Profile</button>
+    <button class="tab" data-view="register">Risk Register</button>
+    <button class="tab" data-view="about">เกี่ยวกับระบบ</button>
+  </nav>
+
+  <main>
+    <section id="view-dashboard" class="view active">
+      <div class="notice fiscal-notice">
+        <span class="notice-icon">✓</span>
+        <div>
+          <strong>ระบบนี้ยึดปีงบประมาณจากไฟล์ต้นทางโดยตรง</strong>
+          <p>ไม่คำนวณปีจากวันที่เกิดอุบัติการณ์ จึงไม่เกิดปัญหาจับปี พ.ศ. แทนปีงบประมาณ</p>
+        </div>
+      </div>
+
+      <div id="selectedYearTitle" class="section-heading"></div>
+      <div id="kpiGrid" class="kpi-grid"></div>
+
+      <div class="dashboard-grid">
+        <article class="panel span-2">
+          <div class="panel-head">
+            <div>
+              <h2>แนวโน้มจำนวนอุบัติการณ์รายปีงบประมาณ</h2>
+              <p>เปรียบเทียบข้อมูลตั้งแต่ปี 2566–2569</p>
+            </div>
+          </div>
+          <div id="yearComparisonChart" class="chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>อุบัติการณ์ตามเดือนงบประมาณ</h2>
+              <p>เรียงเดือน ต.ค. – ก.ย.</p>
+            </div>
+          </div>
+          <div id="monthlyChart" class="chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>ระดับความรุนแรง</h2>
+              <p>แสดงตามค่าที่บันทึกใน HRMS</p>
+            </div>
+          </div>
+          <div id="severityChart" class="chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>10 รหัสความเสี่ยงที่พบบ่อย</h2>
+              <p>จัดอันดับตามจำนวนครั้ง</p>
+            </div>
+          </div>
+          <div id="riskChart" class="chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>10 หน่วยงานที่รายงานมากที่สุด</h2>
+              <p>หน่วยงานที่บันทึกรายงาน</p>
+            </div>
+          </div>
+          <div id="unitChart" class="chart"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="view-incidents" class="view">
+      <div class="section-heading">
+        <div>
+          <h2>ค้นหาอุบัติการณ์</h2>
+          <p>ค้นหาได้จากรหัส เรื่องย่อย รายละเอียด หน่วยงาน สถานที่ และสถานะ</p>
+        </div>
+        <button id="exportCsvBtn" class="btn secondary">ส่งออก CSV ที่กรองแล้ว</button>
+      </div>
+
+      <div class="filter-panel">
+        <div class="filter wide">
+          <label for="searchInput">คำค้นหา</label>
+          <input id="searchInput" type="search" placeholder="เช่น Falling, Patient Identification, Medication error…">
+        </div>
+        <div class="filter">
+          <label for="typeFilter">ประเภท</label>
+          <select id="typeFilter"><option value="">ทั้งหมด</option></select>
+        </div>
+        <div class="filter">
+          <label for="severityFilter">ความรุนแรง</label>
+          <select id="severityFilter"><option value="">ทั้งหมด</option></select>
+        </div>
+        <div class="filter">
+          <label for="unitFilter">หน่วยงานรายงาน</label>
+          <select id="unitFilter"><option value="">ทั้งหมด</option></select>
+        </div>
+        <div class="filter">
+          <label for="monthFilter">เดือนงบประมาณ</label>
+          <select id="monthFilter"><option value="">ทั้งหมด</option></select>
+        </div>
+        <button id="clearFiltersBtn" class="btn ghost">ล้างตัวกรอง</button>
+      </div>
+
+      <div class="table-summary">
+        <span id="resultCount">0 รายการ</span>
+        <span id="dataSourceLabel"></span>
+      </div>
+      <div class="table-wrap">
+        <table id="incidentTable">
+          <thead>
+            <tr>
+              <th>ปีงบประมาณ</th>
+              <th>วันที่เกิด</th>
+              <th>รหัส / เรื่องอุบัติการณ์</th>
+              <th>เรื่องย่อย</th>
+              <th>ความรุนแรง</th>
+              <th>หน่วยงานรายงาน</th>
+              <th>สถานที่</th>
+              <th>สถานะ</th>
+              <th>รายละเอียด</th>
+            </tr>
+          </thead>
+          <tbody id="incidentTbody"></tbody>
+        </table>
+      </div>
+      <div id="pagination" class="pagination"></div>
+    </section>
+
+    <section id="view-profile" class="view">
+      <div class="section-heading">
+        <div>
+          <h2>Risk Profile</h2>
+          <p>ความเสี่ยงสำคัญ Top 10 ด้าน Clinical และ Non-clinical</p>
+        </div>
+      </div>
+      <div id="profileContent"></div>
+    </section>
+
+    <section id="view-register" class="view">
+      <div class="section-heading">
+        <div>
+          <h2>Risk Register</h2>
+          <p>แผนป้องกัน การติดตามควบคุม และแนวทางบรรเทาความเสียหาย</p>
+        </div>
+      </div>
+      <div class="filter-panel compact">
+        <div class="filter wide">
+          <label for="registerSearch">ค้นหาใน Risk Register</label>
+          <input id="registerSearch" type="search" placeholder="ค้นหารหัส ชื่อความเสี่ยง หรือมาตรการ…">
+        </div>
+      </div>
+      <div id="registerContent"></div>
+    </section>
+
+    <section id="view-about" class="view">
+      <div class="about-grid">
+        <article class="panel">
+          <h2>หลักการกำหนดปีงบประมาณ</h2>
+          <p>ข้อมูลแต่ละแถวได้รับค่า <strong>ปีงบประมาณ</strong> จากไฟล์ที่นำเข้า เช่น ไฟล์ปี 66 จะถูกกำหนดเป็นปีงบประมาณ 2566 ทุกแถว แม้ว่าวันที่เกิดเหตุบางรายการจะอยู่ในปี พ.ศ. 2565 หรือ 2566 ก็ตาม</p>
+          <div class="code-rule">ปีงบประมาณ 2566 = 1 ต.ค. 2565 – 30 ก.ย. 2566</div>
+          <div class="code-rule">ปีงบประมาณ 2567 = 1 ต.ค. 2566 – 30 ก.ย. 2567</div>
+          <div class="code-rule">ปีงบประมาณ 2568 = 1 ต.ค. 2567 – 30 ก.ย. 2568</div>
+          <div class="code-rule">ปีงบประมาณ 2569 = 1 ต.ค. 2568 – 30 ก.ย. 2569</div>
+        </article>
+        <article class="panel">
+          <h2>ชุดข้อมูลในระบบ</h2>
+          <div id="validationList" class="validation-list"></div>
+        </article>
+        <article class="panel span-2 warning-panel">
+          <h2>ข้อควรระวังด้านข้อมูล</h2>
+          <p>GitHub Pages เป็นเว็บไซต์สาธารณะและไม่มีระบบล็อกอินจริง ข้อมูลในไฟล์ JSON จะถูกดาวน์โหลดได้ทั้งหมด ควรตรวจสอบและลบข้อมูลที่ระบุตัวบุคคลหรือข้อมูลผู้ป่วยก่อนเผยแพร่สู่สาธารณะ หากใช้ภายในองค์กร ควรวางระบบบนเซิร์ฟเวอร์ที่มีการยืนยันตัวตน</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="detailDialog" class="detail-dialog">
+    <div class="dialog-head">
+      <div>
+        <span id="dialogYearBadge" class="badge"></span>
+        <h2 id="dialogTitle">รายละเอียดอุบัติการณ์</h2>
+      </div>
+      <button id="closeDialogBtn" class="icon-btn" aria-label="ปิด">×</button>
+    </div>
+    <div id="dialogContent" class="detail-grid"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="assets/app.js" defer></script>
+</body>
+</html>

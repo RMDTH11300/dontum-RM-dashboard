@@ -151,7 +151,7 @@ main { max-width: 1520px; margin: 0 auto; padding: 26px clamp(14px, 3vw, 40px) 5
 .year-bar-label { color: var(--muted); font-weight: 800; }
 
 .filter-panel {
-  display: grid; grid-template-columns: 2fr repeat(4, minmax(150px, 1fr)) auto; gap: 12px; align-items: end;
+  display: grid; grid-template-columns: 2fr repeat(5, minmax(150px, 1fr)) auto; gap: 12px; align-items: end;
   padding: 16px; margin-bottom: 14px; border-radius: 14px; background: white; border: 1px solid var(--line);
 }
 .filter-panel.compact { grid-template-columns: minmax(280px, 650px); }

@@ -177,9 +177,11 @@ function rebuildIncidentFilters() {
   const types = [...new Set(titles.map(riskType))].sort();
   const severities = [...new Set(state.currentRows.map(item => String(valueAt(item, "ความรุนแรง") ?? "ไม่ระบุ")))].sort((a,b) => a.localeCompare(b,"th",{numeric:true}));
   const units = [...new Set(state.currentRows.map(item => String(valueAt(item, "หน่วยงานที่บันทึกรายงาน") ?? "ไม่ระบุ")))].sort((a,b) => a.localeCompare(b,"th"));
+  const mainUnits = [...new Set(state.currentRows.map(item => String(valueAt(item, "กลุ่ม/หน่วยงานหลัก") ?? "ไม่ระบุ")))].sort((a,b) => a.localeCompare(b,"th"));
   populateSelect(el("typeFilter"), types);
   populateSelect(el("severityFilter"), severities);
   populateSelect(el("unitFilter"), units);
+  populateSelect(el("mainUnitFilter"), mainUnits);
   el("monthFilter").innerHTML = `<option value="">ทั้งหมด</option>` + fiscalMonths.map(m => `<option value="${m}">${monthLabels[m]}</option>`).join("");
 }
 
@@ -188,17 +190,20 @@ function applyIncidentFilters() {
   const type = el("typeFilter").value;
   const severity = el("severityFilter").value;
   const unit = el("unitFilter").value;
+  const mainUnit = el("mainUnitFilter").value;
   const month = el("monthFilter").value;
   const dateIdx = getCol("วันที่เกิดอุบัติการณ์");
   const titleIdx = getCol("รหัส: เรื่องอุบัติการณ์");
   const severityIdx = getCol("ความรุนแรง");
   const unitIdx = getCol("หน่วยงานที่บันทึกรายงาน");
+  const mainUnitIdx = getCol("กลุ่ม/หน่วยงานหลัก");
 
   state.filteredRows = state.currentRows.filter(item => {
     const row = item.row;
     if (type && riskType(row[titleIdx]) !== type) return false;
     if (severity && String(row[severityIdx] ?? "ไม่ระบุ") !== severity) return false;
     if (unit && String(row[unitIdx] ?? "ไม่ระบุ") !== unit) return false;
+    if (mainUnit && String(row[mainUnitIdx] ?? "ไม่ระบุ") !== mainUnit) return false;
     if (month && String(fiscalMonthFromDate(row[dateIdx])) !== month) return false;
     if (query) {
       const haystack = normalize(row.filter(v => v !== null && v !== "").join(" "));
@@ -389,9 +394,9 @@ function bindEvents() {
 
   let searchTimer;
   el("searchInput").addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(applyIncidentFilters, 180); });
-  ["typeFilter","severityFilter","unitFilter","monthFilter"].forEach(id => el(id).addEventListener("change", applyIncidentFilters));
+  ["typeFilter","severityFilter","unitFilter","mainUnitFilter","monthFilter"].forEach(id => el(id).addEventListener("change", applyIncidentFilters));
   el("clearFiltersBtn").addEventListener("click", () => {
-    ["searchInput","typeFilter","severityFilter","unitFilter","monthFilter"].forEach(id => el(id).value = "");
+    ["searchInput","typeFilter","severityFilter","unitFilter","mainUnitFilter","monthFilter"].forEach(id => el(id).value = "");
     applyIncidentFilters();
   });
   el("exportCsvBtn").addEventListener("click", exportFilteredCsv);

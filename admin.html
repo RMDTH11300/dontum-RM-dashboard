@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Admin จัดการข้อมูลความเสี่ยง | โรงพยาบาลดอนตูม</title>
+  <style>
+    :root{--bg:#f3f6fa;--panel:#fff;--ink:#172033;--muted:#667085;--line:#d8dee9;--primary:#1f5f99;--primary2:#15466f;--danger:#b42318;--success:#067647;--warn:#b54708;--shadow:0 12px 34px rgba(20,38,63,.09);font-family:"Noto Sans Thai","Tahoma",system-ui,sans-serif}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink)}
+    button,input,select,textarea{font:inherit} button{cursor:pointer}
+    .topbar{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#123e62,#1f6aa5);color:#fff;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.18)}
+    .brand{display:flex;align-items:center;gap:12px}.mark{width:46px;height:46px;border-radius:13px;background:#fff;color:#174f7b;display:grid;place-items:center;font-weight:900}.brand h1{font-size:1.15rem;margin:0}.brand p{margin:2px 0 0;opacity:.84;font-size:.88rem}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.top-actions a{color:#fff;text-decoration:none}
+    main{max-width:1500px;margin:0 auto;padding:20px}.notice{background:#fff7ed;border:1px solid #fed7aa;border-left:5px solid #f79009;padding:13px 16px;border-radius:12px;margin-bottom:16px}.notice strong{display:block;margin-bottom:3px}.notice p{margin:0;color:#7a2e0e;font-size:.92rem}
+    .toolbar,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.toolbar{padding:15px;display:flex;align-items:end;gap:11px;flex-wrap:wrap;margin-bottom:14px}.field{display:flex;flex-direction:column;gap:5px;min-width:150px}.field.grow{flex:1;min-width:240px}.field label{font-weight:700;font-size:.83rem;color:#344054}.field input,.field select,.field textarea{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:9px 10px;background:#fff;color:#172033}.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid rgba(31,95,153,.14);border-color:#1f5f99}
+    .btn{border:0;border-radius:9px;padding:10px 14px;font-weight:800;white-space:nowrap}.btn.primary{background:var(--primary);color:#fff}.btn.primary:hover{background:var(--primary2)}.btn.secondary{background:#eaf2f8;color:#174f7b}.btn.ghost{background:#fff;border:1px solid #cbd5e1;color:#344054}.btn.danger{background:#fee4e2;color:#b42318}.btn.success{background:#dcfae6;color:#067647}.btn:disabled{opacity:.45;cursor:not-allowed}
+    .status-row{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:10px 2px;color:var(--muted);font-size:.9rem;flex-wrap:wrap}.status-row strong{color:var(--ink)}.dirty{color:var(--warn);font-weight:800}.clean{color:var(--success);font-weight:800}
+    .panel{overflow:hidden}.table-wrap{overflow:auto;max-height:66vh}table{border-collapse:separate;border-spacing:0;width:100%;min-width:1180px}th,td{padding:10px 11px;border-bottom:1px solid #eaecf0;text-align:left;vertical-align:top;font-size:.85rem}th{position:sticky;top:0;background:#eef4f8;color:#344054;z-index:2;font-size:.79rem}tbody tr:hover{background:#f8fbfd}.ellipsis{max-width:320px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.badge{display:inline-flex;padding:3px 8px;border-radius:999px;background:#edf2f7;font-size:.75rem;font-weight:800}.sev{display:inline-grid;place-items:center;min-width:31px;padding:4px 8px;border-radius:8px;background:#eef4f8;font-weight:900}.row-actions{display:flex;gap:6px}.mini{border:1px solid #cbd5e1;background:#fff;border-radius:7px;padding:6px 9px;font-weight:700}.mini.edit{color:#175cd3}.mini.delete{color:#b42318}
+    .pagination{display:flex;justify-content:center;gap:5px;padding:14px;flex-wrap:wrap}.page{border:1px solid #cbd5e1;background:#fff;border-radius:7px;padding:6px 10px}.page.active{background:#1f5f99;color:#fff;border-color:#1f5f99}.empty{padding:55px;text-align:center;color:var(--muted)}
+    dialog{width:min(1120px,96vw);max-height:92vh;border:0;border-radius:18px;padding:0;box-shadow:0 30px 80px rgba(0,0,0,.28)}dialog::backdrop{background:rgba(10,25,41,.58)}.modal-head{position:sticky;top:0;z-index:4;background:#fff;border-bottom:1px solid var(--line);padding:15px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.modal-head h2{margin:0;font-size:1.08rem}.modal-body{padding:18px;overflow:auto}.modal-footer{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding:13px 18px;display:flex;justify-content:flex-end;gap:9px}.icon-btn{border:0;background:#eef2f6;border-radius:50%;width:36px;height:36px;font-size:1.4rem}.section-title{grid-column:1/-1;margin:8px 0 0;padding:10px 12px;background:#edf4f9;border-radius:10px;color:#174f7b;font-weight:900}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.form-grid .span2{grid-column:span 2}.form-grid .span3{grid-column:1/-1}.form-grid textarea{min-height:92px;resize:vertical}.fy-lock{background:#ecfdf3;border:1px solid #abefc6;border-radius:10px;padding:10px 12px;color:#067647;font-weight:900}
+    .toast{position:fixed;right:18px;bottom:18px;background:#172033;color:#fff;padding:12px 16px;border-radius:10px;opacity:0;transform:translateY(15px);pointer-events:none;transition:.2s;z-index:50;max-width:420px}.toast.show{opacity:1;transform:none}.help{margin-top:15px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px}.help h3{margin:0 0 8px}.help ol{margin:0;padding-left:24px}.help li{margin:6px 0}.code{font-family:ui-monospace,monospace;background:#f2f4f7;border-radius:5px;padding:2px 5px}
+    @media(max-width:850px){.topbar{position:static;align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.form-grid .span2,.form-grid .span3{grid-column:auto}.toolbar{align-items:stretch}.field,.field.grow{width:100%}.btn{width:100%}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="mark">RM</div><div><h1>Admin จัดการข้อมูลความเสี่ยง</h1><p>โรงพยาบาลดอนตูม — เครื่องมือเพิ่ม แก้ไข ลบ และส่งออก JSON</p></div></div>
+    <div class="top-actions"><a class="btn ghost" href="index.html">กลับหน้า Dashboard</a></div>
+  </header>
+
+  <main>
+    <div class="notice"><strong>ปีงบประมาณกำหนดจากไฟล์ที่เลือกเท่านั้น</strong><p>ระบบนี้ไม่คำนวณปีงบประมาณจากวันที่เกิดเหตุ เมื่อเลือกปี 2569 ข้อมูลทุกแถวที่เพิ่มจะถูกส่งออกเป็นไฟล์ <b>incidents_2569.json</b></p></div>
+
+    <section class="toolbar" aria-label="เครื่องมือจัดการข้อมูล">
+      <div class="field"><label for="yearSelect">ปีงบประมาณ</label><select id="yearSelect"></select></div>
+      <button id="loadWebBtn" class="btn secondary">โหลดข้อมูลจาก Dashboard</button>
+      <button id="importBtn" class="btn ghost">นำเข้าไฟล์ JSON</button>
+      <input id="fileInput" type="file" accept="application/json,.json" hidden>
+      <button id="openDraftBtn" class="btn ghost">เปิดร่างในเครื่อง</button>
+      <button id="saveDraftBtn" class="btn success">บันทึกร่างในเครื่อง</button>
+      <button id="addBtn" class="btn primary">+ เพิ่มอุบัติการณ์</button>
+      <button id="exportBtn" class="btn primary">ส่งออก JSON สำหรับ GitHub</button>
+    </section>
+
+    <section class="toolbar">
+      <div class="field grow"><label for="searchInput">ค้นหา</label><input id="searchInput" type="search" placeholder="ค้นหารหัส เรื่องอุบัติการณ์ รายละเอียด หน่วยงาน…"></div>
+      <div class="field"><label for="severityFilter">ความรุนแรง</label><select id="severityFilter"><option value="">ทั้งหมด</option></select></div>
+      <div class="field"><label for="reportUnitFilter">หน่วยงานรายงาน</label><select id="reportUnitFilter"><option value="">ทั้งหมด</option></select></div>
+      <div class="field"><label for="mainUnitFilter">หน่วยงานหลักที่แก้ไข</label><select id="mainUnitFilter"><option value="">ทั้งหมด</option></select></div>
+      <button id="clearFilterBtn" class="btn ghost">ล้างตัวกรอง</button>
+    </section>
+
+    <div class="status-row"><div><strong id="datasetLabel">ยังไม่ได้โหลดข้อมูล</strong> · <span id="resultLabel">0 รายการ</span></div><div id="changeState" class="clean">ยังไม่มีการแก้ไข</div></div>
+
+    <section class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ลำดับ</th><th>รหัสรายงาน</th><th>วันที่เกิด</th><th>รหัส / เรื่องอุบัติการณ์</th><th>เรื่องย่อย</th><th>ความรุนแรง</th><th>หน่วยงานรายงาน</th><th>หน่วยงานหลักที่แก้ไข</th><th>สถานที่</th><th>จัดการ</th></tr></thead>
+          <tbody id="tbody"><tr><td colspan="10" class="empty">เลือกปีแล้วกด “โหลดข้อมูลจาก Dashboard” หรือ “นำเข้าไฟล์ JSON”</td></tr></tbody>
+        </table>
+      </div>
+      <div id="pagination" class="pagination"></div>
+    </section>
+
+    <section class="help">
+      <h3>ขั้นตอนอัปเดตข้อมูลขึ้น GitHub</h3>
+      <ol>
+        <li>โหลดไฟล์ปีที่ต้องการ แล้วเพิ่มหรือแก้ไขข้อมูล</li>
+        <li>กด <b>ส่งออก JSON สำหรับ GitHub</b> จะได้ไฟล์ชื่อ <span class="code">incidents_2569.json</span></li>
+        <li>เข้า GitHub Repository → โฟลเดอร์ <span class="code">data</span> → <b>Add file → Upload files</b></li>
+        <li>อัปโหลดไฟล์ใหม่ทับชื่อเดิม แล้วกด <b>Commit changes</b></li>
+        <li>รอ GitHub Pages อัปเดต แล้วเปิด Dashboard กด <span class="code">Ctrl + F5</span></li>
+      </ol>
+    </section>
+  </main>
+
+  <dialog id="editorDialog">
+    <form id="editorForm" method="dialog">
+      <div class="modal-head"><div><h2 id="editorTitle">เพิ่มอุบัติการณ์</h2><div id="fyLock" class="fy-lock"></div></div><button type="button" id="closeEditorBtn" class="icon-btn" aria-label="ปิด">×</button></div>
+      <div class="modal-body"><div id="formGrid" class="form-grid"></div></div>
+      <div class="modal-footer"><button type="button" id="cancelEditorBtn" class="btn ghost">ยกเลิก</button><button type="submit" class="btn primary">บันทึกข้อมูล</button></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+
+<script>
+"use strict";
+
+const HEADERS = [
+  "รหัสรายงานอุบัติการณ์","รหัส: เรื่องอุบัติการณ์","เรื่องย่อย","ความรุนแรง","หน่วยงานที่บันทึกรายงาน","ชนิดสถานที่","สถานที่เกิดเหตุ","เวร (เวลา)","วิธีการค้นพบ","ผู้ที่ได้รับผลกระทบ","เพศ","อายุ","สรุปประเด็นปัญหา","Keyword","รายละเอียดการเกิด","การจัดการเบื้องต้น","ข้อเสนอแนะเพื่อการแก้ไข","กลุ่ม/หน่วยงานหลัก","กลุ่ม/หน่วยงานร่วม","สรุปการแก้ไขของกลุ่ม/หน่วยงานหลัก","การร่วมแก้ไขของกลุ่ม/หน่วยงานร่วม","การแก้ไขของกรรมการความเสี่ยง","มีการแก้ไขปัญหาอย่างไร","การทำ RCA/Contributing Factor อะไร อย่างไร","มีการปรับ/พัฒนาระบบ อะไร อย่างไร","ผลลัพธ์ทางสังคม","สถานะ","วันที่เกิดอุบัติการณ์","วันที่ค้นพบ","วันที่บันทึกรายงาน","วันที่ยืนยัน","วันที่แจ้งเหตุให้ผู้แก้ไขทราบ","วันที่เริ่มดำเนินการแก้ไข","วันที่กลุ่ม/หน่วยงานหลัก login แก้ไขเสร็จ","วันที่ RM ปิดเคส","วันที่สิ้นสุดการแก้ไขปัญหา"
+];
+const IDX = Object.fromEntries(HEADERS.map((h,i)=>[h,i]));
+const DATE_FIELDS = new Set(HEADERS.filter(h=>h.startsWith("วันที่")));
+const LONG_FIELDS = new Set(["สรุปประเด็นปัญหา","รายละเอียดการเกิด","การจัดการเบื้องต้น","ข้อเสนอแนะเพื่อการแก้ไข","สรุปการแก้ไขของกลุ่ม/หน่วยงานหลัก","การร่วมแก้ไขของกลุ่ม/หน่วยงานร่วม","การแก้ไขของกรรมการความเสี่ยง","มีการแก้ไขปัญหาอย่างไร","การทำ RCA/Contributing Factor อะไร อย่างไร","มีการปรับ/พัฒนาระบบ อะไร อย่างไร","ผลลัพธ์ทางสังคม"]);
+const SECTIONS = [
+  ["ข้อมูลหลัก", ["รหัสรายงานอุบัติการณ์","รหัส: เรื่องอุบัติการณ์","เรื่องย่อย","ความรุนแรง","หน่วยงานที่บันทึกรายงาน","กลุ่ม/หน่วยงานหลัก","กลุ่ม/หน่วยงานร่วม"]],
+  ["สถานที่และการค้นพบ", ["ชนิดสถานที่","สถานที่เกิดเหตุ","เวร (เวลา)","วิธีการค้นพบ"]],
+  ["ผู้ได้รับผลกระทบ", ["ผู้ที่ได้รับผลกระทบ","เพศ","อายุ"]],
+  ["รายละเอียดเหตุการณ์", ["สรุปประเด็นปัญหา","Keyword","รายละเอียดการเกิด","การจัดการเบื้องต้น","ข้อเสนอแนะเพื่อการแก้ไข"]],
+  ["การแก้ไขและพัฒนาระบบ", ["สรุปการแก้ไขของกลุ่ม/หน่วยงานหลัก","การร่วมแก้ไขของกลุ่ม/หน่วยงานร่วม","การแก้ไขของกรรมการความเสี่ยง","มีการแก้ไขปัญหาอย่างไร","การทำ RCA/Contributing Factor อะไร อย่างไร","มีการปรับ/พัฒนาระบบ อะไร อย่างไร","ผลลัพธ์ทางสังคม","สถานะ"]],
+  ["วันและเวลา", HEADERS.filter(h=>h.startsWith("วันที่"))]
+];
+
+const state = {dataset:null, filtered:[], page:1, pageSize:50, editIndex:null, dirty:false};
+const el = id => document.getElementById(id);
+const escapeHtml = v => String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+const norm = v => String(v??"").toLocaleLowerCase("th-TH").replace(/\s+/g," ").trim();
+const fmt = new Intl.NumberFormat("th-TH");
+
+function showToast(message){const t=el("toast");t.textContent=message;t.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove("show"),2800)}
+function selectedYear(){return Number(el("yearSelect").value)}
+function rowValue(row,header){return row[IDX[header]]??""}
+function normalizeRow(row){const out=Array(HEADERS.length).fill(null);for(let i=0;i<Math.min(row.length,HEADERS.length);i++)out[i]=row[i];return out}
+function setDirty(value=true){state.dirty=value;el("changeState").textContent=value?"มีการแก้ไขที่ยังไม่ได้ส่งออก":"ยังไม่มีการแก้ไข";el("changeState").className=value?"dirty":"clean"}
+function ensureDataset(){if(!state.dataset)state.dataset={fiscalYear:selectedYear(),sourceFile:"สร้างจาก admin.html",rows:[]};}
+function autoReportId(){return `ADM-${selectedYear()}-${new Date().toISOString().replace(/\D/g,"").slice(0,14)}`}
+
+function populateYears(){const current=new Date().getFullYear()+543;const years=[];for(let y=2566;y<=Math.max(2575,current+2);y++)years.push(y);el("yearSelect").innerHTML=years.map(y=>`<option value="${y}" ${y===2569?"selected":""}>${y}</option>`).join("")}
+function unique(header){if(!state.dataset)return[];return [...new Set(state.dataset.rows.map(r=>String(rowValue(r,header)||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"th",{numeric:true}))}
+function fillSelect(id,values){const s=el(id),cur=s.value;s.innerHTML='<option value="">ทั้งหมด</option>'+values.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");if(values.includes(cur))s.value=cur}
+function rebuildFilters(){fillSelect("severityFilter",unique("ความรุนแรง"));fillSelect("reportUnitFilter",unique("หน่วยงานที่บันทึกรายงาน"));fillSelect("mainUnitFilter",unique("กลุ่ม/หน่วยงานหลัก"));}
+function applyFilters(){if(!state.dataset){renderTable();return}const q=norm(el("searchInput").value),sev=el("severityFilter").value,ru=el("reportUnitFilter").value,mu=el("mainUnitFilter").value;state.filtered=state.dataset.rows.map((row,index)=>({row,index})).filter(x=>{if(sev&&String(rowValue(x.row,"ความรุนแรง"))!==sev)return false;if(ru&&String(rowValue(x.row,"หน่วยงานที่บันทึกรายงาน"))!==ru)return false;if(mu&&String(rowValue(x.row,"กลุ่ม/หน่วยงานหลัก"))!==mu)return false;if(q&&!norm(x.row.join(" ")).includes(q))return false;return true});state.page=1;renderTable()}
+function formatDate(v){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(v||"")))return v||"–";const[y,m,d]=String(v).split("-");return `${d}/${m}/${Number(y)+543}`}
+function renderTable(){if(!state.dataset){el("datasetLabel").textContent="ยังไม่ได้โหลดข้อมูล";el("resultLabel").textContent="0 รายการ";el("tbody").innerHTML='<tr><td colspan="10" class="empty">เลือกปีแล้วกด “โหลดข้อมูลจาก Dashboard” หรือ “นำเข้าไฟล์ JSON”</td></tr>';el("pagination").innerHTML="";return}el("datasetLabel").textContent=`ปีงบประมาณ ${state.dataset.fiscalYear} · ทั้งหมด ${fmt.format(state.dataset.rows.length)} รายการ`;el("resultLabel").textContent=`แสดง ${fmt.format(state.filtered.length)} รายการ`;const start=(state.page-1)*state.pageSize,items=state.filtered.slice(start,start+state.pageSize);el("tbody").innerHTML=items.length?items.map((x,i)=>`<tr><td>${start+i+1}</td><td>${escapeHtml(rowValue(x.row,"รหัสรายงานอุบัติการณ์")||"–")}</td><td>${escapeHtml(formatDate(rowValue(x.row,"วันที่เกิดอุบัติการณ์")))}</td><td><div class="ellipsis"><strong>${escapeHtml(rowValue(x.row,"รหัส: เรื่องอุบัติการณ์")||"–")}</strong></div></td><td><div class="ellipsis">${escapeHtml(rowValue(x.row,"เรื่องย่อย")||"–")}</div></td><td><span class="sev">${escapeHtml(rowValue(x.row,"ความรุนแรง")||"–")}</span></td><td>${escapeHtml(rowValue(x.row,"หน่วยงานที่บันทึกรายงาน")||"–")}</td><td>${escapeHtml(rowValue(x.row,"กลุ่ม/หน่วยงานหลัก")||"–")}</td><td>${escapeHtml(rowValue(x.row,"สถานที่เกิดเหตุ")||"–")}</td><td><div class="row-actions"><button class="mini edit" data-edit="${x.index}">แก้ไข</button><button class="mini delete" data-delete="${x.index}">ลบ</button></div></td></tr>`).join(""):'<tr><td colspan="10" class="empty">ไม่พบข้อมูลตามเงื่อนไข</td></tr>';document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openEditor(Number(b.dataset.edit)));document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>deleteRow(Number(b.dataset.delete)));renderPagination()}
+function renderPagination(){const pages=Math.max(1,Math.ceil(state.filtered.length/state.pageSize)),cur=Math.min(state.page,pages);state.page=cur;if(pages<=1){el("pagination").innerHTML="";return}const from=Math.max(1,cur-2),to=Math.min(pages,cur+2);let html=`<button class="page" data-p="${cur-1}" ${cur===1?"disabled":""}>‹</button>`;if(from>1)html+=`<button class="page" data-p="1">1</button>${from>2?"<span>…</span>":""}`;for(let p=from;p<=to;p++)html+=`<button class="page ${p===cur?"active":""}" data-p="${p}">${p}</button>`;if(to<pages)html+=`${to<pages-1?"<span>…</span>":""}<button class="page" data-p="${pages}">${pages}</button>`;html+=`<button class="page" data-p="${cur+1}" ${cur===pages?"disabled":""}>›</button>`;el("pagination").innerHTML=html;el("pagination").querySelectorAll("button:not(:disabled)").forEach(b=>b.onclick=()=>{state.page=Number(b.dataset.p);renderTable()})}
+
+async function loadFromWeb(){const year=selectedYear();if(state.dirty&&!confirm("มีข้อมูลที่แก้ไขแต่ยังไม่ได้ส่งออก ต้องการโหลดทับหรือไม่?"))return;try{const res=await fetch(`data/incidents_${year}.json`,{cache:"no-store"});if(!res.ok)throw new Error(`ไม่พบไฟล์ปี ${year}`);const data=await res.json();acceptDataset(data,`โหลดจาก data/incidents_${year}.json`)}catch(e){showToast("โหลดจากเว็บไม่สำเร็จ กรุณาใช้ปุ่มนำเข้าไฟล์ JSON")}}
+function acceptDataset(data,label){if(!data||!Array.isArray(data.rows))throw new Error("รูปแบบไฟล์ไม่ถูกต้อง: ต้องมี rows");const fy=Number(data.fiscalYear||selectedYear());state.dataset={fiscalYear:fy,sourceFile:data.sourceFile||label||"admin.html",rows:data.rows.map(normalizeRow)};el("yearSelect").value=String(fy);state.filtered=state.dataset.rows.map((row,index)=>({row,index}));rebuildFilters();setDirty(false);applyFilters();showToast(`${label}: ${fmt.format(state.dataset.rows.length)} รายการ`)}
+function importFile(file){const reader=new FileReader();reader.onerror=()=>showToast("อ่านไฟล์ไม่สำเร็จ");reader.onload=()=>{try{acceptDataset(JSON.parse(reader.result),`นำเข้า ${file.name}`)}catch(e){alert(e.message)}};reader.readAsText(file,"utf-8")}
+function exportJson(){ensureDataset();state.dataset.fiscalYear=selectedYear();const payload={fiscalYear:state.dataset.fiscalYear,sourceFile:state.dataset.sourceFile||"แก้ไขด้วย admin.html",rows:state.dataset.rows};const blob=new Blob([JSON.stringify(payload)],{type:"application/json;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`incidents_${payload.fiscalYear}.json`;a.click();URL.revokeObjectURL(a.href);setDirty(false);showToast(`ส่งออก incidents_${payload.fiscalYear}.json แล้ว`)}
+
+function fieldControl(header,value){const id=`f_${IDX[header]}`,safe=escapeHtml(value??"");const common=`id="${id}" name="${id}" data-header="${escapeHtml(header)}"`;if(DATE_FIELDS.has(header))return `<div class="field"><label for="${id}">${escapeHtml(header)}</label><input ${common} type="date" value="${safe}"></div>`;if(header==="ความรุนแรง")return `<div class="field"><label for="${id}">${header}</label><input ${common} list="severityList" value="${safe}" placeholder="เช่น A, B, C, D, E หรือ 1–5"></div>`;if(header==="เพศ")return `<div class="field"><label for="${id}">${header}</label><select ${common}><option value=""></option>${["ชาย","หญิง","ไม่ระบุ"].map(v=>`<option ${v===String(value)?"selected":""}>${v}</option>`).join("")}</select></div>`;if(header==="สถานะ")return `<div class="field span2"><label for="${id}">${header} <small>(เก็บใน JSON แต่ไม่แสดงใน Dashboard Public)</small></label><input ${common} value="${safe}"></div>`;if(LONG_FIELDS.has(header))return `<div class="field span3"><label for="${id}">${escapeHtml(header)}</label><textarea ${common}>${safe}</textarea></div>`;const span=["รหัส: เรื่องอุบัติการณ์","เรื่องย่อย","หน่วยงานที่บันทึกรายงาน","กลุ่ม/หน่วยงานหลัก","กลุ่ม/หน่วยงานร่วม","สถานที่เกิดเหตุ"].includes(header)?" span2":"";let list="";if(header==="รหัส: เรื่องอุบัติการณ์")list=' list="riskList"';if(header==="หน่วยงานที่บันทึกรายงาน"||header==="กลุ่ม/หน่วยงานหลัก"||header==="กลุ่ม/หน่วยงานร่วม")list=' list="unitList"';return `<div class="field${span}"><label for="${id}">${escapeHtml(header)}</label><input ${common}${list} value="${safe}"></div>`}
+function openEditor(index=null){ensureDataset();state.editIndex=index;const row=index===null?Array(HEADERS.length).fill(null):normalizeRow(state.dataset.rows[index]);if(index===null)row[IDX["รหัสรายงานอุบัติการณ์"]]=autoReportId();el("editorTitle").textContent=index===null?"เพิ่มอุบัติการณ์ใหม่":"แก้ไขอุบัติการณ์";el("fyLock").textContent=`ปีงบประมาณ ${selectedYear()} (กำหนดจากไฟล์ ไม่คำนวณจากวันที่)`;el("formGrid").innerHTML=SECTIONS.map(([title,fields])=>`<div class="section-title">${title}</div>${fields.map(h=>fieldControl(h,row[IDX[h]])).join("")}`).join("")+`<datalist id="severityList">${unique("ความรุนแรง").map(v=>`<option value="${escapeHtml(v)}">`).join("")}</datalist><datalist id="unitList">${[...new Set([...unique("หน่วยงานที่บันทึกรายงาน"),...unique("กลุ่ม/หน่วยงานหลัก"),...unique("กลุ่ม/หน่วยงานร่วม")])].map(v=>`<option value="${escapeHtml(v)}">`).join("")}</datalist><datalist id="riskList">${unique("รหัส: เรื่องอุบัติการณ์").map(v=>`<option value="${escapeHtml(v)}">`).join("")}</datalist>`;el("editorDialog").showModal()}
+function saveEditor(){const row=Array(HEADERS.length).fill(null);el("formGrid").querySelectorAll("[data-header]").forEach(input=>{const h=input.dataset.header;let v=input.value.trim();if(v==="")v=null;else if(h==="อายุ"&&!Number.isNaN(Number(v)))v=Number(v);row[IDX[h]]=v});if(!row[IDX["รหัสรายงานอุบัติการณ์"]])row[IDX["รหัสรายงานอุบัติการณ์"]]=autoReportId();if(!row[IDX["รหัส: เรื่องอุบัติการณ์"]]){alert("กรุณากรอก รหัส: เรื่องอุบัติการณ์");return false}if(state.editIndex===null)state.dataset.rows.push(row);else state.dataset.rows[state.editIndex]=row;state.dataset.fiscalYear=selectedYear();rebuildFilters();applyFilters();setDirty(true);el("editorDialog").close();showToast(state.editIndex===null?"เพิ่มข้อมูลแล้ว":"แก้ไขข้อมูลแล้ว");return true}
+function deleteRow(index){const row=state.dataset.rows[index];const label=rowValue(row,"รหัส: เรื่องอุบัติการณ์")||rowValue(row,"รหัสรายงานอุบัติการณ์");if(!confirm(`ยืนยันลบรายการนี้?\n${label}`))return;state.dataset.rows.splice(index,1);rebuildFilters();applyFilters();setDirty(true);showToast("ลบข้อมูลแล้ว")}
+
+function openDb(){return new Promise((resolve,reject)=>{const req=indexedDB.open("dontum-risk-admin",1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains("datasets"))req.result.createObjectStore("datasets",{keyPath:"fiscalYear"})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+async function saveDraft(){ensureDataset();const db=await openDb();await new Promise((resolve,reject)=>{const tx=db.transaction("datasets","readwrite");tx.objectStore("datasets").put({fiscalYear:selectedYear(),savedAt:new Date().toISOString(),dataset:state.dataset});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});showToast("บันทึกร่างไว้ในเบราว์เซอร์เครื่องนี้แล้ว")}
+async function openDraft(){try{const db=await openDb();const rec=await new Promise((resolve,reject)=>{const req=db.transaction("datasets").objectStore("datasets").get(selectedYear());req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});if(!rec){showToast("ยังไม่มีร่างของปีนี้");return}if(state.dirty&&!confirm("มีข้อมูลที่แก้ไขอยู่ ต้องการเปิดร่างทับหรือไม่?"))return;acceptDataset(rec.dataset,`เปิดร่างที่บันทึก ${new Date(rec.savedAt).toLocaleString("th-TH")}`);setDirty(true)}catch(e){showToast("เปิดร่างไม่สำเร็จ")}}
+
+function bind(){el("loadWebBtn").onclick=loadFromWeb;el("importBtn").onclick=()=>el("fileInput").click();el("fileInput").onchange=e=>{if(e.target.files[0])importFile(e.target.files[0]);e.target.value=""};el("addBtn").onclick=()=>openEditor(null);el("exportBtn").onclick=exportJson;el("saveDraftBtn").onclick=saveDraft;el("openDraftBtn").onclick=openDraft;el("clearFilterBtn").onclick=()=>{el("searchInput").value="";el("severityFilter").value="";el("reportUnitFilter").value="";el("mainUnitFilter").value="";applyFilters()};let timer;el("searchInput").oninput=()=>{clearTimeout(timer);timer=setTimeout(applyFilters,150)};["severityFilter","reportUnitFilter","mainUnitFilter"].forEach(id=>el(id).onchange=applyFilters);el("yearSelect").onchange=()=>{if(state.dirty&&!confirm("มีข้อมูลที่แก้ไขแต่ยังไม่ได้ส่งออก ต้องการเปลี่ยนปีและล้างข้อมูลบนหน้าจอหรือไม่?")){el("yearSelect").value=String(state.dataset?.fiscalYear||2569);return}state.dataset=null;state.filtered=[];setDirty(false);rebuildFilters();renderTable()};el("closeEditorBtn").onclick=()=>el("editorDialog").close();el("cancelEditorBtn").onclick=()=>el("editorDialog").close();el("editorForm").onsubmit=e=>{e.preventDefault();saveEditor()};window.addEventListener("beforeunload",e=>{if(state.dirty){e.preventDefault();e.returnValue=""}})}
+
+populateYears();bind();renderTable();
+</script>
+</body>
+</html>

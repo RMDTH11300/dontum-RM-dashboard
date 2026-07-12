@@ -11,7 +11,12 @@ function bind(){
   $$('.nav[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
   $('#year').onchange=async e=>{state.year=+e.target.value;state.selected.clear();state.page=1;await loadYear()};
   $('#allUnits').onclick=()=>{state.selected=new Set(state.units);renderUnits();apply()};
-  $('#expandUnits').onclick=()=>{$$('#units details').forEach(x=>x.open=true)};
+  $('#expandUnits').onclick=()=>{
+    const details=$$('#units details');
+    const shouldOpen=details.some(x=>!x.open);
+    details.forEach(x=>x.open=shouldOpen);
+    $('#expandUnits').textContent=shouldOpen?'ย่อทั้งหมด':'ขยายทั้งหมด'
+  };
   $('#clearUnits').onclick=()=>{state.selected.clear();renderUnits();apply()};
   $('#unitSearch').oninput=renderUnits;$('#refresh').onclick=loadYear;
   ['#q','#sev','#type','#month'].forEach(s=>$(s).addEventListener(s==='#q'?'input':'change',()=>{state.page=1;apply()}));
@@ -50,7 +55,7 @@ function treeMatches(group,q){
 }
 function renderUnits(){
   const q=$('#unitSearch').value.trim().toLowerCase();
-  $('#selectedCount').textContent=state.selected.size?`${state.selected.size} งานย่อย`:'ทั้งหมด';
+  $('#selectedCount').textContent=state.selected.size?`${state.selected.size} งานย่อยที่เลือก`:'ทั้งหมด';
   const groups=(state.orgTree.groups||[]).filter(g=>treeMatches(g,q));
   let out=groups.map((g,gi)=>{
     const gUnits=allDescendantUnits(g),gs=checkboxState(gUnits);
@@ -59,13 +64,13 @@ function renderUnits(){
       const dUnits=allDescendantUnits(d),ds=checkboxState(dUnits);
       const leaves=d.units.filter(u=>state.units.includes(u)&&(!q||[g.name,d.name,u].join(' ').toLowerCase().includes(q)));
       if(!leaves.length)return'';
-      return `<details class="org-dept" ${q||d.name==='งานกายภาพบำบัด'||d.name==='งานขาเทียม'||d.name==='งานกิจกรรมบำบัด'||d.name==='งานแพทย์แผนจีน'?'open':''}>
+      return `<details class="org-dept" open>
         <summary><label class="org-parent"><input type="checkbox" data-kind="dept" data-units="${esc(dUnits.join('||'))}" ${ds.checked?'checked':''}><span>${esc(d.name)}</span></label></summary>
         <div class="org-leaves">${leaves.map(u=>`<label class="org-leaf"><input type="checkbox" data-kind="leaf" value="${esc(u)}" ${state.selected.has(u)?'checked':''}><span>${esc(u)}</span></label>`).join('')}</div>
       </details>`
     }).join('');
     if(!deptHtml)return'';
-    return `<details class="org-group" ${q||g.name==='กลุ่มงานเวชกรรมฟื้นฟู'?'open':''}>
+    return `<details class="org-group" open>
       <summary><label class="org-parent group"><input type="checkbox" data-kind="group" data-units="${esc(gUnits.join('||'))}" ${gs.checked?'checked':''}><span>${esc(g.name)}</span></label></summary>
       <div class="org-departments">${deptHtml}</div>
     </details>`
@@ -74,7 +79,7 @@ function renderUnits(){
   const unmatched=unmatchedUnits().filter(u=>!q||u.toLowerCase().includes(q));
   if(unmatched.length){
     const us=checkboxState(unmatched);
-    out+=`<details class="org-group unmatched" ${q?'open':''}><summary><label class="org-parent group"><input type="checkbox" data-kind="group" data-units="${esc(unmatched.join('||'))}" ${us.checked?'checked':''}><span>ยังไม่จัดกลุ่ม</span></label></summary><div class="org-leaves">${unmatched.map(u=>`<label class="org-leaf"><input type="checkbox" data-kind="leaf" value="${esc(u)}" ${state.selected.has(u)?'checked':''}><span>${esc(u)}</span></label>`).join('')}</div></details>`
+    out+=`<details class="org-group unmatched" open><summary><label class="org-parent group"><input type="checkbox" data-kind="group" data-units="${esc(unmatched.join('||'))}" ${us.checked?'checked':''}><span>ยังไม่จัดกลุ่ม</span></label></summary><div class="org-leaves">${unmatched.map(u=>`<label class="org-leaf"><input type="checkbox" data-kind="leaf" value="${esc(u)}" ${state.selected.has(u)?'checked':''}><span>${esc(u)}</span></label>`).join('')}</div></details>`
   }
   $('#units').innerHTML=out||'<p class="empty">ไม่พบหน่วยงาน</p>';
 

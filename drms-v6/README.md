@@ -126,3 +126,11 @@ Master หน่วยงานอยู่ที่ `config/departments.json`
 - รวมข้อมูลจากทุกไฟล์ `incidents_ปี.json`
 - KPI, Top Risk, Top หน่วยงาน และกราฟในหน้าภาพรวมคำนวณจากข้อมูลรวม
 - ยังสามารถเลือกดูแยกปีได้ตามเดิม
+
+
+## V6.11 – Document Center
+เพิ่มเมนู “เอกสารและแบบฟอร์ม” พร้อมไฟล์ดาวน์โหลด:
+- `docs/risk-management-manual-2569.pdf` — คู่มือระบบบริหารความเสี่ยง 2569
+- `docs/risk-profile-form.docx` — แบบฟอร์ม Risk Profile
+- `docs/risk-register-form.docx` — แบบฟอร์ม Risk Register
+- `docs/rca-form.docx` — แบบฟอร์ม RCA

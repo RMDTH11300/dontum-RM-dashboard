@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.10-all-years">
+  <link rel="stylesheet" href="assets/style.css?v=6.11-document-center">
 </head>
 <body>
 <header class="topbar">
@@ -18,6 +18,7 @@
   <button class="nav" data-view="profile">▤ Risk Profile</button>
   <button class="nav" data-view="register">▥ Risk Register</button>
   <button class="nav" data-view="analytics">◫ Analytics</button>
+  <button class="nav" data-view="documents">📚 เอกสารและแบบฟอร์ม</button>
   <button class="nav" data-view="rca">📑 RCA</button>
   <button class="nav" data-view="haReport">▧ รายงาน HA หน่วยงาน</button>
   <a class="nav link" href="admin.html">⚙ หน้า Admin</a>
@@ -168,6 +169,80 @@
   <section class="panel readiness-panel"><h3>ความพร้อมของข้อมูลสำหรับ HA</h3><div id="haReadiness" class="readiness-list"></div></section>
 </section>
 
+
+<section id="documents" class="view">
+  <div class="page-title">
+    <div>
+      <h1>เอกสารและแบบฟอร์ม</h1>
+      <p>ศูนย์รวมคู่มือและแบบฟอร์มมาตรฐานด้านการบริหารความเสี่ยง โรงพยาบาลดอนตูม</p>
+    </div>
+  </div>
+
+  <section class="document-hero">
+    <div>
+      <span class="document-eyebrow">DOCUMENT CENTER</span>
+      <h2>ดาวน์โหลดเอกสารมาตรฐานจากแหล่งเดียว</h2>
+      <p>สำหรับใช้จัดทำ Risk Profile, Risk Register และวิเคราะห์สาเหตุราก (RCA) ให้เป็นรูปแบบเดียวกันทั้งโรงพยาบาล</p>
+    </div>
+    <div class="document-count">4<small>รายการ</small></div>
+  </section>
+
+  <div class="document-grid">
+    <article class="document-card manual">
+      <div class="document-icon">📘</div>
+      <div class="document-content">
+        <span class="document-type">คู่มือ</span>
+        <h3>คู่มือระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม 2569</h3>
+        <p>นโยบาย กระบวนการบริหารความเสี่ยง แนวทาง RCA และบัญชีอุบัติการณ์ HRMS</p>
+        <div class="document-meta"><span>PDF</span><span>111 หน้า</span></div>
+      </div>
+      <div class="document-actions">
+        <a href="docs/risk-management-manual-2569.pdf" target="_blank" rel="noopener">เปิดดู</a>
+        <a href="docs/risk-management-manual-2569.pdf" download>ดาวน์โหลด</a>
+      </div>
+    </article>
+
+    <article class="document-card">
+      <div class="document-icon">📋</div>
+      <div class="document-content">
+        <span class="document-type">แบบฟอร์ม</span>
+        <h3>แบบฟอร์ม Risk Profile</h3>
+        <p>บัญชีรายการความเสี่ยงด้านคลินิกและด้านทั่วไป พร้อมประเมินโอกาส ผลกระทบ และมาตรการควบคุม</p>
+        <div class="document-meta"><span>Word</span><span>แก้ไขได้</span></div>
+      </div>
+      <div class="document-actions">
+        <a href="docs/risk-profile-form.docx" download>ดาวน์โหลด</a>
+      </div>
+    </article>
+
+    <article class="document-card">
+      <div class="document-icon">📊</div>
+      <div class="document-content">
+        <span class="document-type">แบบฟอร์ม</span>
+        <h3>แบบฟอร์ม Risk Register</h3>
+        <p>ทะเบียนจัดการความเสี่ยง ครอบคลุม Risk Owner, การติดตาม ทบทวน และ Residual Risk</p>
+        <div class="document-meta"><span>Word</span><span>แก้ไขได้</span></div>
+      </div>
+      <div class="document-actions">
+        <a href="docs/risk-register-form.docx" download>ดาวน์โหลด</a>
+      </div>
+    </article>
+
+    <article class="document-card">
+      <div class="document-icon">🔎</div>
+      <div class="document-content">
+        <span class="document-type">แบบฟอร์ม</span>
+        <h3>แบบฟอร์ม RCA</h3>
+        <p>แบบบันทึกการวิเคราะห์หาสาเหตุราก สำหรับทบทวนเหตุการณ์สำคัญและกำหนดมาตรการป้องกันการเกิดซ้ำ</p>
+        <div class="document-meta"><span>Word</span><span>6 หน้า</span></div>
+      </div>
+      <div class="document-actions">
+        <a href="docs/rca-form.docx" download>ดาวน์โหลด</a>
+      </div>
+    </article>
+  </div>
+</section>
+
 <section id="rca" class="view">
   <div class="page-title">
     <div><h1>RCA</h1><p>แสดงเฉพาะความเสี่ยงระดับ E–I และ 3–5 พร้อมสถานะมี/ไม่มี RCA และลิงก์ดาวน์โหลด</p></div>
@@ -257,5 +332,5 @@
   </section>
 </section>
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.10-all-years"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.11-document-center"></script>
 </body></html>

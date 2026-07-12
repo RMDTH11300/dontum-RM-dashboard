@@ -1,10 +1,243 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DRMS Admin</title><link rel="stylesheet" href="assets/style.css"></head><body>
-<header class="topbar"><div class="brand"><div class="logo">DT</div><div><b>DRMS ADMIN</b><small>จัดการข้อมูลอุบัติการณ์ โรงพยาบาลดอนตูม</small></div></div><div class="top-actions"><a class="ghost" href="index.html">กลับหน้าระบบ</a><span class="tag">ADMIN</span></div></header>
-<div class="admin-layout"><aside class="admin-side"><button class="nav active">▦ Incident Management</button><a class="nav link" href="index.html">⌂ Dashboard / HA Center</a><div class="sidebox"><label>ปีงบประมาณ</label><select id="adminYear"><option>2566</option><option>2567</option><option>2568</option><option selected>2569</option></select><small>เลือกจากชุดข้อมูลโดยตรง ไม่คำนวณจากวันที่</small></div><div class="stats-mini"><span>ข้อมูลที่โหลด</span><b id="miniTotal">0</b><small>รายการ</small></div><div class="draft-status" id="draftStatus">ยังไม่มีการแก้ไข</div></aside>
-<main class="admin-main"><div class="page-title"><div><h1>จัดการข้อมูลอุบัติการณ์</h1><p>เลขานุการทีมความเสี่ยงตรวจสอบ เพิ่ม แก้ไข ลบ แล้วส่งออก JSON สำหรับ GitHub</p></div><div class="actions"><button id="load" class="primary">โหลดจาก Dashboard</button><button id="importJson">นำเข้า JSON</button><button id="exportJson" class="success">ส่งออก JSON</button></div></div>
-<div class="notice"><b>วิธีใช้งาน:</b> โหลดข้อมูล → เพิ่ม/แก้ไข/ลบ → ส่งออก <code>incidents_ปี.json</code> → อัปโหลดทับไฟล์เดิมในโฟลเดอร์ <code>data</code> ของ GitHub</div>
-<div class="admin-kpis"><article><span>ทั้งหมด</span><b id="adTotal">0</b></article><article class="green"><span>Clinical</span><b id="adClinical">0</b></article><article class="purple"><span>Non-clinical</span><b id="adNon">0</b></article><article class="red"><span>High Risk</span><b id="adHigh">0</b></article></div>
-<section class="panel"><div class="toolbar admin-toolbar"><input id="adminQ" placeholder="ค้นหาได้ทุกช่อง..."><select id="adminType"><option value="">ทุกประเภท</option><option>Clinical</option><option>Non-clinical</option></select><select id="adminSeverity"><option value="">ทุกระดับความรุนแรง</option></select><select id="adminMonth"><option value="">ทุกเดือนงบประมาณ</option><option value="10">ตุลาคม</option><option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option><option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option><option value="3">มีนาคม</option><option value="4">เมษายน</option><option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option><option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option><option value="9">กันยายน</option></select><select id="adminRiskCode"><option value="">ทุกรหัสความเสี่ยง</option></select><select id="adminReportUnit"><option value="">ทุกหน่วยงานรายงาน</option></select><select id="adminMainUnit"><option value="">ทุกหน่วยงานหลักที่แก้ไข</option></select><button id="clearFilter">ล้างตัวกรอง</button><button id="exportFiltered">ส่งออกผลค้นหา CSV</button><button id="add" class="primary">+ เพิ่มข้อมูล</button><button id="saveDraft">บันทึกร่าง</button><button id="openDraft">เปิดร่าง</button><input type="file" id="file" accept=".json" hidden></div>
-<div class="table-wrap"><div class="table-head"><b id="adminCount">ยังไม่ได้โหลดข้อมูล</b><div class="page-size"><label>แสดงต่อหน้า</label><select id="pageSize"><option>50</option><option selected>100</option><option>200</option><option>300</option></select></div></div><table><thead><tr><th>ลำดับ</th><th>วันที่เกิด</th><th>รหัสรายงาน</th><th>ประเภท</th><th>รหัส/เรื่อง</th><th>เรื่องย่อย</th><th>ความรุนแรง</th><th>หน่วยงานรายงาน</th><th>หน่วยงานหลัก</th><th>สถานที่</th><th>จัดการ</th></tr></thead><tbody id="adminRows"></tbody></table><div id="adminPager" class="pager"></div></div></section></main></div>
-<dialog id="editor"><form method="dialog" id="form"><div class="modal-head"><h2 id="modalTitle">เพิ่มอุบัติการณ์</h2><button value="cancel" aria-label="ปิด">×</button></div><div class="form-grid"><label>ปีงบประมาณ<input name="fiscalYear" readonly></label><label>รหัสรายงาน<input name="reportId"></label><label>วันที่เกิดอุบัติการณ์<input name="date" type="date"></label><label>ประเภท<select name="riskType"><option value="">เลือกประเภท</option><option>Clinical</option><option>Non-clinical</option></select></label><label class="span2">รหัส: เรื่องอุบัติการณ์<input name="risk" required></label><label>เรื่องย่อย<input name="sub"></label><label>ความรุนแรง<input name="severity" list="severityList"></label><datalist id="severityList"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></datalist><label>หน่วยงานที่บันทึกรายงาน<input name="reportUnit" list="reportUnitList"></label><datalist id="reportUnitList"></datalist><label>กลุ่ม/หน่วยงานหลักที่แก้ไข<input name="mainUnit" list="mainUnitList" required></label><datalist id="mainUnitList"></datalist><label>กลุ่ม/หน่วยงานร่วม<input name="jointUnit"></label><label>สถานที่เกิดเหตุ<input name="place"></label><label class="span2">สรุปประเด็นปัญหา<textarea name="summary"></textarea></label><label class="span2">Keyword<input name="keyword"></label><label class="span2">รายละเอียดการเกิด<textarea name="detail"></textarea></label><label class="span2">การจัดการเบื้องต้น<textarea name="initial"></textarea></label><label class="span2">ข้อเสนอแนะเพื่อการแก้ไข<textarea name="suggest"></textarea></label></div><div class="modal-actions"><button value="cancel">ยกเลิก</button><button id="save" value="default" class="primary">บันทึกข้อมูล</button></div></form></dialog>
-<div id="toast"></div><script src="assets/admin.js"></script></body></html>
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DRMS Admin Data Center</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="dc-body">
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">DT</div>
+    <div>
+      <b>DRMS ADMIN CENTER</b>
+      <small>ศูนย์จัดการข้อมูลความเสี่ยง โรงพยาบาลดอนตูม</small>
+    </div>
+  </div>
+  <div class="top-actions">
+    <a class="ghost" href="index.html">กลับหน้าระบบ</a>
+    <span class="tag">V6.1 FINAL</span>
+  </div>
+</header>
+
+<div class="dc-layout">
+  <aside class="dc-side">
+    <button class="dc-nav active" data-tab="dataCenter">📥 Data Center</button>
+    <button class="dc-nav" data-tab="backupCenter">💾 Backup / Restore</button>
+    <button class="dc-nav" data-tab="settingsCenter">⚙ ตั้งค่า</button>
+
+    <div class="sidebox">
+      <label>ปีงบประมาณที่จัดการ</label>
+      <select id="fiscalYear">
+        <option>2566</option>
+        <option>2567</option>
+        <option>2568</option>
+        <option selected>2569</option>
+        <option>2570</option>
+      </select>
+      <small>ระบบบันทึกปีตามค่าที่เลือกโดยตรง ไม่เปลี่ยนปีจากวันที่</small>
+    </div>
+
+    <div class="dc-current">
+      <span>ข้อมูลที่เตรียมไว้</span>
+      <b id="sideTotal">0</b>
+      <small>รายการ</small>
+    </div>
+
+    <div id="dataState" class="draft-status">ยังไม่ได้โหลดข้อมูล</div>
+  </aside>
+
+  <main class="dc-main">
+    <section id="dataCenter" class="dc-tab active">
+      <div class="page-title">
+        <div>
+          <h1>Data Center</h1>
+          <p>นำเข้า Excel จากระบบเดิม ตรวจคุณภาพ และส่งออก JSON สำหรับ Dashboard</p>
+        </div>
+        <div class="actions">
+          <button id="loadCurrent">โหลดข้อมูลปัจจุบัน</button>
+          <button id="chooseExcel" class="primary">เลือกไฟล์ Excel</button>
+          <input id="excelFile" type="file" accept=".xlsx,.xls" hidden>
+        </div>
+      </div>
+
+      <div class="dc-notice">
+        <b>ขั้นตอนใช้งาน:</b>
+        เลือกปีงบประมาณ → เลือกไฟล์ Excel → ตรวจผล Data Quality → ส่งออก JSON → อัปโหลดทับไฟล์เดิมในโฟลเดอร์ <code>data</code> บน GitHub
+      </div>
+
+      <section class="dc-upload-card">
+        <div class="dc-drop" id="dropZone">
+          <div class="dc-upload-icon">⇧</div>
+          <h2>ลากไฟล์ Excel มาวางที่นี่</h2>
+          <p>รองรับ .xlsx และ .xls จากระบบรายงานความเสี่ยงเดิม</p>
+          <button id="browseExcel">Browse Excel</button>
+        </div>
+        <div class="dc-file-info">
+          <div><span>ชื่อไฟล์</span><b id="fileName">–</b></div>
+          <div><span>ขนาด</span><b id="fileSize">–</b></div>
+          <div><span>แผ่นงานที่อ่าน</span><b id="sheetName">–</b></div>
+          <div><span>แถวหัวตาราง</span><b id="headerRow">–</b></div>
+        </div>
+      </section>
+
+      <div class="dc-kpis">
+        <article><span>ข้อมูลทั้งหมด</span><b id="qTotal">0</b><small>รายการ</small></article>
+        <article class="green"><span>Clinical</span><b id="qClinical">0</b><small>รายการ</small></article>
+        <article class="purple"><span>Non-clinical</span><b id="qNon">0</b><small>รายการ</small></article>
+        <article class="red"><span>High Risk</span><b id="qHigh">0</b><small>รายการ</small></article>
+        <article class="orange"><span>ต้องตรวจสอบ</span><b id="qWarnings">0</b><small>ประเด็น</small></article>
+      </div>
+
+      <div class="dc-grid">
+        <section class="panel">
+          <div class="panel-title">
+            <h3>Data Quality</h3>
+            <span id="qualityBadge" class="quality-badge neutral">ยังไม่ได้ตรวจ</span>
+          </div>
+          <div id="qualityList" class="quality-list">
+            <div class="quality-empty">เลือกไฟล์ Excel หรือโหลดข้อมูลปัจจุบันเพื่อเริ่มตรวจสอบ</div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title"><h3>สรุปชุดข้อมูล</h3></div>
+          <div class="dataset-summary">
+            <div><span>ปีงบประมาณ</span><b id="sumYear">2569</b></div>
+            <div><span>วันที่เก่าสุด</span><b id="sumMinDate">–</b></div>
+            <div><span>วันที่ล่าสุด</span><b id="sumMaxDate">–</b></div>
+            <div><span>หน่วยงานหลัก</span><b id="sumUnits">0</b></div>
+            <div><span>รหัสความเสี่ยง</span><b id="sumCodes">0</b></div>
+            <div><span>ข้อมูลซ้ำ</span><b id="sumDuplicates">0</b></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel dc-preview">
+        <div class="panel-title">
+          <div>
+            <h3>ตัวอย่างข้อมูล</h3>
+            <small id="previewText">ยังไม่มีข้อมูล</small>
+          </div>
+          <div class="actions">
+            <button id="exportErrors">ส่งออกรายการที่ต้องตรวจสอบ</button>
+            <button id="exportJson" class="success">ส่งออก JSON สำหรับ GitHub</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ลำดับ</th>
+                <th>วันที่เกิด</th>
+                <th>รหัสรายงาน</th>
+                <th>ประเภท</th>
+                <th>รหัส/เรื่อง</th>
+                <th>ความรุนแรง</th>
+                <th>หน่วยงานรายงาน</th>
+                <th>หน่วยงานหลักที่แก้ไข</th>
+                <th>ผลตรวจ</th>
+              </tr>
+            </thead>
+            <tbody id="previewRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><h3>ประวัติการนำเข้าและส่งออก</h3><button id="clearLog">ล้างประวัติ</button></div>
+        <div id="importLog" class="dc-log"></div>
+      </section>
+    </section>
+
+    <section id="backupCenter" class="dc-tab">
+      <div class="page-title">
+        <div><h1>Backup / Restore</h1><p>สำรองและกู้คืนชุดข้อมูลที่กำลังจัดการในเครื่องนี้</p></div>
+      </div>
+
+      <div class="backup-grid">
+        <section class="panel backup-card">
+          <div class="backup-icon">⬇</div>
+          <h2>สำรองข้อมูล</h2>
+          <p>ดาวน์โหลดไฟล์สำรองที่มีข้อมูล ปีงบประมาณ แหล่งข้อมูล และผล Data Quality</p>
+          <button id="downloadBackup" class="primary">ดาวน์โหลด Backup</button>
+        </section>
+
+        <section class="panel backup-card">
+          <div class="backup-icon">⬆</div>
+          <h2>กู้คืนข้อมูล</h2>
+          <p>เลือกไฟล์ Backup หรือไฟล์ JSON ที่เคยส่งออกจาก DRMS</p>
+          <button id="chooseRestore">เลือกไฟล์ Restore</button>
+          <input id="restoreFile" type="file" accept=".json" hidden>
+        </section>
+
+        <section class="panel backup-card">
+          <div class="backup-icon">⟳</div>
+          <h2>โหลดจาก Dashboard</h2>
+          <p>โหลดไฟล์ <code>incidents_ปี.json</code> ล่าสุดที่เผยแพร่อยู่บน GitHub Pages</p>
+          <button id="restoreCurrent">โหลดข้อมูลปัจจุบัน</button>
+        </section>
+      </div>
+
+      <section class="panel">
+        <div class="panel-title"><h3>สถานะข้อมูลสำรอง</h3></div>
+        <div class="dataset-summary">
+          <div><span>ปีงบประมาณ</span><b id="backupYear">–</b></div>
+          <div><span>จำนวนรายการ</span><b id="backupRows">0</b></div>
+          <div><span>แหล่งข้อมูล</span><b id="backupSource">–</b></div>
+          <div><span>แก้ไขล่าสุด</span><b id="backupUpdated">–</b></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="settingsCenter" class="dc-tab">
+      <div class="page-title">
+        <div><h1>ตั้งค่าระบบ</h1><p>กำหนดค่าที่ใช้กับหน้า Admin ในเบราว์เซอร์เครื่องนี้</p></div>
+      </div>
+
+      <section class="panel settings-form">
+        <label>ชื่อโรงพยาบาล
+          <input id="settingHospital" value="โรงพยาบาลดอนตูม">
+        </label>
+        <label>ชื่อระบบ
+          <input id="settingSystem" value="Don Tum Risk Management System">
+        </label>
+        <label>ปีงบประมาณเริ่มต้น
+          <select id="settingDefaultYear">
+            <option>2566</option><option>2567</option><option>2568</option><option selected>2569</option><option>2570</option>
+          </select>
+        </label>
+        <label>จำนวนแถวตัวอย่าง
+          <select id="settingPreviewLimit">
+            <option>20</option><option selected>50</option><option>100</option>
+          </select>
+        </label>
+        <label class="setting-check">
+          <input id="settingBlockErrors" type="checkbox">
+          <span>ไม่อนุญาตให้ส่งออกเมื่อไม่มีรหัสความเสี่ยงหรือไม่มีหน่วยงานหลัก</span>
+        </label>
+        <div class="settings-actions">
+          <button id="saveSettings" class="primary">บันทึกการตั้งค่า</button>
+          <button id="resetSettings">คืนค่าเริ่มต้น</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><h3>ข้อมูลระบบ</h3></div>
+        <div class="dataset-summary">
+          <div><span>เวอร์ชัน</span><b>DRMS V6.1 Final</b></div>
+          <div><span>รูปแบบข้อมูล</span><b>Excel → JSON</b></div>
+          <div><span>ที่จัดเก็บร่าง</span><b>Browser Local Storage</b></div>
+          <div><span>การเผยแพร่</span><b>GitHub Pages</b></div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

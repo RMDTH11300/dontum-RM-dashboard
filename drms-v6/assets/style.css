@@ -220,3 +220,32 @@
   .official-brand-text b{font-size:13px;white-space:normal}
   .official-brand-text small{display:none}
 }
+
+
+/* V6.16 – Hospital logo on About page */
+.about-logo.about-hospital-logo{
+  width:150px;
+  height:96px;
+  min-width:150px;
+  padding:8px;
+  border-radius:16px;
+  background:#ffffff;
+  border:1px solid rgba(255,255,255,.55);
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.about-logo.about-hospital-logo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+@media(max-width:850px){
+  .about-logo.about-hospital-logo{
+    width:125px;
+    height:82px;
+    min-width:125px;
+  }
+}

@@ -49,9 +49,26 @@
   <section class="panel table-wrap"><div class="table-head"><b id="resultCount">0 รายการ</b><button id="csv">ส่งออก CSV</button></div><table><thead><tr><th>ลำดับ</th><th>วันที่เกิด</th><th>รหัส/เรื่อง</th><th>เรื่องย่อย</th><th>ความรุนแรง</th><th>หน่วยงานรายงาน</th><th>หน่วยงานหลักที่แก้ไข</th><th>รายละเอียด</th></tr></thead><tbody id="incidentRows"></tbody></table><div id="pager" class="pager"></div></section>
 </section>
 <section id="profile" class="view">
-  <div class="page-title"><div><h1>Risk Profile</h1><p>ใช้แบบฟอร์มโรงพยาบาลดอนตูม และยึดหน่วยงานหลักที่แก้ไข</p></div><button id="printProfile">พิมพ์ / บันทึก PDF</button></div>
-  <div class="context-note" id="profileContext"></div>
-  <section class="panel table-wrap"><table><thead><tr><th>อันดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน</th><th>ระดับ</th><th>มาตรการควบคุม</th></tr></thead><tbody id="profileRows"></tbody></table></section>
+  <div class="page-title"><div><h1>บัญชีรายการความเสี่ยง (Risk Profile)</h1><p>สร้างร่างอัตโนมัติจาก Incident ตามกลุ่ม/หน่วยงานหลักที่แก้ไข และใช้แบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions"><button id="exportProfileCsv">ส่งออก CSV</button><button id="printProfile" class="primary">พิมพ์ / บันทึก PDF</button></div></div>
+  <section class="profile-sheet">
+    <div class="profile-heading">
+      <h2>บัญชีรายการความเสี่ยง (Risk Profile)</h2>
+      <p id="profileUnitTitle">หน่วยงาน: ภาพรวมโรงพยาบาล</p>
+      <p id="profilePeriod">ประจำปีงบประมาณ</p>
+      <p class="profile-help">จัดทำรายการความเสี่ยง วิเคราะห์โอกาสเกิดและผลกระทบ จัดระดับตาม Risk Matrix และกำหนดมาตรการควบคุม/ป้องกัน/แก้ไข</p>
+    </div>
+    <div class="context-note" id="profileContext"></div>
+    <div class="profile-note"><b>หลักการคำนวณ:</b> โอกาส 1 = 1–2 ครั้ง, 2 = 3–20 ครั้ง, 3 = 21–50 ครั้ง, 4 = 51–100 ครั้ง, 5 = มากกว่า 100 ครั้ง • คะแนน = โอกาส × ผลกระทบ</div>
+    <section class="profile-block">
+      <h3>ความเสี่ยงด้านคลินิก (Clinical risk) — Top 10</h3>
+      <div class="table-wrap profile-table"><table><thead><tr><th rowspan="2">ลำดับ</th><th rowspan="2">รายการความเสี่ยง</th><th colspan="3">การประเมินความเสี่ยง</th><th rowspan="2">ระดับความเสี่ยง</th><th rowspan="2">มาตรการควบคุม/ป้องกัน/แก้ไขความเสี่ยง</th></tr><tr><th>โอกาส<br>(ความถี่) 1–5</th><th>ผลกระทบ<br>(ความรุนแรง) 1–5</th><th>ผลคูณ<br>1–25</th></tr></thead><tbody id="profileClinicalRows"></tbody></table></div>
+    </section>
+    <section class="profile-block">
+      <h3>ความเสี่ยงด้านทั่วไป (Non-clinical risk) — Top 10</h3>
+      <div class="table-wrap profile-table"><table><thead><tr><th rowspan="2">ลำดับ</th><th rowspan="2">รายการความเสี่ยง</th><th colspan="3">การประเมินความเสี่ยง</th><th rowspan="2">ระดับความเสี่ยง</th><th rowspan="2">มาตรการควบคุม/ป้องกัน/แก้ไขความเสี่ยง</th></tr><tr><th>โอกาส<br>(ความถี่) 1–5</th><th>ผลกระทบ<br>(ความรุนแรง) 1–5</th><th>ผลคูณ<br>1–25</th></tr></thead><tbody id="profileNonRows"></tbody></table></div>
+    </section>
+    <p class="profile-warning">หมายเหตุ: ค่า Impact และมาตรการเป็นร่างตั้งต้นจาก Risk Profile ของโรงพยาบาล หากเป็นรายหน่วยงานควรให้หน่วยงานเจ้าภาพทบทวนรับรองก่อนใช้เป็นหลักฐาน HA</p>
+  </section>
 </section>
 <section id="register" class="view">
   <div class="page-title"><div><h1>Risk Register</h1><p>ทะเบียนความเสี่ยงตามแบบฟอร์มโรงพยาบาลดอนตูม</p></div><button id="printRegister">พิมพ์ / บันทึก PDF</button></div>

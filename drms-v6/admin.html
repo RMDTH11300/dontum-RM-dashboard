@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS Admin Data Center</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.5-rca-easy">
+  <link rel="stylesheet" href="assets/style.css?v=6.6-rca-complete">
 </head>
 <body class="dc-body">
 <header class="topbar">
@@ -17,7 +17,7 @@
   </div>
   <div class="top-actions">
     <a class="ghost" href="index.html">กลับหน้าระบบ</a>
-    <span class="tag">V6.5</span>
+    <span class="tag">V6.6</span>
   </div>
 </header>
 
@@ -188,20 +188,20 @@
         </div>
       </div>
 
-      <div class="dc-notice">
-        <b>วิธีใช้งาน:</b>
-        เลือก Incident → กด “เตรียมไฟล์” → เลือก PDF/DOCX → ระบบดาวน์โหลดไฟล์ที่เปลี่ยนชื่อแล้วและไฟล์ <code>rca.json</code> ฉบับอัปเดต
-        จากนั้นนำทั้งสองไฟล์ไปอัปโหลดใน GitHub ตามตำแหน่งที่แสดง
+      <div class="dc-notice rca-simple-notice">
+        <b>วิธีใช้งานแบบง่าย:</b>
+        เลือกปี → โหลดรายการ → กด “เลือกไฟล์ RCA” → ระบบดาวน์โหลดไฟล์ที่เปลี่ยนชื่อแล้ว →
+        กด “ดาวน์โหลด rca.json” → อัปโหลดไฟล์ทั้งสองตำแหน่งตามคำแนะนำด้านล่าง
       </div>
 <div class="dc-kpis rca-kpis">
-        <article><span>ต้องมี RCA</span><b id="rcaRequired">0</b><small>รายการ</small></article>
+        <article><span>รายการระดับ E–I / 3–5</span><b id="rcaRequired">0</b><small>รายการ</small></article>
         <article class="green"><span>มี RCA</span><b id="rcaHas">0</b><small>รายการ</small></article>
         <article class="red"><span>ไม่มี RCA</span><b id="rcaMissing">0</b><small>รายการ</small></article>
       </div>
 
       <section class="panel">
         <div class="toolbar rca-toolbar">
-          <input id="rcaSearch" placeholder="ค้นหา Incident เรื่อง หน่วยงาน หรือระดับ">
+          <input id="rcaSearch" placeholder="ค้นหาเลข Incident เรื่อง หน่วยงาน หรือระดับ">
           <select id="rcaAvailability">
             <option value="">ทั้งหมด</option>
             <option value="has">มี RCA</option>
@@ -216,7 +216,7 @@
               <tr>
                 <th>วันที่</th><th>Incident No.</th><th>เรื่องความเสี่ยง</th>
                 <th>หน่วยงานหลักที่แก้ไข</th><th>ระดับ</th><th>RCA</th>
-                <th>ดาวน์โหลด</th><th>เตรียมไฟล์ RCA</th>
+                <th>ดาวน์โหลด</th><th>จัดการไฟล์ RCA</th>
               </tr>
             </thead>
             <tbody id="rcaRows"></tbody>
@@ -226,16 +226,26 @@
 
 
       <section class="panel rca-upload-guide">
-        <div class="panel-title"><h3>ตำแหน่งอัปโหลดใน GitHub</h3></div>
+        <div class="panel-title">
+          <h3>ไฟล์ที่เตรียมไว้สำหรับอัปโหลด</h3>
+          <button id="clearPreparedRca">ล้างรายการที่เตรียมไว้</button>
+        </div>
+        <div id="preparedRcaList" class="prepared-rca-list">
+          <div class="quality-empty">ยังไม่มีไฟล์ที่เตรียมไว้</div>
+        </div>
         <div class="upload-guide-grid">
           <div>
-            <b>ไฟล์ RCA ที่เปลี่ยนชื่อแล้ว</b>
+            <b>1. อัปโหลดไฟล์ RCA</b>
             <code id="rcaUploadPath">drms-v6/rca/ปีงบประมาณ/เลขIncident.pdf</code>
           </div>
           <div>
-            <b>ไฟล์รายการ RCA</b>
+            <b>2. อัปโหลดไฟล์รายการ RCA</b>
             <code>data/rca.json</code>
           </div>
+        </div>
+        <div class="rca-final-note">
+          หลังอัปโหลดเสร็จ รอ GitHub Pages ประมาณ 1–3 นาที แล้วกด <b>Ctrl + Shift + R</b>
+          หน้า RCA จะเปลี่ยนเป็น “มี RCA” และแสดงปุ่มดาวน์โหลด
         </div>
       </section>
 
@@ -317,7 +327,7 @@
       <section class="panel">
         <div class="panel-title"><h3>ข้อมูลระบบ</h3></div>
         <div class="dataset-summary">
-          <div><span>เวอร์ชัน</span><b>DRMS V6.5</b></div>
+          <div><span>เวอร์ชัน</span><b>DRMS V6.6</b></div>
           <div><span>รูปแบบข้อมูล</span><b>Excel → JSON</b></div>
           <div><span>ที่จัดเก็บร่าง</span><b>Browser Local Storage</b></div>
           <div><span>การเผยแพร่</span><b>GitHub Pages</b></div>
@@ -329,6 +339,6 @@
 
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="assets/admin.js?v=6.5-rca-easy"></script>
+<script src="assets/admin.js?v=6.6-rca-complete"></script>
 </body>
 </html>

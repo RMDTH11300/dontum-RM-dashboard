@@ -60,3 +60,8 @@
 
 /* V6.5 RCA Easy Upload */
 .prepare-rca{background:#17365d;color:#fff;border-color:#17365d}.rca-upload-guide{margin-top:16px}.upload-guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}.upload-guide-grid>div{padding:13px;border:1px solid #d9e3ef;border-radius:8px;background:#fbfdff}.upload-guide-grid b,.upload-guide-grid code{display:block}.upload-guide-grid code{margin-top:7px;padding:8px;background:#edf4fd;border-radius:5px;word-break:break-all}@media(max-width:750px){.upload-guide-grid{grid-template-columns:1fr}}
+
+
+/* V6.6 RCA Complete */
+.rca-simple-notice{font-size:15px}.prepared-note{display:block;color:#9a6700;font-weight:700;margin-top:4px}.prepared-rca-list{padding:10px 16px}.prepared-rca-item{display:grid;grid-template-columns:minmax(220px,1fr) minmax(300px,1.4fr) auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid #e5ebf3}.prepared-rca-item:last-child{border-bottom:0}.prepared-rca-item b,.prepared-rca-item small{display:block}.prepared-rca-item small{color:var(--muted);margin-top:3px}.prepared-rca-item code{padding:7px 9px;background:#edf4fd;border-radius:5px;word-break:break-all}.remove-prepared{color:#b42318;border-color:#f2b8b5}.rca-final-note{margin:0 16px 16px;padding:11px 13px;background:#eaf8ef;border-left:4px solid #22a06b;color:#215a3c}.rca-table-wrap .download-link{white-space:nowrap}
+@media(max-width:900px){.prepared-rca-item{grid-template-columns:1fr}.prepared-rca-item button{justify-self:start}}

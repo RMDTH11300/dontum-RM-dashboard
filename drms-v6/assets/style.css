@@ -72,3 +72,7 @@
 
 
 /* V6.8 – ใช้เฉพาะหน่วยงานจาก Master และไม่แสดงหมวด “ยังไม่จัดกลุ่ม” */
+
+
+/* V6.10 – ตัวเลือกทุกปีงบประมาณ */
+#year option[value="all"],#fiscalYear option[value="all"]{font-weight:700}

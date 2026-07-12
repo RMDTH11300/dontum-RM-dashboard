@@ -1,15 +1,53 @@
 const PARENT='../data/';
 const IDX={id:0,risk:1,sub:2,sev:3,reportUnit:4,place:6,summary:12,keyword:13,detail:14,initial:15,suggest:16,mainUnit:17,status:26,date:27};
-const state={year:2569,years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},rcaManifest:[],allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary'};
+const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},rcaManifest:[],allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary'};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.style.display='none',2400)}
 async function json(url){const r=await fetch(url+'?v='+Date.now());if(!r.ok)throw Error(`${r.status} ${url}`);return r.json()}
-async function init(){try{const meta=await json(PARENT+'meta.json');state.profiles=await json(PARENT+'profiles.json');state.registers=await json(PARENT+'registers.json');try{state.orgTree=await json('config/departments.json')}catch(e){console.warn('ไม่พบ departments.json ใช้รายชื่อหน่วยงานแบบเดิม',e);state.orgTree={groups:[]}}try{const r=await json(PARENT+'rca.json');state.rcaManifest=Array.isArray(r)?r:(r.items||[])}catch(e){state.rcaManifest=[]}state.years=meta.years||[];$('#year').innerHTML=meta.years.map(y=>`<option ${y===meta.defaultYear?'selected':''}>${y}</option>`).join('');state.year=meta.defaultYear;buildMonths();bind();await loadYear()}catch(e){console.error(e);toast('เริ่มระบบไม่สำเร็จ ตรวจสอบไฟล์ data') }}
+async function init(){
+  try{
+    const meta=await json(PARENT+'meta.json');
+    state.profiles=await json(PARENT+'profiles.json');
+    state.registers=await json(PARENT+'registers.json');
+
+    try{state.orgTree=await json('config/departments.json')}
+    catch(e){console.warn('ไม่พบ departments.json ใช้รายชื่อหน่วยงานแบบเดิม',e);state.orgTree={groups:[]}}
+
+    try{
+      const r=await json(PARENT+'rca.json');
+      state.rcaManifest=Array.isArray(r)?r:(r.items||[])
+    }catch(e){state.rcaManifest=[]}
+
+    state.years=(meta.years||[]).map(Number).filter(Boolean);
+    $('#year').innerHTML='<option value="all">ทุกปีงบประมาณ</option>'+
+      state.years.map(y=>`<option value="${y}">${y}</option>`).join('');
+    state.year='all';
+    $('#year').value='all';
+
+    buildMonths();
+    bind();
+    await loadAllYears();
+  }catch(e){
+    console.error(e);
+    toast('เริ่มระบบไม่สำเร็จ ตรวจสอบไฟล์ data')
+  }
+}
 function buildMonths(){const vals=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ตุลาคม','พฤศจิกายน','ธันวาคม','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน'];$('#month').innerHTML='<option value="">ทุกเดือนงบประมาณ</option>'+vals.map((m,i)=>`<option value="${m}">${names[i]}</option>`).join('')}
 function bind(){
   $$('.nav[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
-  $('#year').onchange=async e=>{state.year=+e.target.value;state.selected.clear();state.page=1;await loadYear()};
+  $('#year').onchange=async e=>{
+    const value=e.target.value;
+    state.year=value==='all'?'all':Number(value);
+    state.selected.clear();
+    state.page=1;
+    if(state.year==='all'){
+      show('dashboard');
+      await loadAllYears()
+    }else{
+      await loadYear()
+    }
+  };
   $('#allUnits').onclick=()=>{state.selected=new Set(state.units);renderUnits();apply()};
   $('#expandUnits').onclick=()=>{
     const details=$$('#units details');
@@ -18,7 +56,7 @@ function bind(){
     $('#expandUnits').textContent=shouldOpen?'ย่อทั้งหมด':'ขยายทั้งหมด'
   };
   $('#clearUnits').onclick=()=>{state.selected.clear();renderUnits();apply()};
-  $('#unitSearch').oninput=renderUnits;$('#refresh').onclick=loadYear;
+  $('#unitSearch').oninput=renderUnits;$('#refresh').onclick=()=>state.year==='all'?loadAllYears():loadYear();
   ['#q','#sev','#type','#month'].forEach(s=>$(s).addEventListener(s==='#q'?'input':'change',()=>{state.page=1;apply()}));
   $('#reset').onclick=()=>{$('#q').value='';$('#sev').value='';$('#type').value='';$('#month').value='';state.selected.clear();state.page=1;renderUnits();apply()};
   $('#csv').onclick=exportCsv;
@@ -33,7 +71,67 @@ function bind(){
   $('#exportRegisterExcel').onclick=()=>exportTableDocument('register','excel');
 }
 function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='rca')renderPublicRca();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
-async function loadYear(){try{const d=await json(PARENT+`incidents_${state.year}.json`);state.rows=d.rows||[];state.allYearRows[state.year]=state.rows;state.units=[...new Set(state.rows.map(r=>normUnit(r[IDX.mainUnit])).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));const sevs=[...new Set(state.rows.map(r=>String(r[IDX.sev]||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));$('#sev').innerHTML='<option value="">ทุกระดับ</option>'+sevs.map(x=>`<option>${esc(x)}</option>`).join('');renderUnits();apply();toast(`โหลดปี ${state.year} จำนวน ${state.rows.length.toLocaleString()} รายการ`)}catch(e){console.error(e);toast('โหลดข้อมูลไม่สำเร็จ ตรวจสอบโครงสร้างไฟล์') }}
+
+async function loadAllYears(){
+  const years=(state.years||[]).map(Number).filter(Boolean);
+  const all=[];
+  state.allYearRows=state.allYearRows||{};
+
+  for(const y of years){
+    try{
+      let rows=state.allYearRows[y];
+      if(!rows){
+        const obj=await json(PARENT+`incidents_${y}.json`);
+        rows=Array.isArray(obj.rows)?obj.rows:[];
+        state.allYearRows[y]=rows;
+      }
+      rows.forEach(r=>{
+        const copy=[...r];
+        copy.__fiscalYear=y;
+        all.push(copy)
+      })
+    }catch(e){
+      console.warn(`โหลดปี ${y} ไม่สำเร็จ`,e)
+    }
+  }
+
+  state.rows=all;
+  state.units=[...new Set(all.map(r=>normUnit(r[IDX.mainUnit])).filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b,'th'));
+
+  const sevs=[...new Set(all.map(r=>String(r[IDX.sev]||'').trim()).filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b,'th'));
+  $('#sev').innerHTML='<option value="">ทุกระดับ</option>'+
+    sevs.map(x=>`<option>${esc(x)}</option>`).join('');
+
+  renderUnits();
+  apply();
+  toast(`โหลดทุกปีงบประมาณ ${years.length} ปี รวม ${all.length.toLocaleString()} รายการ`)
+}
+
+async function loadYear(){
+  if(state.year==='all')return loadAllYears();
+
+  try{
+    const d=await json(PARENT+`incidents_${state.year}.json`);
+    state.rows=d.rows||[];
+    state.allYearRows[state.year]=state.rows;
+    state.units=[...new Set(state.rows.map(r=>normUnit(r[IDX.mainUnit])).filter(Boolean))]
+      .sort((a,b)=>a.localeCompare(b,'th'));
+
+    const sevs=[...new Set(state.rows.map(r=>String(r[IDX.sev]||'').trim()).filter(Boolean))]
+      .sort((a,b)=>a.localeCompare(b,'th'));
+    $('#sev').innerHTML='<option value="">ทุกระดับ</option>'+
+      sevs.map(x=>`<option>${esc(x)}</option>`).join('');
+
+    renderUnits();
+    apply();
+    toast(`โหลดปี ${state.year} จำนวน ${state.rows.length.toLocaleString()} รายการ`)
+  }catch(e){
+    console.error(e);
+    toast('โหลดข้อมูลไม่สำเร็จ ตรวจสอบโครงสร้างไฟล์')
+  }
+}
 function normUnit(v){return String(v||'ไม่ระบุ').trim()||'ไม่ระบุ'}
 function allDescendantUnits(node){
   if(Array.isArray(node.units))return node.units.filter(u=>state.units.includes(u));
@@ -304,3 +402,11 @@ function exportHaCsv(){
 }
 
 init();
+
+
+
+
+
+function currentYearLabel(){
+  return state.year==='all' ? 'ทุกปีงบประมาณ' : `ปีงบประมาณ ${state.year}`;
+}

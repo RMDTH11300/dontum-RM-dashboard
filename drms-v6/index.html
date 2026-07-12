@@ -94,6 +94,11 @@
     <section class="panel"><h3>ความรุนแรงแยกตามประเภท</h3><div id="severityByType" class="matrix-table"></div></section>
     <section class="panel"><h3>เดือนที่มีการรายงานสูงสุด</h3><div id="peakMonths" class="bars"></div></section>
   </div>
+  <div class="grid2">
+    <section class="panel"><h3>Risk Matrix 5 × 5</h3><div class="panel-help">จำนวนประเด็นความเสี่ยงจาก Risk Profile ที่สร้างอัตโนมัติ แยกตามโอกาสเกิดและผลกระทบ</div><div id="riskMatrix" class="risk-matrix"></div></section>
+    <section class="panel"><h3>แนวโน้มเปรียบเทียบรายปีงบประมาณ</h3><div class="panel-help">ใช้ตัวกรองหน่วยงาน ประเภท ความรุนแรง และเดือนเดียวกับหน้าปัจจุบัน</div><div id="yearTrend" class="bars"></div></section>
+  </div>
+  <section class="panel readiness-panel"><h3>ความพร้อมของข้อมูลสำหรับ HA</h3><div id="haReadiness" class="readiness-list"></div></section>
 </section>
 <section id="haReport" class="view">
   <div class="page-title"><div><h1>รายงาน HA ของหน่วยงาน</h1><p>สรุปข้อมูลจาก Incident, Risk Profile และ Risk Register สำหรับใช้ทบทวนคุณภาพ</p></div><div class="actions"><button id="exportHaCsv">ส่งออก CSV</button><button id="printHa" class="primary">พิมพ์ / บันทึก PDF</button></div></div>
@@ -112,6 +117,7 @@
     <section class="panel"><h3>ประเด็นความเสี่ยงสำคัญ 10 อันดับ</h3><div id="haTopRisks"></div></section>
     <section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="haMonthly" class="bars"></div></section>
   </div>
+  <section class="panel report-section"><h3>สรุปเพื่อการทบทวนคุณภาพ</h3><div id="haNarrative" class="ha-narrative"></div></section>
   <section class="panel report-section"><h3>Risk Profile ที่เกี่ยวข้อง</h3><div class="table-wrap"><table><thead><tr><th>อันดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน</th><th>ระดับ</th><th>มาตรการควบคุม</th></tr></thead><tbody id="haProfileRows"></tbody></table></div></section>
   <section class="panel report-section"><h3>Risk Register ที่เกี่ยวข้อง</h3><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียด</th><th>ช่วงเวลา</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน</th><th>การติดตาม</th><th>การลดผลกระทบ</th></tr></thead><tbody id="haRegisterRows"></tbody></table></div></section>
 </section>

@@ -1,11 +1,11 @@
 const PARENT='../data/';
 const IDX={id:0,risk:1,sub:2,sev:3,reportUnit:4,place:6,summary:12,keyword:13,detail:14,initial:15,suggest:16,mainUnit:17,status:26,date:27};
-const state={year:2569,rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},page:1,pageSize:25,view:'dashboard'};
+const state={year:2569,years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},allYearRows:{},page:1,pageSize:25,view:'dashboard'};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.style.display='none',2400)}
 async function json(url){const r=await fetch(url+'?v='+Date.now());if(!r.ok)throw Error(`${r.status} ${url}`);return r.json()}
-async function init(){try{const meta=await json(PARENT+'meta.json');state.profiles=await json(PARENT+'profiles.json');state.registers=await json(PARENT+'registers.json');$('#year').innerHTML=meta.years.map(y=>`<option ${y===meta.defaultYear?'selected':''}>${y}</option>`).join('');state.year=meta.defaultYear;buildMonths();bind();await loadYear()}catch(e){console.error(e);toast('เริ่มระบบไม่สำเร็จ ตรวจสอบไฟล์ data') }}
+async function init(){try{const meta=await json(PARENT+'meta.json');state.profiles=await json(PARENT+'profiles.json');state.registers=await json(PARENT+'registers.json');state.years=meta.years||[];$('#year').innerHTML=meta.years.map(y=>`<option ${y===meta.defaultYear?'selected':''}>${y}</option>`).join('');state.year=meta.defaultYear;buildMonths();bind();await loadYear()}catch(e){console.error(e);toast('เริ่มระบบไม่สำเร็จ ตรวจสอบไฟล์ data') }}
 function buildMonths(){const vals=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ตุลาคม','พฤศจิกายน','ธันวาคม','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน'];$('#month').innerHTML='<option value="">ทุกเดือนงบประมาณ</option>'+vals.map((m,i)=>`<option value="${m}">${names[i]}</option>`).join('')}
 function bind(){
   $$('.nav[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
@@ -18,7 +18,7 @@ function bind(){
   $('#csv').onclick=exportCsv;$('#printProfile').onclick=()=>window.print();$('#printRegister').onclick=()=>window.print();$('#printAnalytics').onclick=()=>window.print();$('#printHa').onclick=()=>window.print();$('#exportHaCsv').onclick=exportHaCsv;$('#exportProfileCsv').onclick=exportProfileCsv;$('#exportRegisterCsv').onclick=exportRegisterCsv;
 }
 function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile')renderProfile();if(v==='register')renderRegister();if(v==='analytics')renderAnalytics();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
-async function loadYear(){try{const d=await json(PARENT+`incidents_${state.year}.json`);state.rows=d.rows||[];state.units=[...new Set(state.rows.map(r=>normUnit(r[IDX.mainUnit])).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));const sevs=[...new Set(state.rows.map(r=>String(r[IDX.sev]||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));$('#sev').innerHTML='<option value="">ทุกระดับ</option>'+sevs.map(x=>`<option>${esc(x)}</option>`).join('');renderUnits();apply();toast(`โหลดปี ${state.year} จำนวน ${state.rows.length.toLocaleString()} รายการ`)}catch(e){console.error(e);toast('โหลดข้อมูลไม่สำเร็จ ตรวจสอบโครงสร้างไฟล์') }}
+async function loadYear(){try{const d=await json(PARENT+`incidents_${state.year}.json`);state.rows=d.rows||[];state.allYearRows[state.year]=state.rows;state.units=[...new Set(state.rows.map(r=>normUnit(r[IDX.mainUnit])).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));const sevs=[...new Set(state.rows.map(r=>String(r[IDX.sev]||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));$('#sev').innerHTML='<option value="">ทุกระดับ</option>'+sevs.map(x=>`<option>${esc(x)}</option>`).join('');renderUnits();apply();toast(`โหลดปี ${state.year} จำนวน ${state.rows.length.toLocaleString()} รายการ`)}catch(e){console.error(e);toast('โหลดข้อมูลไม่สำเร็จ ตรวจสอบโครงสร้างไฟล์') }}
 function normUnit(v){return String(v||'ไม่ระบุ').trim()||'ไม่ระบุ'}
 function renderUnits(){const q=$('#unitSearch').value.trim().toLowerCase();$('#selectedCount').textContent=state.selected.size?`${state.selected.size} หน่วยงาน`:'ทั้งหมด';$('#units').innerHTML=state.units.filter(u=>u.toLowerCase().includes(q)).map(u=>`<label><input type="checkbox" value="${esc(u)}" ${state.selected.has(u)?'checked':''}><span>${esc(u)}</span></label>`).join('');$$('#units input').forEach(x=>x.onchange=()=>{x.checked?state.selected.add(x.value):state.selected.delete(x.value);state.page=1;renderUnits();apply()})}
 function riskType(r){const text=String(r[IDX.risk]||'').toUpperCase();if(text.startsWith('C'))return'Clinical';if(text.startsWith('G')||text.startsWith('N'))return'Non-clinical';return'อื่นๆ'}
@@ -62,6 +62,42 @@ function download(data,name,type){const a=document.createElement('a');const url=
 
 function isNearMiss(s){return ['A','B','1','2'].includes(String(s||'').trim().toUpperCase())}
 function countMap(arr){const m={};arr.forEach(x=>m[x]=(m[x]||0)+1);return m}
+
+function currentFilterValues(){return {sev:$('#sev')?.value||'',type:$('#type')?.value||'',month:+($('#month')?.value||0)}}
+function filterComparableRows(rows){const f=currentFilterValues();return (rows||[]).filter(r=>(!state.selected.size||state.selected.has(normUnit(r[IDX.mainUnit])))&&(!f.sev||String(r[IDX.sev]||'')===f.sev)&&(!f.type||riskType(r)===f.type)&&(!f.month||monthOf(r[IDX.date])===f.month))}
+async function ensureYearRows(year){if(state.allYearRows[year])return state.allYearRows[year];try{const d=await json(PARENT+`incidents_${year}.json`);state.allYearRows[year]=d.rows||[];return state.allYearRows[year]}catch(e){console.warn('load trend year failed',year,e);return[]}}
+function renderRiskMatrix(){
+  const rows=getProfileRows();const cells={};rows.forEach(x=>{const l=Number(x.likelihood)||1,i=Number(x.impact)||1;cells[`${i}-${l}`]=(cells[`${i}-${l}`]||0)+1});
+  let out='<div class="rm-axis-title">ผลกระทบ (Impact)</div><div class="rm-grid"><div class="rm-corner"></div>';
+  for(let l=1;l<=5;l++)out+=`<div class="rm-head">L${l}</div>`;
+  for(let i=5;i>=1;i--){out+=`<div class="rm-head rm-side">I${i}</div>`;for(let l=1;l<=5;l++){const score=i*l,n=cells[`${i}-${l}`]||0;const cls=score>=16?'rm-vhigh':score>=10?'rm-high':score>=5?'rm-med':'rm-low';out+=`<div class="rm-cell ${cls}" title="Impact ${i} × Likelihood ${l} = ${score}"><b>${n}</b><small>${score}</small></div>`}}out+='</div><div class="rm-x-title">โอกาสเกิด (Likelihood)</div><div class="rm-legend"><span class="rm-low">ต่ำ</span><span class="rm-med">ปานกลาง</span><span class="rm-high">สูง</span><span class="rm-vhigh">สูงมาก</span></div>';
+  $('#riskMatrix').innerHTML=out;
+}
+async function renderYearTrend(){
+  const years=state.years.length?state.years:[2566,2567,2568,2569];
+  const values=[];for(const y of years){const rows=await ensureYearRows(y);values.push({label:String(y),count:filterComparableRows(rows).length})}
+  if($('#yearTrend'))barChart('#yearTrend',values);
+}
+function renderReadiness(){
+  const a=state.filtered,profile=getProfileRows(),register=getRegisterRows(),monthCount=new Set(a.map(r=>monthOf(r[IDX.date])).filter(Boolean)).size;
+  const checks=[
+    {ok:a.length>0,title:'มีข้อมูล Incident',detail:`${a.length.toLocaleString()} รายการ`},
+    {ok:state.selected.size>0,title:'ระบุหน่วยงานเจ้าภาพ',detail:state.selected.size?`${state.selected.size} หน่วยงาน`:'ยังเป็นภาพรวมโรงพยาบาล'},
+    {ok:profile.length>0,title:'สร้าง Risk Profile ได้',detail:`${profile.length} ประเด็น`},
+    {ok:register.length>0,title:'สร้าง Risk Register ได้',detail:`${register.length} รายการ`},
+    {ok:monthCount>=3,title:'มีข้อมูลแนวโน้มตามเวลา',detail:`ครอบคลุม ${monthCount} เดือนงบประมาณ`},
+    {ok:a.filter(r=>isHigh(r[IDX.sev])).length===0||register.length>0,title:'High Risk มีแผนติดตาม',detail:`High Risk ${a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString()} รายการ`}
+  ];
+  $('#haReadiness').innerHTML=checks.map(x=>`<div class="readiness-item ${x.ok?'ready':'pending'}"><span>${x.ok?'✓':'!'}</span><div><b>${esc(x.title)}</b><small>${esc(x.detail)}</small></div></div>`).join('');
+}
+function buildHaNarrative(){
+  const a=state.filtered,total=a.length,clinical=a.filter(r=>riskType(r)==='Clinical').length,non=a.filter(r=>riskType(r)==='Non-clinical').length,high=a.filter(r=>isHigh(r[IDX.sev])).length;
+  const top=Object.entries(countMap(a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()))).sort((x,y)=>y[1]-x[1]).slice(0,3);
+  const months=[10,11,12,1,2,3,4,5,6,7,8,9],names={10:'ตุลาคม',11:'พฤศจิกายน',12:'ธันวาคม',1:'มกราคม',2:'กุมภาพันธ์',3:'มีนาคม',4:'เมษายน',5:'พฤษภาคม',6:'มิถุนายน',7:'กรกฎาคม',8:'สิงหาคม',9:'กันยายน'};
+  const peak=months.map(m=>({m,n:a.filter(r=>monthOf(r[IDX.date])===m).length})).sort((x,y)=>y.n-x.n)[0]||{m:'',n:0};
+  const topText=top.length?top.map(([x,n])=>`${x} (${n.toLocaleString()} ครั้ง)`).join(', '):'ยังไม่มีข้อมูล';
+  return `<p>ปีงบประมาณ <b>${state.year}</b> ${esc(contextText())} มีอุบัติการณ์ทั้งหมด <b>${total.toLocaleString()}</b> รายการ แบ่งเป็น Clinical <b>${clinical.toLocaleString()}</b> รายการ และ Non-clinical <b>${non.toLocaleString()}</b> รายการ โดยพบ High Risk <b>${high.toLocaleString()}</b> รายการ</p><p>ประเด็นความเสี่ยงที่พบสูงสุด ได้แก่ <b>${esc(topText)}</b>${peak.n?` และเดือนที่พบเหตุการณ์สูงสุดคือ <b>${names[peak.m]}</b> จำนวน <b>${peak.n.toLocaleString()}</b> รายการ`:''}</p><p>หน่วยงานควรทบทวน Risk Profile และ Risk Register ที่ระบบสร้างเป็นร่าง ตรวจสอบมาตรการควบคุม ตัวชี้วัด ผู้รับผิดชอบ และหลักฐานการติดตามก่อนใช้ในการประเมิน HA</p>`;
+}
 function renderAnalytics(){
   const a=state.filtered;
   $('#aTotal').textContent=a.length.toLocaleString();
@@ -77,10 +113,11 @@ function renderAnalytics(){
   $('#severityByType').innerHTML=`<table><thead><tr><th>ระดับ</th><th>Clinical</th><th>Non-clinical</th><th>รวม</th></tr></thead><tbody>${sevs.map(s=>{const c=a.filter(r=>String(r[IDX.sev]||'ไม่ระบุ')===s&&riskType(r)==='Clinical').length;const n=a.filter(r=>String(r[IDX.sev]||'ไม่ระบุ')===s&&riskType(r)==='Non-clinical').length;return `<tr><td><span class="badge ${isHigh(s)?'high':''}">${esc(s)}</span></td><td>${c.toLocaleString()}</td><td>${n.toLocaleString()}</td><td><b>${(c+n).toLocaleString()}</b></td></tr>`}).join('')}</tbody></table>`;
   const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];
   barChart('#peakMonths',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})).sort((x,y)=>y.count-x.count));
+  renderRiskMatrix();renderReadiness();renderYearTrend();
 }
 function renderHaReport(){
   const a=state.filtered, pr=getProfileRows(), rr=getRegisterRows();
-  $('#haContext').textContent=`ปีงบประมาณ ${state.year} • ${contextText()} • จัดทำจากข้อมูลที่ผ่านตัวกรองปัจจุบัน`;
+  $('#haContext').textContent=`ปีงบประมาณ ${state.year} • ${contextText()} • จัดทำจากข้อมูลที่ผ่านตัวกรองปัจจุบัน`;$('#haNarrative').innerHTML=buildHaNarrative();
   $('#haTotal').textContent=a.length.toLocaleString();$('#haClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#haNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#haHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();
   rank('#haTopRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));
   const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#haMonthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));

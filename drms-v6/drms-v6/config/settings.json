@@ -1,0 +1,16 @@
+{
+  "system": "DonTum Risk Management System",
+  "version": "1.0.0",
+  "hospital": "โรงพยาบาลดอนตูม",
+  "fiscalYears": [
+    2566,
+    2567,
+    2568,
+    2569
+  ],
+  "defaultFiscalYear": 2569,
+  "fiscalYearSource": "dataset",
+  "profileRegisterOwnerField": "กลุ่ม/หน่วยงานหลัก",
+  "multiDepartment": true,
+  "dataPath": "../data/"
+}

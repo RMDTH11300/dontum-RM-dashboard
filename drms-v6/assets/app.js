@@ -44,10 +44,7 @@ function checkboxState(units){
   const count=units.filter(u=>state.selected.has(u)).length;
   return{checked:units.length>0&&count===units.length,partial:count>0&&count<units.length}
 }
-function unmatchedUnits(){
-  const known=new Set((state.orgTree.groups||[]).flatMap(g=>g.departments.flatMap(d=>d.units)));
-  return state.units.filter(u=>!known.has(u))
-}
+
 function treeMatches(group,q){
   if(!q)return true;
   const text=[group.name,...group.departments.flatMap(d=>[d.name,...d.units])].join(' ').toLowerCase();
@@ -75,13 +72,7 @@ function renderUnits(){
       <div class="org-departments">${deptHtml}</div>
     </details>`
   }).join('');
-
-  const unmatched=unmatchedUnits().filter(u=>!q||u.toLowerCase().includes(q));
-  if(unmatched.length){
-    const us=checkboxState(unmatched);
-    out+=`<details class="org-group unmatched" open><summary><label class="org-parent group"><input type="checkbox" data-kind="group" data-units="${esc(unmatched.join('||'))}" ${us.checked?'checked':''}><span>ยังไม่จัดกลุ่ม</span></label></summary><div class="org-leaves">${unmatched.map(u=>`<label class="org-leaf"><input type="checkbox" data-kind="leaf" value="${esc(u)}" ${state.selected.has(u)?'checked':''}><span>${esc(u)}</span></label>`).join('')}</div></details>`
-  }
-  $('#units').innerHTML=out||'<p class="empty">ไม่พบหน่วยงาน</p>';
+  $('#units').innerHTML=out||'<p class="empty">ไม่พบหน่วยงานใน Master</p>';
 
   $$('#units input[data-kind="leaf"]').forEach(x=>x.onchange=()=>{
     x.checked?state.selected.add(x.value):state.selected.delete(x.value);

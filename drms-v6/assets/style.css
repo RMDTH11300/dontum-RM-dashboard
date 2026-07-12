@@ -7,3 +7,18 @@
 @media(max-width:700px){.ha-kpis{grid-template-columns:1fr 1fr}.pareto-row{grid-template-columns:28px 1fr 45px 48px}.pareto-bar{display:none}.summary-block{flex-direction:column}.donut{width:130px;height:130px}.donut:before{width:85px;height:85px}}
 @media print{#analytics .cards,#haReport .ha-kpis{break-inside:avoid}.report-section{break-before:auto}.ha-cover{border:1px solid #bbb!important}.pareto-row{font-size:10px}.donut{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
 .admin-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}.admin-kpis article{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:9px;padding:13px 15px}.admin-kpis article.green{border-left-color:var(--green)}.admin-kpis article.purple{border-left-color:var(--purple)}.admin-kpis article.red{border-left-color:var(--red)}.admin-kpis span{display:block;color:var(--muted);font-size:13px}.admin-kpis b{display:block;font-size:24px;margin-top:4px}.draft-status{margin-top:12px;padding:9px;border-radius:7px;background:#eef5ff;color:#315d93;font-size:12px;text-align:center}.draft-status.dirty{background:#fff4df;color:#9a5d00;border:1px solid #f0cf8a}.page-size{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:13px}.page-size select{padding:6px 8px;border:1px solid #cbd7e6;border-radius:6px}.row-actions{white-space:nowrap}.row-actions button{margin:2px}.pager span{align-self:center;color:var(--muted);padding-left:6px}@media(max-width:850px){.admin-kpis{grid-template-columns:1fr 1fr}}
+/* Sprint 3: advanced incident administration */
+.admin-toolbar{position:sticky;top:0;z-index:5;background:#fff}
+.admin-toolbar select{min-width:165px}
+.table-wrap{max-height:70vh;overflow:auto;position:relative}
+.table-wrap thead th{position:sticky;top:0;z-index:4;box-shadow:0 1px 0 #dfe7f1}
+.table-wrap th:first-child,.table-wrap td:first-child{position:sticky;left:0;background:#fff;z-index:2}
+.table-wrap thead th:first-child{z-index:6;background:#f4f7fb}
+.table-wrap th:last-child,.table-wrap td:last-child{position:sticky;right:0;background:#fff;z-index:2}
+.table-wrap thead th:last-child{z-index:6;background:#f4f7fb}
+.type-pill{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid #cbd7e6;background:#f5f8fc}
+.type-pill.clinical{color:#087a3e;background:#ecfdf3;border-color:#9fe0ba}
+.type-pill.non{color:#6338a5;background:#f5efff;border-color:#cab5eb}
+.row-actions{min-width:170px}
+.row-actions .small-btn{display:inline-block}
+@media(max-width:1000px){.admin-toolbar{position:static}.table-wrap{max-height:none}.table-wrap th:first-child,.table-wrap td:first-child,.table-wrap th:last-child,.table-wrap td:last-child{position:static}}

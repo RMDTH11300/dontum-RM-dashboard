@@ -88,3 +88,19 @@
 .about-hero{display:flex;align-items:center;gap:22px;padding:26px;margin-bottom:18px;border-radius:16px;background:linear-gradient(135deg,#102f57,#1f5c96);color:#fff;box-shadow:0 10px 26px rgba(16,47,87,.18)}.about-logo{display:flex;align-items:center;justify-content:center;width:86px;height:86px;border-radius:50%;background:#fff;color:#16834f;font-size:30px;font-weight:900;border:6px solid #d8f3e5}.about-eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:#bfdbfe}.about-hero h2{margin:3px 0;font-size:36px}.about-hero p{margin:0;color:#e5effa}.about-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.about-badges span{padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);font-size:12px;font-weight:700}.about-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.about-card{padding:20px;border:1px solid #d9e3ef;border-radius:14px;background:#fff;box-shadow:0 3px 12px rgba(23,54,93,.06)}.about-card h3{margin:0 0 12px;color:#17365d}.about-card p{color:#5c6f82;line-height:1.6}.about-list{margin:0}.about-list>div{display:grid;grid-template-columns:160px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid #edf1f5}.about-list>div:last-child{border-bottom:0}.about-list dt{font-weight:800;color:#385a7c}.about-list dd{margin:0;color:#31475f}.about-scope{margin:0;padding-left:20px;color:#4f6478;line-height:1.7}.about-card.warning{background:#fff9e8;border-color:#f0d38f}.about-card.warning h3{color:#8a5a00}.version-history{margin-top:16px}.version-list{display:grid;gap:8px}.version-list>div{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:10px 12px;border-radius:9px;background:#f6f9fc}.version-list b{color:#17365d}.version-list span{color:#516579}.about-footer{display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:16px;padding:20px;border-radius:14px;background:#eaf6ef;color:#215b3d;text-align:center}.about-footer strong{font-size:21px}
 @media(max-width:850px){.about-grid{grid-template-columns:1fr}.about-list>div{grid-template-columns:1fr;gap:3px}.about-hero{align-items:flex-start}.about-logo{width:70px;height:70px;font-size:24px}}
 @media(max-width:580px){.about-hero{flex-direction:column}.version-list>div{grid-template-columns:1fr}}
+.logo {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

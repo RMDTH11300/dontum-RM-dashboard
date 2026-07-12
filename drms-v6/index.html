@@ -49,8 +49,16 @@
   <section class="panel table-wrap"><div class="table-head"><b id="resultCount">0 รายการ</b><button id="csv">ส่งออก CSV</button></div><table><thead><tr><th>ลำดับ</th><th>วันที่เกิด</th><th>รหัส/เรื่อง</th><th>เรื่องย่อย</th><th>ความรุนแรง</th><th>หน่วยงานรายงาน</th><th>หน่วยงานหลักที่แก้ไข</th><th>รายละเอียด</th></tr></thead><tbody id="incidentRows"></tbody></table><div id="pager" class="pager"></div></section>
 </section>
 <section id="profile" class="view">
-  <div class="page-title"><div><h1>บัญชีรายการความเสี่ยง (Risk Profile)</h1><p>สร้างร่างอัตโนมัติจาก Incident ตามกลุ่ม/หน่วยงานหลักที่แก้ไข และใช้แบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions"><button id="exportProfileCsv">ส่งออก CSV</button><button id="printProfile" class="primary">พิมพ์ / บันทึก PDF</button></div></div>
-  <section class="profile-sheet">
+  <div class="page-title"><div><h1>บัญชีรายการความเสี่ยง (Risk Profile)</h1><p>สร้างร่างอัตโนมัติจาก Incident ตามกลุ่ม/หน่วยงานหลักที่แก้ไข และใช้แบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions">
+<button id="profileSummaryMode" class="mode-btn active">มุมมองสรุป</button>
+<button id="profileHaMode" class="mode-btn">แบบฟอร์ม HA</button>
+<button id="saveProfileDraft">บันทึกร่าง HA</button>
+<button id="exportProfileWord">Word</button>
+<button id="exportProfileExcel">Excel</button>
+<button id="exportProfileCsv">CSV</button>
+<button id="printProfile" class="primary">พิมพ์ / PDF</button>
+</div></div>
+  <section id="profileSummaryPane" class="profile-sheet">
     <div class="profile-heading">
       <h2>บัญชีรายการความเสี่ยง (Risk Profile)</h2>
       <p id="profileUnitTitle">หน่วยงาน: ภาพรวมโรงพยาบาล</p>
@@ -69,13 +77,71 @@
     </section>
     <p class="profile-warning">หมายเหตุ: ค่า Impact และมาตรการเป็นร่างตั้งต้นจาก Risk Profile ของโรงพยาบาล หากเป็นรายหน่วยงานควรให้หน่วยงานเจ้าภาพทบทวนรับรองก่อนใช้เป็นหลักฐาน HA</p>
   </section>
+  <section id="profileHaPane" class="ha-form-pane hidden">
+    <div class="ha-form-header">
+      <div>
+        <h2>แบบฟอร์ม Risk Profile สำหรับ HA</h2>
+        <p id="profileHaContext">ใช้ข้อมูลจาก Incident และให้หน่วยงานเจ้าภาพทบทวนรายละเอียด</p>
+      </div>
+      <div class="draft-meta"><span id="profileDraftStatus">ยังไม่บันทึกร่าง</span></div>
+    </div>
+    <div class="ha-instruction"><b>วิธีใช้:</b> คลิกช่องสีขาวเพื่อกรอกหรือแก้ไขข้อมูล แล้วกด “บันทึกร่าง HA” ข้อมูลจะเก็บไว้ในเบราว์เซอร์เครื่องนี้</div>
+    <div class="table-wrap ha-edit-table">
+      <table id="profileHaTable">
+        <thead><tr>
+          <th>ลำดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน/ระดับ</th>
+          <th>วัตถุประสงค์</th><th>ตัวชี้วัด</th><th>เป้าหมาย</th><th>มาตรการเดิม</th>
+          <th>มาตรการเพิ่มเติม</th><th>ผู้รับผิดชอบ</th><th>กำหนดเวลา</th><th>ผลการติดตาม</th>
+        </tr></thead>
+        <tbody id="profileHaRows"></tbody>
+      </table>
+    </div>
+    <section class="history-panel">
+      <h3>ประวัติการบันทึกร่าง</h3>
+      <div id="profileHistory" class="history-list"></div>
+    </section>
+  </section>
 </section>
 <section id="register" class="view">
-  <div class="page-title"><div><h1>Risk Register</h1><p>สร้างร่างทะเบียนความเสี่ยงอัตโนมัติจาก Incident และ Risk Profile ตามแบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions"><button id="exportRegisterCsv">ส่งออก CSV</button><button id="printRegister" class="primary">พิมพ์ / บันทึก PDF</button></div></div>
+  <div class="page-title"><div><h1>Risk Register</h1><p>สร้างร่างทะเบียนความเสี่ยงอัตโนมัติจาก Incident และ Risk Profile ตามแบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions">
+<button id="registerSummaryMode" class="mode-btn active">มุมมองสรุป</button>
+<button id="registerHaMode" class="mode-btn">แบบฟอร์ม HA</button>
+<button id="saveRegisterDraft">บันทึกร่าง HA</button>
+<button id="exportRegisterWord">Word</button>
+<button id="exportRegisterExcel">Excel</button>
+<button id="exportRegisterCsv">CSV</button>
+<button id="printRegister" class="primary">พิมพ์ / PDF</button>
+</div></div>
+  <div id="registerSummaryPane">
   <div class="context-note" id="registerContext"></div>
   <div class="profile-note"><b>หลักการ:</b> ดึงความเสี่ยงสำคัญจาก Incident ที่ผ่านตัวกรองปัจจุบัน จัดอันดับด้วยคะแนน Risk Matrix และใช้มาตรการจากทะเบียนความเสี่ยงเดิมเป็นค่าตั้งต้นเมื่อรหัสตรงกัน</div>
   <section class="panel table-wrap register-table"><table><thead><tr><th>ลำดับ/รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียดและหลักฐาน</th><th>ช่วงเวลาติดตาม</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน/ควบคุม</th><th>ตัวชี้วัดและการติดตาม</th><th>การลดผลกระทบ</th><th>ผู้รับผิดชอบ</th></tr></thead><tbody id="registerRows"></tbody></table></section>
   <p class="profile-warning">หมายเหตุ: เป็นร่างอัตโนมัติสำหรับให้หน่วยงานเจ้าภาพทบทวน ปรับมาตรการ ตัวชี้วัด ผู้รับผิดชอบ และกำหนดเวลาติดตามก่อนใช้เป็นหลักฐาน HA</p>
+  </div>
+  <section id="registerHaPane" class="ha-form-pane hidden">
+    <div class="ha-form-header">
+      <div>
+        <h2>แบบฟอร์ม Risk Register สำหรับ HA</h2>
+        <p id="registerHaContext">ทะเบียนความเสี่ยงสำหรับกำหนดแผนควบคุมและติดตาม</p>
+      </div>
+      <div class="draft-meta"><span id="registerDraftStatus">ยังไม่บันทึกร่าง</span></div>
+    </div>
+    <div class="ha-instruction"><b>วิธีใช้:</b> คลิกช่องสีขาวเพื่อปรับมาตรการ ตัวชี้วัด ผู้รับผิดชอบ กำหนดเวลา และผลติดตาม แล้วกด “บันทึกร่าง HA”</div>
+    <div class="table-wrap ha-edit-table">
+      <table id="registerHaTable">
+        <thead><tr>
+          <th>รหัส</th><th>ชื่อความเสี่ยง</th><th>หลักฐาน/สถานการณ์</th><th>L</th><th>I</th><th>ระดับ</th>
+          <th>มาตรการป้องกัน/ควบคุม</th><th>ตัวชี้วัด</th><th>เป้าหมาย</th>
+          <th>ผู้รับผิดชอบ</th><th>กำหนดเวลา</th><th>ผลการติดตาม</th><th>หลักฐานประกอบ</th>
+        </tr></thead>
+        <tbody id="registerHaRows"></tbody>
+      </table>
+    </div>
+    <section class="history-panel">
+      <h3>ประวัติการบันทึกร่าง</h3>
+      <div id="registerHistory" class="history-list"></div>
+    </section>
+  </section>
 </section>
 
 <section id="analytics" class="view">

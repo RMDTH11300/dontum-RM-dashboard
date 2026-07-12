@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS Admin Data Center</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.2">
+  <link rel="stylesheet" href="assets/style.css?v=6.4-rca">
 </head>
 <body class="dc-body">
 <header class="topbar">
@@ -17,13 +17,14 @@
   </div>
   <div class="top-actions">
     <a class="ghost" href="index.html">กลับหน้าระบบ</a>
-    <span class="tag">V6.2</span>
+    <span class="tag">V6.4</span>
   </div>
 </header>
 
 <div class="dc-layout">
   <aside class="dc-side">
     <button class="dc-nav active" data-tab="dataCenter">📥 Data Center</button>
+    <button class="dc-nav" data-tab="rcaCenter">📑 RCA Manager</button>
     <button class="dc-nav" data-tab="backupCenter">💾 Backup / Restore</button>
     <button class="dc-nav" data-tab="settingsCenter">⚙ ตั้งค่า</button>
 
@@ -174,7 +175,83 @@
       </section>
     </section>
 
-    <section id="backupCenter" class="dc-tab">
+    
+    <section id="rcaCenter" class="dc-tab">
+      <div class="page-title">
+        <div>
+          <h1>RCA Manager</h1>
+          <p>แสดงเฉพาะความเสี่ยงระดับ E–I และ 3–5 พร้อมแนบไฟล์ RCA และเผยแพร่ผ่าน GitHub</p>
+        </div>
+        <div class="actions">
+          <button id="loadRcaIncidents">โหลดรายการจาก Dashboard</button>
+          <button id="refreshRcaManifest">รีเฟรชรายการ RCA</button>
+        </div>
+      </div>
+
+      <div class="dc-notice">
+        <b>ความปลอดภัย:</b>
+        Token จะเก็บเฉพาะในแท็บนี้จนกว่าจะปิด ไม่ถูกบันทึกลงไฟล์โปรแกรม
+        ไม่ควรใช้เครื่องสาธารณะ
+      </div>
+
+      <section class="panel github-settings">
+        <div class="panel-title"><h3>การเชื่อมต่อ GitHub</h3><span id="githubStatus" class="quality-badge neutral">ยังไม่ตั้งค่า</span></div>
+        <div class="github-grid">
+          <label>GitHub Owner
+            <input id="githubOwner" value="rmdth11300">
+          </label>
+          <label>Repository
+            <input id="githubRepo" value="dontum-RM-dashboard">
+          </label>
+          <label>Branch
+            <input id="githubBranch" value="main">
+          </label>
+          <label>Personal Access Token
+            <input id="githubToken" type="password" placeholder="github_pat_...">
+          </label>
+        </div>
+        <div class="actions github-actions">
+          <button id="saveGithubSession">บันทึกสำหรับแท็บนี้</button>
+          <button id="testGithub">ทดสอบการเชื่อมต่อ</button>
+          <button id="clearGithubSession">ล้าง Token</button>
+        </div>
+      </section>
+
+      <div class="dc-kpis rca-kpis">
+        <article><span>ต้องมี RCA</span><b id="rcaRequired">0</b><small>รายการ</small></article>
+        <article class="green"><span>มี RCA</span><b id="rcaHas">0</b><small>รายการ</small></article>
+        <article class="red"><span>ไม่มี RCA</span><b id="rcaMissing">0</b><small>รายการ</small></article>
+      </div>
+
+      <section class="panel">
+        <div class="toolbar rca-toolbar">
+          <input id="rcaSearch" placeholder="ค้นหา Incident เรื่อง หน่วยงาน หรือระดับ">
+          <select id="rcaAvailability">
+            <option value="">ทั้งหมด</option>
+            <option value="has">มี RCA</option>
+            <option value="missing">ไม่มี RCA</option>
+          </select>
+          <button id="clearRcaFilter">ล้างตัวกรอง</button>
+        </div>
+
+        <div class="table-wrap rca-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>วันที่</th><th>Incident No.</th><th>เรื่องความเสี่ยง</th>
+                <th>หน่วยงานหลักที่แก้ไข</th><th>ระดับ</th><th>RCA</th>
+                <th>ดาวน์โหลด</th><th>แนบ/แทนที่ไฟล์</th>
+              </tr>
+            </thead>
+            <tbody id="rcaRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <input id="rcaFileInput" type="file" accept=".pdf,.doc,.docx" hidden>
+    </section>
+
+<section id="backupCenter" class="dc-tab">
       <div class="page-title">
         <div><h1>Backup / Restore</h1><p>สำรองและกู้คืนชุดข้อมูลที่กำลังจัดการในเครื่องนี้</p></div>
       </div>
@@ -249,7 +326,7 @@
       <section class="panel">
         <div class="panel-title"><h3>ข้อมูลระบบ</h3></div>
         <div class="dataset-summary">
-          <div><span>เวอร์ชัน</span><b>DRMS V6.2</b></div>
+          <div><span>เวอร์ชัน</span><b>DRMS V6.4</b></div>
           <div><span>รูปแบบข้อมูล</span><b>Excel → JSON</b></div>
           <div><span>ที่จัดเก็บร่าง</span><b>Browser Local Storage</b></div>
           <div><span>การเผยแพร่</span><b>GitHub Pages</b></div>
@@ -261,6 +338,6 @@
 
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="assets/admin.js?v=6.2"></script>
+<script src="assets/admin.js?v=6.4-rca"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=6.4-rca">
 </head>
 <body>
 <header class="topbar">
@@ -18,6 +18,7 @@
   <button class="nav" data-view="profile">▤ Risk Profile</button>
   <button class="nav" data-view="register">▥ Risk Register</button>
   <button class="nav" data-view="analytics">◫ Analytics</button>
+  <button class="nav" data-view="rca">📑 RCA</button>
   <button class="nav" data-view="haReport">▧ รายงาน HA หน่วยงาน</button>
   <a class="nav link" href="admin.html">⚙ หน้า Admin</a>
   <div class="sidebox">
@@ -25,9 +26,9 @@
     <small>ยึดจากชุดข้อมูล ไม่คำนวณจากวันที่</small>
   </div>
   <div class="sidebox">
-    <div class="side-title"><b>หน่วยงานหลักที่แก้ไข</b><span id="selectedCount">ทั้งหมด</span></div>
-    <div class="unit-actions"><button id="allUnits">เลือกทั้งหมด</button><button id="clearUnits">ล้าง</button></div>
-    <input id="unitSearch" placeholder="ค้นหาหน่วยงาน">
+    <div class="side-title"><b>กลุ่มงาน / งาน / งานย่อย</b><span id="selectedCount">ทั้งหมด</span></div>
+    <div class="unit-actions"><button id="allUnits">เลือกทั้งหมด</button><button id="expandUnits">ขยายทั้งหมด</button><button id="clearUnits">ล้าง</button></div>
+    <input id="unitSearch" placeholder="ค้นหากลุ่มงาน งาน หรืองานย่อย">
     <div id="units" class="unit-list"></div>
   </div>
 </aside>
@@ -166,6 +167,26 @@
   </div>
   <section class="panel readiness-panel"><h3>ความพร้อมของข้อมูลสำหรับ HA</h3><div id="haReadiness" class="readiness-list"></div></section>
 </section>
+
+<section id="rca" class="view">
+  <div class="page-title">
+    <div><h1>RCA</h1><p>แสดงเฉพาะความเสี่ยงระดับ E–I และ 3–5 พร้อมสถานะมี/ไม่มี RCA และลิงก์ดาวน์โหลด</p></div>
+  </div>
+  <div class="cards rca-public-kpis">
+    <article><span>ต้องมี RCA</span><strong id="pubRcaRequired">0</strong><small>รายการ</small></article>
+    <article class="green"><span>มี RCA</span><strong id="pubRcaHas">0</strong><small>รายการ</small></article>
+    <article class="red"><span>ไม่มี RCA</span><strong id="pubRcaMissing">0</strong><small>รายการ</small></article>
+  </div>
+  <section class="panel">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>วันที่</th><th>Incident No.</th><th>เรื่องความเสี่ยง</th><th>หน่วยงานหลักที่แก้ไข</th><th>ระดับ</th><th>RCA</th><th>ดาวน์โหลด</th></tr></thead>
+        <tbody id="pubRcaRows"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
 <section id="haReport" class="view">
   <div class="page-title">
     <div><h1>รายงาน HA ของหน่วยงาน</h1><p>สร้างรายงานจาก Incident, Risk Profile และ Risk Register พร้อมแก้ไขข้อความและส่งออกเอกสาร</p></div>
@@ -236,5 +257,5 @@
   </section>
 </section>
 </main></div>
-<div id="toast"></div><script src="assets/app.js"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.4-rca"></script>
 </body></html>

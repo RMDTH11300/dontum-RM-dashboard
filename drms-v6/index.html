@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.11-document-center">
+  <link rel="stylesheet" href="assets/style.css?v=6.12-about-version">
 </head>
 <body>
 <header class="topbar">
@@ -21,6 +21,7 @@
   <button class="nav" data-view="documents">📚 เอกสารและแบบฟอร์ม</button>
   <button class="nav" data-view="rca">📑 RCA</button>
   <button class="nav" data-view="haReport">▧ รายงาน HA หน่วยงาน</button>
+  <button class="nav" data-view="about">ℹ️ เกี่ยวกับระบบ</button>
   <a class="nav link" href="admin.html">⚙ หน้า Admin</a>
   <div class="sidebox">
     <label>ปีงบประมาณ</label><select id="year"><option value="all">ทุกปีงบประมาณ</option></select>
@@ -331,6 +332,87 @@
     <div id="haReportHistory" class="history-list"></div>
   </section>
 </section>
+
+<section id="about" class="view">
+  <div class="page-title">
+    <div>
+      <h1>เกี่ยวกับระบบ</h1>
+      <p>ข้อมูลเวอร์ชัน วัตถุประสงค์ และขอบเขตการใช้งานของ DRMS</p>
+    </div>
+  </div>
+
+  <section class="about-hero">
+    <div class="about-logo">DT</div>
+    <div>
+      <span class="about-eyebrow">DON TUM RISK MANAGEMENT SYSTEM</span>
+      <h2>DRMS</h2>
+      <p>ระบบบริหารจัดการความเสี่ยง โรงพยาบาลดอนตูม จังหวัดนครปฐม</p>
+      <div class="about-badges">
+        <span>Version 6.12</span>
+        <span>Production</span>
+        <span>ปรับปรุงล่าสุด กรกฎาคม 2569</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="about-grid">
+    <section class="about-card">
+      <h3>ข้อมูลระบบ</h3>
+      <dl class="about-list">
+        <div><dt>ชื่อระบบ</dt><dd>Don Tum Risk Management System: DRMS</dd></div>
+        <div><dt>เวอร์ชัน</dt><dd>V6.12</dd></div>
+        <div><dt>สถานะ</dt><dd>เวอร์ชันใช้งานจริง</dd></div>
+        <div><dt>หน่วยงานเจ้าของระบบ</dt><dd>คณะกรรมการบริหารงานคุณภาพและความปลอดภัย โรงพยาบาลดอนตูม</dd></div>
+        <div><dt>ผู้ดูแลข้อมูล</dt><dd>เลขานุการทีมบริหารความเสี่ยง</dd></div>
+        <div><dt>ช่องทางใช้งาน</dt><dd>GitHub Pages</dd></div>
+      </dl>
+    </section>
+
+    <section class="about-card">
+      <h3>วัตถุประสงค์</h3>
+      <p>พัฒนาขึ้นเพื่อรวบรวม วิเคราะห์ และนำเสนอข้อมูลอุบัติการณ์ความเสี่ยง สนับสนุนการจัดทำ Risk Profile, Risk Register, RCA และรายงานข้อมูลความเสี่ยงของหน่วยงาน โรงพยาบาลดอนตูม</p>
+    </section>
+
+    <section class="about-card">
+      <h3>ขอบเขตการใช้งาน</h3>
+      <ul class="about-scope">
+        <li>Dashboard ภาพรวมรายปีและทุกปีงบประมาณ</li>
+        <li>รายการอุบัติการณ์และการค้นหาข้อมูล</li>
+        <li>ตัวกรองตามกลุ่มงาน งาน และงานย่อย</li>
+        <li>Risk Profile และ Risk Register</li>
+        <li>Analytics และรายงาน HA หน่วยงาน</li>
+        <li>RCA และเอกสารประกอบ</li>
+        <li>คู่มือและแบบฟอร์มมาตรฐาน</li>
+        <li>Data Center สำหรับผู้ดูแลระบบ</li>
+      </ul>
+    </section>
+
+    <section class="about-card warning">
+      <h3>ข้อควรทราบ</h3>
+      <p>ข้อมูลในระบบใช้เพื่อการบริหารจัดการความเสี่ยง การพัฒนาคุณภาพ และความปลอดภัยของโรงพยาบาล</p>
+      <p><b>ห้ามเผยแพร่ข้อมูลที่สามารถระบุตัวผู้ป่วย หรือข้อมูลส่วนบุคคลต่อบุคคลภายนอก</b></p>
+    </section>
+  </div>
+
+  <section class="about-card version-history">
+    <h3>ประวัติเวอร์ชัน</h3>
+    <div class="version-list">
+      <div><b>V6.12</b><span>เพิ่มหน้า About / Version</span></div>
+      <div><b>V6.11</b><span>เพิ่มศูนย์เอกสารและแบบฟอร์ม</span></div>
+      <div><b>V6.10</b><span>เพิ่มการแสดงข้อมูลทุกปีงบประมาณ</span></div>
+      <div><b>V6.9</b><span>ปรับ Master โครงสร้างหน่วยงาน</span></div>
+      <div><b>V6.6</b><span>เพิ่ม RCA Manager</span></div>
+      <div><b>V6.2</b><span>เพิ่ม Data Center และ Data Quality</span></div>
+      <div><b>V1.0</b><span>Dashboard รุ่นเริ่มต้น</span></div>
+    </div>
+  </section>
+
+  <section class="about-footer">
+    <strong>“No Blame, No Shame”</strong>
+    <span>พัฒนาเพื่อสนับสนุนวัฒนธรรมความปลอดภัย โรงพยาบาลดอนตูม</span>
+  </section>
+</section>
+
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.11-document-center"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.12-about-version"></script>
 </body></html>

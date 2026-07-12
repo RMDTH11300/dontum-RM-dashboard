@@ -134,3 +134,10 @@ Master หน่วยงานอยู่ที่ `config/departments.json`
 - `docs/risk-profile-form.docx` — แบบฟอร์ม Risk Profile
 - `docs/risk-register-form.docx` — แบบฟอร์ม Risk Register
 - `docs/rca-form.docx` — แบบฟอร์ม RCA
+
+
+## V6.12 – About / Version
+- เพิ่มเมนู “เกี่ยวกับระบบ”
+- แสดงชื่อระบบ เวอร์ชัน สถานะ และหน่วยงานเจ้าของระบบ
+- แสดงวัตถุประสงค์ ขอบเขตการใช้งาน และข้อควรทราบ
+- แสดงประวัติเวอร์ชันแบบย่อ

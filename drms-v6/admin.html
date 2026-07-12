@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS Admin Data Center</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.1.1">
+  <link rel="stylesheet" href="assets/style.css?v=6.2">
 </head>
 <body class="dc-body">
 <header class="topbar">
@@ -17,7 +17,7 @@
   </div>
   <div class="top-actions">
     <a class="ghost" href="index.html">กลับหน้าระบบ</a>
-    <span class="tag">V6.1 FINAL</span>
+    <span class="tag">V6.2</span>
   </div>
 </header>
 
@@ -114,6 +114,17 @@
         </section>
       </div>
 
+      <section class="panel export-policy">
+        <div class="panel-title"><h3>การเตรียมข้อมูลก่อนส่งออก</h3><span id="exportCountBadge" class="quality-badge neutral">0 รายการ</span></div>
+        <div class="policy-grid">
+          <label><input id="excludeDuplicates" type="checkbox"> ตัดข้อมูลซ้ำออกจากไฟล์ส่งออก</label>
+          <label><input id="excludeOutOfYear" type="checkbox"> ตัดข้อมูลที่อยู่นอกช่วงปีงบประมาณออก</label>
+          <label><input id="excludeMissingRisk" type="checkbox"> ตัดรายการที่ไม่มีรหัส/เรื่องความเสี่ยงออก</label>
+          <label><input id="excludeMissingUnit" type="checkbox"> ตัดรายการที่ไม่มีหน่วยงานหลักที่แก้ไขออก</label>
+        </div>
+        <div class="policy-note">ระบบจะไม่แก้ไขข้อมูลต้นฉบับ ตัวเลือกเหล่านี้มีผลเฉพาะไฟล์ JSON ที่ส่งออกเท่านั้น</div>
+      </section>
+
       <section class="panel dc-preview">
         <div class="panel-title">
           <div>
@@ -121,8 +132,20 @@
             <small id="previewText">ยังไม่มีข้อมูล</small>
           </div>
           <div class="actions">
-            <button id="exportErrors">ส่งออกรายการที่ต้องตรวจสอบ</button>
-            <button id="exportJson" class="success">ส่งออก JSON สำหรับ GitHub</button>
+            <select id="previewIssueFilter">
+              <option value="">แสดงทุกข้อมูล</option>
+              <option value="issues">เฉพาะรายการที่ต้องตรวจสอบ</option>
+              <option value="duplicate">ข้อมูลซ้ำ</option>
+              <option value="risk">ไม่มีรหัสความเสี่ยง</option>
+              <option value="mainUnit">ไม่มีหน่วยงานหลัก</option>
+              <option value="severity">ไม่มีความรุนแรง</option>
+              <option value="date">ไม่มีวันที่</option>
+              <option value="invalidDate">วันที่ผิดรูปแบบ</option>
+              <option value="fiscal">นอกช่วงปีงบประมาณ</option>
+            </select>
+            <button id="exportErrors">ส่งออกผล Data Quality</button>
+            <button id="exportJson">ส่งออก Incident JSON</button>
+            <button id="exportBundle" class="success">ส่งออกชุด Dashboard</button>
           </div>
         </div>
         <div class="table-wrap">
@@ -226,7 +249,7 @@
       <section class="panel">
         <div class="panel-title"><h3>ข้อมูลระบบ</h3></div>
         <div class="dataset-summary">
-          <div><span>เวอร์ชัน</span><b>DRMS V6.1 Final</b></div>
+          <div><span>เวอร์ชัน</span><b>DRMS V6.2</b></div>
           <div><span>รูปแบบข้อมูล</span><b>Excel → JSON</b></div>
           <div><span>ที่จัดเก็บร่าง</span><b>Browser Local Storage</b></div>
           <div><span>การเผยแพร่</span><b>GitHub Pages</b></div>
@@ -238,6 +261,6 @@
 
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="assets/admin.js?v=6.1.1"></script>
+<script src="assets/admin.js?v=6.2"></script>
 </body>
 </html>

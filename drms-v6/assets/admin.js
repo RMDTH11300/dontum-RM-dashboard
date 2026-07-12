@@ -81,7 +81,9 @@ function bind(){
     dz.ondrop=e=>{e.preventDefault();e.currentTarget.classList.remove('dragover');const f=e.dataTransfer.files[0];if(f)readExcel(f)}
   }
   on('#loadCurrent','click',loadCurrent);on('#restoreCurrent','click',loadCurrent);
-  on('#exportJson','click',exportJson);on('#exportErrors','click',exportIssues);
+  on('#exportJson','click',exportJson);on('#exportErrors','click',exportIssues);on('#exportBundle','click',exportDashboardBundle);
+  on('#previewIssueFilter','change',()=>renderPreview(dataset.quality||qualityCheck([],dataset.fiscalYear)));
+  ['#excludeDuplicates','#excludeOutOfYear','#excludeMissingRisk','#excludeMissingUnit'].forEach(s=>on(s,'change',updateExportPolicy));
   on('#clearLog','click',()=>{localStorage.removeItem('drms_admin_log');renderLog();toast('ล้างประวัติแล้ว')});
   on('#downloadBackup','click',downloadBackup);
   on('#chooseRestore','click',()=>$('#restoreFile')?.click());
@@ -188,7 +190,7 @@ function renderAll(){
   $('#dataState').classList.toggle('dirty',q.total>0);
   $('#qTotal').textContent=q.total.toLocaleString();$('#qClinical').textContent=q.clinical.toLocaleString();$('#qNon').textContent=q.nonClinical.toLocaleString();$('#qHigh').textContent=q.high.toLocaleString();$('#qWarnings').textContent=q.issues.length.toLocaleString();
   $('#sumYear').textContent=dataset.fiscalYear;$('#sumMinDate').textContent=fmtDate(q.minDate);$('#sumMaxDate').textContent=fmtDate(q.maxDate);$('#sumUnits').textContent=q.units.toLocaleString();$('#sumCodes').textContent=q.codes.toLocaleString();$('#sumDuplicates').textContent=(q.byType.duplicate?.length||0).toLocaleString();
-  renderQuality(q);renderPreview(q);renderBackupStatus();renderLog()
+  renderQuality(q);renderPreview(q);renderBackupStatus();renderLog();updateExportPolicy()
 }
 function renderQuality(q){
   const defs=[
@@ -212,10 +214,15 @@ function renderQuality(q){
 function rowIssues(q,index){return q.issues.filter(x=>x.index===index)}
 function renderPreview(q){
   const limit=settings.previewLimit||50;
+  const filter=$('#previewIssueFilter')?.value||'';
   const issueIndexes=new Set(q.issues.map(x=>x.index));
-  const order=[...issueIndexes,...dataset.rows.map((_,i)=>i).filter(i=>!issueIndexes.has(i))].slice(0,limit);
-  $('#previewText').textContent=dataset.rows.length?`แสดง ${order.length} จาก ${dataset.rows.length.toLocaleString()} รายการ โดยนำรายการที่ต้องตรวจสอบขึ้นก่อน`:'ยังไม่มีข้อมูล';
-  $('#previewRows').innerHTML=order.map((i,pos)=>{
+  let indexes=dataset.rows.map((_,i)=>i);
+  if(filter==='issues')indexes=indexes.filter(i=>issueIndexes.has(i));
+  else if(filter)indexes=indexes.filter(i=>q.issues.some(x=>x.index===i&&x.type===filter));
+  else indexes=[...issueIndexes,...indexes.filter(i=>!issueIndexes.has(i))];
+  const order=indexes.slice(0,limit);
+  $('#previewText').textContent=dataset.rows.length?`แสดง ${order.length} จาก ${indexes.length.toLocaleString()} รายการตามตัวกรอง • ข้อมูลทั้งหมด ${dataset.rows.length.toLocaleString()}`:'ยังไม่มีข้อมูล';
+  $('#previewRows').innerHTML=order.map(i=>{
     const r=dataset.rows[i],problems=rowIssues(q,i);
     return `<tr class="${problems.length?'issue-row':''}">
       <td>${i+1}</td><td>${esc(fmtDate(r[IDX.date]))}</td><td>${esc(r[IDX.id])}</td>
@@ -223,7 +230,7 @@ function renderPreview(q){
       <td>${esc(r[IDX.risk])}</td><td><b>${esc(r[IDX.sev])}</b></td><td>${esc(r[IDX.reportUnit])}</td><td>${esc(r[IDX.mainUnit])}</td>
       <td>${problems.length?problems.map(x=>`<span class="issue-pill">${esc(x.label)}</span>`).join(' '):'<span class="ok-pill">ผ่าน</span>'}</td>
     </tr>`
-  }).join('')||'<tr><td colspan="9" class="quality-empty">ยังไม่มีข้อมูลสำหรับแสดง</td></tr>'
+  }).join('')||'<tr><td colspan="9" class="quality-empty">ไม่พบข้อมูลตามตัวกรอง</td></tr>'
 }
 function renderBackupStatus(){
   $('#backupYear').textContent=dataset.rows.length?dataset.fiscalYear:'–';
@@ -232,14 +239,74 @@ function renderBackupStatus(){
   $('#backupUpdated').textContent=dataset.loadedAt?new Date(dataset.loadedAt).toLocaleString('th-TH'):'–'
 }
 
+
+function exportPolicy(){
+  return {
+    duplicate:$('#excludeDuplicates')?.checked||false,
+    fiscal:$('#excludeOutOfYear')?.checked||false,
+    risk:$('#excludeMissingRisk')?.checked||false,
+    mainUnit:$('#excludeMissingUnit')?.checked||false
+  }
+}
+function excludedIndexes(){
+  const p=exportPolicy(),q=dataset.quality||{issues:[]},set=new Set();
+  q.issues.forEach(x=>{if(p[x.type])set.add(x.index)});
+  return set
+}
+function exportRows(){
+  const excluded=excludedIndexes();
+  return dataset.rows.filter((_,i)=>!excluded.has(i))
+}
+function updateExportPolicy(){
+  const n=exportRows().length,b=$('#exportCountBadge');
+  if(b){b.textContent=`พร้อมส่งออก ${n.toLocaleString()} รายการ`;b.className='quality-badge '+(n?'good':'neutral')}
+}
+function exportObject(){
+  const rows=exportRows();
+  return {
+    fiscalYear:dataset.fiscalYear,
+    sourceFile:dataset.sourceFile||'Imported from DRMS Data Center',
+    updatedAt:new Date().toISOString(),
+    exportPolicy:exportPolicy(),
+    originalRows:dataset.rows.length,
+    excludedRows:dataset.rows.length-rows.length,
+    headers:dataset.headers,
+    rows
+  }
+}
+function dashboardMeta(){
+  const rows=exportRows();
+  return {
+    generatedAt:new Date().toISOString(),
+    activeFiscalYear:dataset.fiscalYear,
+    years:{
+      [dataset.fiscalYear]:{
+        total:rows.length,
+        clinical:rows.filter(r=>riskType(r)==='Clinical').length,
+        nonClinical:rows.filter(r=>riskType(r)==='Non-clinical').length,
+        highRisk:rows.filter(r=>isHigh(r[IDX.sev])).length,
+        sourceFile:dataset.sourceFile||''
+      }
+    }
+  }
+}
+function exportDashboardBundle(){
+  if(!dataset.rows.length){toast('ยังไม่มีข้อมูลสำหรับส่งออก');return}
+  const obj=exportObject(),year=dataset.fiscalYear;
+  download(JSON.stringify(obj),`incidents_${year}.json`,'application/json');
+  setTimeout(()=>download(JSON.stringify(dashboardMeta(),null,2),`meta_${year}.json`,'application/json'),450);
+  addLog('Export dashboard bundle',obj.rows.length,`incidents_${year}.json + meta_${year}.json`);
+  toast(`ส่งออกชุด Dashboard ${obj.rows.length.toLocaleString()} รายการแล้ว`)
+}
+
 function exportJson(){
   if(!dataset.rows.length){toast('ยังไม่มีข้อมูลสำหรับส่งออก');return}
   const critical=(dataset.quality?.byType.risk?.length||0)+(dataset.quality?.byType.mainUnit?.length||0);
   if(settings.blockErrors&&critical){toast(`ยังส่งออกไม่ได้: พบข้อมูลสำคัญไม่ครบ ${critical} รายการ`);return}
-  const obj={fiscalYear:dataset.fiscalYear,sourceFile:dataset.sourceFile||'Imported from DRMS Data Center',updatedAt:new Date().toISOString(),headers:dataset.headers,rows:dataset.rows};
-  download(JSON.stringify(obj,null,0),`incidents_${dataset.fiscalYear}.json`,'application/json');
-  addLog('Export JSON',dataset.rows.length,`incidents_${dataset.fiscalYear}.json`);
-  toast('ส่งออก JSON แล้ว')
+  const obj=exportObject();
+  download(JSON.stringify(obj),`incidents_${dataset.fiscalYear}.json`,'application/json');
+  addLog('Export JSON',obj.rows.length,`incidents_${dataset.fiscalYear}.json`);
+  toast(`ส่งออก JSON ${obj.rows.length.toLocaleString()} รายการแล้ว`)
 }
 function exportIssues(){
   const issues=dataset.quality?.issues||[];

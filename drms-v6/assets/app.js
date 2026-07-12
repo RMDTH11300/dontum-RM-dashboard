@@ -17,7 +17,7 @@ function bind(){
   $('#reset').onclick=()=>{$('#q').value='';$('#sev').value='';$('#type').value='';$('#month').value='';state.selected.clear();state.page=1;renderUnits();apply()};
   $('#csv').onclick=exportCsv;
   $('#printProfile').onclick=()=>window.print();$('#printRegister').onclick=()=>window.print();$('#printAnalytics').onclick=()=>window.print();$('#printHa').onclick=()=>window.print();
-  $('#exportHaCsv').onclick=exportHaCsv;$('#exportProfileCsv').onclick=exportProfileCsv;$('#exportRegisterCsv').onclick=exportRegisterCsv;
+  $('#exportHaCsv').onclick=exportHaCsv;$('#refreshHaReport').onclick=()=>{renderHaReport(true);toast('สร้างสรุปรายงานใหม่แล้ว')};$('#saveHaDraft').onclick=saveHaReportDraft;$('#exportHaWord').onclick=()=>exportHaReport('word');$('#exportHaExcel').onclick=()=>exportHaReport('excel');$('#exportProfileCsv').onclick=exportProfileCsv;$('#exportRegisterCsv').onclick=exportRegisterCsv;
   $('#profileSummaryMode').onclick=()=>setProfileMode('summary');$('#profileHaMode').onclick=()=>setProfileMode('ha');
   $('#registerSummaryMode').onclick=()=>setRegisterMode('summary');$('#registerHaMode').onclick=()=>setRegisterMode('ha');
   $('#saveProfileDraft').onclick=()=>saveHaDrafts('profile');$('#saveRegisterDraft').onclick=()=>saveHaDrafts('register');
@@ -141,14 +141,77 @@ function renderAnalytics(){
   barChart('#peakMonths',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})).sort((x,y)=>y.count-x.count));
   renderRiskMatrix();renderReadiness();renderYearTrend();
 }
-function renderHaReport(){
-  const a=state.filtered, pr=getProfileRows(), rr=getRegisterRows();
-  $('#haContext').textContent=`ปีงบประมาณ ${state.year} • ${contextText()} • จัดทำจากข้อมูลที่ผ่านตัวกรองปัจจุบัน`;$('#haNarrative').innerHTML=buildHaNarrative();
+function haReportKey(){return `drms_ha_report_${contextKey()}`}
+function haReportHistoryKey(){return `drms_ha_report_history_${contextKey()}`}
+function defaultActionRows(){
+  const rr=getRegisterRows().slice(0,5);
+  return rr.map((x,i)=>({
+    issue:x.title||`ประเด็นพัฒนา ${i+1}`,
+    action:x.prevention||'ทบทวนกระบวนการและกำหนดมาตรการป้องกันเชิงระบบ',
+    indicator:x.monitor||'ติดตามจำนวนอุบัติการณ์และผลการดำเนินงานรายเดือน',
+    target:'แนวโน้มลดลงและไม่เกิดเหตุรุนแรงซ้ำ',
+    owner:x.owner||contextText(),
+    deadline:`ภายในปีงบประมาณ ${state.year}`,
+    followup:'รอติดตามผล'
+  }))
+}
+function editableActionCell(row,field,value){return `<td class="editable-cell" contenteditable="true" data-ha-row="${row}" data-ha-field="${field}" spellcheck="false">${esc(value||'')}</td>`}
+function renderHaActionRows(saved={}){
+  const rows=(saved.actions&&saved.actions.length?saved.actions:defaultActionRows());
+  $('#haActionRows').innerHTML=rows.map((x,i)=>`<tr>${editableActionCell(i,'issue',x.issue)}${editableActionCell(i,'action',x.action)}${editableActionCell(i,'indicator',x.indicator)}${editableActionCell(i,'target',x.target)}${editableActionCell(i,'owner',x.owner)}${editableActionCell(i,'deadline',x.deadline)}${editableActionCell(i,'followup',x.followup)}</tr>`).join('')||'<tr><td colspan="7" class="empty">ไม่พบข้อมูลสำหรับสร้างแผนพัฒนา</td></tr>'
+}
+function renderHaEvidence(saved={}){
+  const profileDraft=readStore(draftStoreKey('profile'),{}),registerDraft=readStore(draftStoreKey('register'),{});
+  const items=[
+    ['incident','รายการ Incident และหลักฐานการทบทวน',state.filtered.length>0],
+    ['profile','Risk Profile ที่หน่วยงานทบทวนแล้ว',Object.keys(profileDraft).some(k=>k!=='__meta')],
+    ['register','Risk Register ที่กำหนดมาตรการและผู้รับผิดชอบแล้ว',Object.keys(registerDraft).some(k=>k!=='__meta')],
+    ['minutes','รายงานประชุม/การทบทวนของหน่วยงาน',false],
+    ['rca','RCA / mini RCA สำหรับเหตุการณ์สำคัญ',state.filtered.filter(r=>isHigh(r[IDX.sev])).length===0],
+    ['audit','ผล audit / tracer / การติดตามตัวชี้วัด',false],
+    ['communication','หลักฐานการสื่อสารมาตรการแก่ผู้เกี่ยวข้อง',false],
+    ['outcome','หลักฐานผลลัพธ์หลังดำเนินการ',false]
+  ];
+  const checked=new Set(saved.evidence||[]);
+  $('#haEvidenceChecklist').innerHTML=items.map(([id,label,auto])=>`<label class="evidence-item"><input type="checkbox" data-evidence="${id}" ${(checked.has(id)||auto)?'checked':''}><span><b>${esc(label)}</b><small>${auto?'ระบบพบข้อมูลเบื้องต้นแล้ว':'ให้หน่วยงานตรวจสอบและแนบหลักฐาน'}</small></span></label>`).join('')
+}
+function readHaDraft(){return readStore(haReportKey(),{})}
+function renderHaReport(force=false){
+  const a=state.filtered, pr=getProfileRows(), rr=getRegisterRows(),saved=force?{}:readHaDraft();
+  $('#haContext').textContent=`ปีงบประมาณ ${state.year} • ${contextText()} • จัดทำจากข้อมูลที่ผ่านตัวกรองปัจจุบัน`;
+  $('#haNarrative').innerHTML=saved.narrative||buildHaNarrative();
+  $('#haStrengths').innerHTML=saved.strengths||'ระบุจุดเด่นของระบบบริหารความเสี่ยง ผลลัพธ์ที่ดีขึ้น และแนวปฏิบัติที่หน่วยงานภาคภูมิใจ';
+  $('#haOpportunities').innerHTML=saved.opportunities||'ระบุประเด็นที่ต้องปรับปรุง ความเสี่ยงซ้ำ แนวโน้มที่ต้องเฝ้าระวัง และช่องว่างของมาตรการควบคุม';
   $('#haTotal').textContent=a.length.toLocaleString();$('#haClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#haNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#haHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();
   rank('#haTopRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));
   const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#haMonthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));
   $('#haProfileRows').innerHTML=pr.map(x=>`<tr><td>${esc(x.rank)}</td><td>${esc(x.type)}</td><td>${esc(x.risk)}</td><td>${esc(x.likelihood)}</td><td>${esc(x.impact)}</td><td>${esc(x.score)}</td><td><span class="level">${esc(x.level)}</span></td><td>${esc(x.control)}</td></tr>`).join('')||'<tr><td colspan="8" class="empty">ไม่พบข้อมูล</td></tr>';
   $('#haRegisterRows').innerHTML=rr.map(x=>`<tr><td>${esc(x.riskId)}</td><td>${esc(x.title)}</td><td>${esc(x.description)}</td><td>${esc(x.quarter)}</td><td>${esc(x.likelihood)}</td><td>${esc(x.impact)}</td><td><span class="level">${esc(x.level)}</span></td><td>${esc(x.prevention)}</td><td>${esc(x.monitor)}</td><td>${esc(x.mitigation)}</td></tr>`).join('')||'<tr><td colspan="10" class="empty">ไม่พบข้อมูล</td></tr>';
+  renderHaActionRows(saved);renderHaEvidence(saved);renderHaReportHistory()
+}
+function collectHaActions(){
+  const out={};$$('[data-ha-row]').forEach(cell=>{const i=+cell.dataset.haRow,field=cell.dataset.haField;out[i]=out[i]||{};out[i][field]=cell.innerText.trim()});return Object.keys(out).sort((a,b)=>a-b).map(k=>out[k])
+}
+function saveHaReportDraft(){
+  const evidence=$$('[data-evidence]:checked').map(x=>x.dataset.evidence);
+  const now=new Date().toLocaleString('th-TH');
+  const data={narrative:$('#haNarrative').innerHTML,strengths:$('#haStrengths').innerHTML,opportunities:$('#haOpportunities').innerHTML,actions:collectHaActions(),evidence,__meta:{updatedAt:now,year:state.year,units:contextText()}};
+  localStorage.setItem(haReportKey(),JSON.stringify(data));
+  const hist=readStore(haReportHistoryKey(),[]);hist.unshift({at:now,year:state.year,units:contextText(),actions:data.actions.length,evidence:evidence.length});localStorage.setItem(haReportHistoryKey(),JSON.stringify(hist.slice(0,20)));renderHaReportHistory();toast('บันทึกร่างรายงาน HA แล้ว')
+}
+function renderHaReportHistory(){
+  const saved=readHaDraft(),hist=readStore(haReportHistoryKey(),[]);
+  $('#haDraftStatus').textContent=saved.__meta?.updatedAt?`บันทึกล่าสุด ${saved.__meta.updatedAt}`:'ยังไม่บันทึกร่างรายงาน';
+  $('#haReportHistory').innerHTML=hist.length?hist.map(x=>`<div class="history-item"><b>${esc(x.at)}</b><span>${esc(x.units)} • แผน ${x.actions} รายการ • หลักฐาน ${x.evidence} รายการ</span></div>`).join(''):'<p class="empty">ยังไม่มีประวัติการบันทึก</p>'
+}
+function haReportDocument(){
+  const evidence=$$('[data-evidence]').map(x=>`<li>${x.checked?'☑':'☐'} ${esc(x.closest('label').querySelector('b').innerText)}</li>`).join('');
+  return `<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:Tahoma,Arial,sans-serif;font-size:11pt}h1,h2,h3{text-align:center}table{border-collapse:collapse;width:100%;margin:10px 0}th,td{border:1px solid #333;padding:5px;vertical-align:top}th{background:#dbe7f5}.section{margin:20px 0}.kpis{display:flex;gap:10px}.kpis div{border:1px solid #333;padding:8px}.bars,.actions{display:none}</style></head><body><h2>รายงานบริหารความเสี่ยงเพื่อการพัฒนาคุณภาพและการประเมิน HA</h2><p><b>โรงพยาบาลดอนตูม</b><br>ปีงบประมาณ ${state.year}<br>${esc(contextText())}</p><div class="section"><h3>1. บริบทและภาพรวม</h3>${$('#haNarrative').innerHTML}</div><div class="section"><h3>2. จุดเด่นและผลลัพธ์สำคัญ</h3>${$('#haStrengths').innerHTML}</div><div class="section"><h3>3. ประเด็นพัฒนา</h3>${$('#haOpportunities').innerHTML}</div><div class="section"><h3>4. แผนพัฒนาและการติดตาม</h3>${$('#haActionTable').outerHTML}</div><div class="section"><h3>5. Checklist หลักฐาน</h3><ul>${evidence}</ul></div><div class="section"><h3>6. Risk Profile</h3>${$('#haProfileTable').outerHTML}</div><div class="section"><h3>7. Risk Register</h3>${$('#haRegisterTable').outerHTML}</div></body></html>`
+}
+function exportHaReport(format){
+  const html='\ufeff'+haReportDocument();
+  if(format==='word')download(html,`HA_Report_${state.year}.doc`,'application/msword');
+  else download(html,`HA_Report_${state.year}.xls`,'application/vnd.ms-excel')
 }
 function exportHaCsv(){
  const top=Object.entries(countMap(state.filtered.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()))).sort((a,b)=>b[1]-a[1]).slice(0,10);

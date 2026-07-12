@@ -167,7 +167,18 @@
   <section class="panel readiness-panel"><h3>ความพร้อมของข้อมูลสำหรับ HA</h3><div id="haReadiness" class="readiness-list"></div></section>
 </section>
 <section id="haReport" class="view">
-  <div class="page-title"><div><h1>รายงาน HA ของหน่วยงาน</h1><p>สรุปข้อมูลจาก Incident, Risk Profile และ Risk Register สำหรับใช้ทบทวนคุณภาพ</p></div><div class="actions"><button id="exportHaCsv">ส่งออก CSV</button><button id="printHa" class="primary">พิมพ์ / บันทึก PDF</button></div></div>
+  <div class="page-title">
+    <div><h1>รายงาน HA ของหน่วยงาน</h1><p>สร้างรายงานจาก Incident, Risk Profile และ Risk Register พร้อมแก้ไขข้อความและส่งออกเอกสาร</p></div>
+    <div class="actions">
+      <button id="refreshHaReport">สร้างสรุปใหม่</button>
+      <button id="saveHaDraft">บันทึกร่างรายงาน</button>
+      <button id="exportHaWord">Word</button>
+      <button id="exportHaExcel">Excel</button>
+      <button id="exportHaCsv">CSV</button>
+      <button id="printHa" class="primary">พิมพ์ / PDF</button>
+    </div>
+  </div>
+
   <div class="ha-cover panel">
     <h2>รายงานบริหารความเสี่ยงเพื่อการพัฒนาคุณภาพและการประเมิน HA</h2>
     <p><b>โรงพยาบาลดอนตูม</b></p>
@@ -178,14 +189,51 @@
       <div><span>Non-clinical</span><b id="haNon">0</b></div>
       <div><span>High Risk</span><b id="haHigh">0</b></div>
     </div>
+    <div class="draft-meta ha-draft-meta"><span id="haDraftStatus">ยังไม่บันทึกร่างรายงาน</span></div>
   </div>
+
   <div class="grid2">
     <section class="panel"><h3>ประเด็นความเสี่ยงสำคัญ 10 อันดับ</h3><div id="haTopRisks"></div></section>
     <section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="haMonthly" class="bars"></div></section>
   </div>
-  <section class="panel report-section"><h3>สรุปเพื่อการทบทวนคุณภาพ</h3><div id="haNarrative" class="ha-narrative"></div></section>
-  <section class="panel report-section"><h3>Risk Profile ที่เกี่ยวข้อง</h3><div class="table-wrap"><table><thead><tr><th>อันดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน</th><th>ระดับ</th><th>มาตรการควบคุม</th></tr></thead><tbody id="haProfileRows"></tbody></table></div></section>
-  <section class="panel report-section"><h3>Risk Register ที่เกี่ยวข้อง</h3><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียด</th><th>ช่วงเวลา</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน</th><th>การติดตาม</th><th>การลดผลกระทบ</th></tr></thead><tbody id="haRegisterRows"></tbody></table></div></section>
+
+  <section class="panel report-section">
+    <h3>1. บริบทและภาพรวมของหน่วยงาน</h3>
+    <div id="haNarrative" class="ha-narrative editable-report" contenteditable="true" spellcheck="false"></div>
+  </section>
+
+  <section class="panel report-section">
+    <h3>2. จุดเด่นและผลลัพธ์สำคัญ</h3>
+    <div id="haStrengths" class="editable-report report-placeholder" contenteditable="true" spellcheck="false">ระบุจุดเด่นของระบบบริหารความเสี่ยง ผลลัพธ์ที่ดีขึ้น และแนวปฏิบัติที่หน่วยงานภาคภูมิใจ</div>
+  </section>
+
+  <section class="panel report-section">
+    <h3>3. ประเด็นพัฒนาและโอกาสปรับปรุง</h3>
+    <div id="haOpportunities" class="editable-report report-placeholder" contenteditable="true" spellcheck="false">ระบุประเด็นที่ต้องปรับปรุง ความเสี่ยงซ้ำ แนวโน้มที่ต้องเฝ้าระวัง และช่องว่างของมาตรการควบคุม</div>
+  </section>
+
+  <section class="panel report-section">
+    <h3>4. แผนพัฒนาและการติดตามผล</h3>
+    <div class="table-wrap ha-plan-table">
+      <table id="haActionTable">
+        <thead><tr><th>ประเด็นพัฒนา</th><th>กิจกรรม/มาตรการ</th><th>ตัวชี้วัด</th><th>เป้าหมาย</th><th>ผู้รับผิดชอบ</th><th>กำหนดเวลา</th><th>ผลติดตาม</th></tr></thead>
+        <tbody id="haActionRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel report-section">
+    <h3>5. Checklist หลักฐานประกอบการประเมิน HA</h3>
+    <div id="haEvidenceChecklist" class="evidence-grid"></div>
+  </section>
+
+  <section class="panel report-section"><h3>6. Risk Profile ที่เกี่ยวข้อง</h3><div class="table-wrap"><table id="haProfileTable"><thead><tr><th>อันดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน</th><th>ระดับ</th><th>มาตรการควบคุม</th></tr></thead><tbody id="haProfileRows"></tbody></table></div></section>
+  <section class="panel report-section"><h3>7. Risk Register ที่เกี่ยวข้อง</h3><div class="table-wrap"><table id="haRegisterTable"><thead><tr><th>รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียด</th><th>ช่วงเวลา</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน</th><th>การติดตาม</th><th>การลดผลกระทบ</th></tr></thead><tbody id="haRegisterRows"></tbody></table></div></section>
+
+  <section class="history-panel">
+    <h3>ประวัติการบันทึกร่างรายงาน HA</h3>
+    <div id="haReportHistory" class="history-list"></div>
+  </section>
 </section>
 </main></div>
 <div id="toast"></div><script src="assets/app.js"></script>

@@ -1,17 +1,101 @@
 <!doctype html>
-<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DRMS | โรงพยาบาลดอนตูม</title><link rel="stylesheet" href="assets/style.css"></head>
-<body><header class="topbar"><div class="brand"><div class="logo">DT</div><div><b>DON TUM RISK MANAGEMENT SYSTEM</b><small>ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม</small></div></div><div class="tag">DRMS 1.0</div></header>
-<div class="layout"><aside class="sidebar">
-<button class="nav active" data-view="dashboard">⌂ Dashboard</button><button class="nav" data-view="incidents">▦ Incident</button><button class="nav" data-view="profile">▤ Risk Profile</button><button class="nav" data-view="register">▥ Risk Register</button><a class="nav link" href="admin.html">⚙ Admin</a>
-<div class="sidebox"><label>ปีงบประมาณ</label><select id="year"></select><small>กำหนดจากชุดข้อมูลโดยตรง</small></div>
-<div class="sidebox"><b>หน่วยงานหลักที่แก้ไข</b><div class="unit-actions"><button id="allUnits">เลือกทั้งหมด</button><button id="clearUnits">ล้าง</button></div><input id="unitSearch" placeholder="ค้นหาหน่วยงาน"><div id="units" class="unit-list"></div></div>
-</aside><main class="main">
-<section id="dashboard" class="view active"><div class="page-title"><div><h1>Dashboard ความเสี่ยง</h1><p>ภาพรวมตามปีงบประมาณและหน่วยงานหลักที่แก้ไข</p></div><button class="primary" id="refresh">↻ รีเฟรช</button></div>
-<div class="cards"><article><span>อุบัติการณ์ทั้งหมด</span><strong id="kTotal">0</strong></article><article class="green"><span>Clinical</span><strong id="kClinical">0</strong></article><article class="purple"><span>Non-clinical</span><strong id="kNon">0</strong></article><article class="red"><span>High Risk</span><strong id="kHigh">0</strong></article></div>
-<div class="grid2"><section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="monthly" class="bars"></div></section><section class="panel"><h3>ระดับความรุนแรง</h3><div id="severity" class="bars"></div></section></div>
-<div class="grid2"><section class="panel"><h3>Top 10 ความเสี่ยง</h3><div id="topRisks"></div></section><section class="panel"><h3>Top 10 หน่วยงานหลักที่แก้ไข</h3><div id="topUnits"></div></section></div></section>
-<section id="incidents" class="view"><div class="page-title"><div><h1>รายการอุบัติการณ์</h1><p>ค้นหาและตรวจสอบข้อมูลจากฐานเดียว</p></div></div><div class="toolbar"><input id="q" placeholder="ค้นหารหัส เรื่องย่อย รายละเอียด หน่วยงาน..."><select id="sev"><option value="">ทุกระดับ</option></select><button id="reset">ล้างตัวกรอง</button></div><section class="panel table-wrap"><div class="table-head"><b id="resultCount">0 รายการ</b><button id="csv">ส่งออก CSV</button></div><table><thead><tr><th>ลำดับ</th><th>วันที่เกิด</th><th>รหัส/เรื่อง</th><th>เรื่องย่อย</th><th>ความรุนแรง</th><th>หน่วยงานรายงาน</th><th>หน่วยงานหลักที่แก้ไข</th><th>รายละเอียด</th></tr></thead><tbody id="incidentRows"></tbody></table><div id="pager" class="pager"></div></section></section>
-<section id="profile" class="view"><div class="page-title"><div><h1>Risk Profile</h1><p>ยึดแบบฟอร์มโรงพยาบาลดอนตูมและกรองตามหน่วยงานหลักที่แก้ไข</p></div><button id="printProfile">พิมพ์ / บันทึก PDF</button></div><section class="panel table-wrap"><table><thead><tr><th>อันดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน</th><th>ระดับ</th><th>มาตรการควบคุม</th></tr></thead><tbody id="profileRows"></tbody></table></section></section>
-<section id="register" class="view"><div class="page-title"><div><h1>Risk Register</h1><p>ทะเบียนความเสี่ยงตามแบบฟอร์มโรงพยาบาลดอนตูม</p></div><button id="printRegister">พิมพ์ / บันทึก PDF</button></div><section class="panel table-wrap"><table><thead><tr><th>รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียด</th><th>ช่วงเวลา</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน</th><th>การติดตาม</th><th>การลดผลกระทบ</th></tr></thead><tbody id="registerRows"></tbody></table></section></section>
-</main></div><div id="toast"></div><script src="assets/app.js"></script></body></html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DRMS | โรงพยาบาลดอนตูม</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">DT</div><div><b>DON TUM RISK MANAGEMENT SYSTEM</b><small>ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม</small></div></div>
+  <div class="top-actions"><a href="../" class="ghost">Dashboard V1</a><span class="tag">DRMS 1.0</span></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <button class="nav active" data-view="dashboard">⌂ ภาพรวม</button>
+  <button class="nav" data-view="incidents">▦ รายการอุบัติการณ์</button>
+  <button class="nav" data-view="profile">▤ Risk Profile</button>
+  <button class="nav" data-view="register">▥ Risk Register</button>
+  <button class="nav" data-view="analytics">◫ Analytics</button>
+  <button class="nav" data-view="haReport">▧ รายงาน HA หน่วยงาน</button>
+  <a class="nav link" href="admin.html">⚙ หน้า Admin</a>
+  <div class="sidebox">
+    <label>ปีงบประมาณ</label><select id="year"></select>
+    <small>ยึดจากชุดข้อมูล ไม่คำนวณจากวันที่</small>
+  </div>
+  <div class="sidebox">
+    <div class="side-title"><b>หน่วยงานหลักที่แก้ไข</b><span id="selectedCount">ทั้งหมด</span></div>
+    <div class="unit-actions"><button id="allUnits">เลือกทั้งหมด</button><button id="clearUnits">ล้าง</button></div>
+    <input id="unitSearch" placeholder="ค้นหาหน่วยงาน">
+    <div id="units" class="unit-list"></div>
+  </div>
+</aside>
+<main class="main">
+<section id="dashboard" class="view active">
+  <div class="page-title"><div><h1>ภาพรวมความเสี่ยง</h1><p>ข้อมูลตามปีงบประมาณและกลุ่ม/หน่วยงานหลักที่แก้ไข</p></div><button class="primary" id="refresh">↻ รีเฟรชข้อมูล</button></div>
+  <div class="cards">
+    <article><span>อุบัติการณ์ทั้งหมด</span><strong id="kTotal">0</strong><small>รายการ</small></article>
+    <article class="green"><span>Clinical</span><strong id="kClinical">0</strong><small>รายการ</small></article>
+    <article class="purple"><span>Non-clinical</span><strong id="kNon">0</strong><small>รายการ</small></article>
+    <article class="red"><span>High Risk</span><strong id="kHigh">0</strong><small>รายการ</small></article>
+  </div>
+  <div class="grid2"><section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="monthly" class="bars"></div></section><section class="panel"><h3>ระดับความรุนแรง</h3><div id="severity" class="bars"></div></section></div>
+  <div class="grid2"><section class="panel"><h3>Top 10 ความเสี่ยง</h3><div id="topRisks"></div></section><section class="panel"><h3>Top 10 หน่วยงานหลักที่แก้ไข</h3><div id="topUnits"></div></section></div>
+</section>
+<section id="incidents" class="view">
+  <div class="page-title"><div><h1>รายการอุบัติการณ์</h1><p>ค้นหาและตรวจสอบข้อมูลจากฐานข้อมูลกลาง</p></div></div>
+  <div class="toolbar filterbar"><input id="q" placeholder="ค้นหารหัส เรื่องย่อย รายละเอียด หน่วยงาน..."><select id="type"><option value="">ทุกประเภท</option><option>Clinical</option><option>Non-clinical</option></select><select id="sev"><option value="">ทุกระดับ</option></select><select id="month"><option value="">ทุกเดือนงบประมาณ</option></select><button id="reset">ล้างตัวกรอง</button></div>
+  <section class="panel table-wrap"><div class="table-head"><b id="resultCount">0 รายการ</b><button id="csv">ส่งออก CSV</button></div><table><thead><tr><th>ลำดับ</th><th>วันที่เกิด</th><th>รหัส/เรื่อง</th><th>เรื่องย่อย</th><th>ความรุนแรง</th><th>หน่วยงานรายงาน</th><th>หน่วยงานหลักที่แก้ไข</th><th>รายละเอียด</th></tr></thead><tbody id="incidentRows"></tbody></table><div id="pager" class="pager"></div></section>
+</section>
+<section id="profile" class="view">
+  <div class="page-title"><div><h1>Risk Profile</h1><p>ใช้แบบฟอร์มโรงพยาบาลดอนตูม และยึดหน่วยงานหลักที่แก้ไข</p></div><button id="printProfile">พิมพ์ / บันทึก PDF</button></div>
+  <div class="context-note" id="profileContext"></div>
+  <section class="panel table-wrap"><table><thead><tr><th>อันดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน</th><th>ระดับ</th><th>มาตรการควบคุม</th></tr></thead><tbody id="profileRows"></tbody></table></section>
+</section>
+<section id="register" class="view">
+  <div class="page-title"><div><h1>Risk Register</h1><p>ทะเบียนความเสี่ยงตามแบบฟอร์มโรงพยาบาลดอนตูม</p></div><button id="printRegister">พิมพ์ / บันทึก PDF</button></div>
+  <div class="context-note" id="registerContext"></div>
+  <section class="panel table-wrap"><table><thead><tr><th>รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียด</th><th>ช่วงเวลา</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน</th><th>การติดตาม</th><th>การลดผลกระทบ</th></tr></thead><tbody id="registerRows"></tbody></table></section>
+</section>
+
+<section id="analytics" class="view">
+  <div class="page-title"><div><h1>Analytics</h1><p>วิเคราะห์แนวโน้ม ความถี่ และสัดส่วนความเสี่ยงจากข้อมูลที่กรองไว้</p></div><button id="printAnalytics">พิมพ์ / บันทึก PDF</button></div>
+  <div class="cards">
+    <article><span>เหตุการณ์ทั้งหมด</span><strong id="aTotal">0</strong><small>รายการ</small></article>
+    <article class="red"><span>High Risk</span><strong id="aHigh">0</strong><small>รายการ</small></article>
+    <article class="green"><span>Near Miss / A-B</span><strong id="aNear">0</strong><small>รายการ</small></article>
+    <article class="purple"><span>หน่วยงานที่เกี่ยวข้อง</span><strong id="aUnits">0</strong><small>หน่วยงาน</small></article>
+  </div>
+  <div class="grid2">
+    <section class="panel"><h3>Pareto ความเสี่ยงสำคัญ</h3><div id="paretoRisks" class="pareto-list"></div></section>
+    <section class="panel"><h3>สัดส่วน Clinical / Non-clinical</h3><div id="typeSummary" class="summary-block"></div></section>
+  </div>
+  <div class="grid2">
+    <section class="panel"><h3>ความรุนแรงแยกตามประเภท</h3><div id="severityByType" class="matrix-table"></div></section>
+    <section class="panel"><h3>เดือนที่มีการรายงานสูงสุด</h3><div id="peakMonths" class="bars"></div></section>
+  </div>
+</section>
+<section id="haReport" class="view">
+  <div class="page-title"><div><h1>รายงาน HA ของหน่วยงาน</h1><p>สรุปข้อมูลจาก Incident, Risk Profile และ Risk Register สำหรับใช้ทบทวนคุณภาพ</p></div><div class="actions"><button id="exportHaCsv">ส่งออก CSV</button><button id="printHa" class="primary">พิมพ์ / บันทึก PDF</button></div></div>
+  <div class="ha-cover panel">
+    <h2>รายงานบริหารความเสี่ยงเพื่อการพัฒนาคุณภาพและการประเมิน HA</h2>
+    <p><b>โรงพยาบาลดอนตูม</b></p>
+    <div id="haContext" class="context-note"></div>
+    <div class="ha-kpis">
+      <div><span>อุบัติการณ์ทั้งหมด</span><b id="haTotal">0</b></div>
+      <div><span>Clinical</span><b id="haClinical">0</b></div>
+      <div><span>Non-clinical</span><b id="haNon">0</b></div>
+      <div><span>High Risk</span><b id="haHigh">0</b></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <section class="panel"><h3>ประเด็นความเสี่ยงสำคัญ 10 อันดับ</h3><div id="haTopRisks"></div></section>
+    <section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="haMonthly" class="bars"></div></section>
+  </div>
+  <section class="panel report-section"><h3>Risk Profile ที่เกี่ยวข้อง</h3><div class="table-wrap"><table><thead><tr><th>อันดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน</th><th>ระดับ</th><th>มาตรการควบคุม</th></tr></thead><tbody id="haProfileRows"></tbody></table></div></section>
+  <section class="panel report-section"><h3>Risk Register ที่เกี่ยวข้อง</h3><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียด</th><th>ช่วงเวลา</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน</th><th>การติดตาม</th><th>การลดผลกระทบ</th></tr></thead><tbody id="haRegisterRows"></tbody></table></div></section>
+</section>
+</main></div>
+<div id="toast"></div><script src="assets/app.js"></script>
+</body></html>

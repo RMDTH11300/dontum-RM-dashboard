@@ -1,19 +1,27 @@
-# DRMS 1.0 — โรงพยาบาลดอนตูม
+# DRMS – Don Tum Risk Management System
 
-ระบบใหม่ถูกแยกไว้ในโฟลเดอร์ `drms-v6` และไม่แก้ Dashboard เดิม
+ระบบใหม่แยกจาก Dashboard V1 เดิม โดย Dashboard V1 ที่หน้าแรกของ Repository ยังใช้งานต่อได้ตามลิงก์เดิม
 
-## ลิงก์หลังอัปโหลด
-- ระบบใหม่: `/dontum-RM-dashboard/drms-v6/`
+## รุ่นปัจจุบัน: DRMS 1.0 – HA Analytics Update
+
+ความสามารถหลัก
+
+- ภาพรวมอุบัติการณ์ตามปีงบประมาณ
+- เลือกหลายกลุ่ม/หน่วยงานหลักที่แก้ไขพร้อมกัน
+- รายการอุบัติการณ์ ค้นหา กรอง และส่งออก CSV
+- Risk Profile และ Risk Register ตามข้อมูลของโรงพยาบาลดอนตูม
+- Analytics: Pareto, Clinical/Non-clinical, Severity และเดือนที่มีเหตุการณ์สูง
+- รายงาน HA ของหน่วยงาน พร้อมพิมพ์เป็น PDF และส่งออก CSV
+- Admin เพิ่ม แก้ไข ลบ และส่งออก JSON สำหรับอัปโหลด GitHub
+
+## ลิงก์
+
+- Dashboard V1: `/dontum-RM-dashboard/`
+- DRMS: `/dontum-RM-dashboard/drms-v6/`
 - Admin: `/dontum-RM-dashboard/drms-v6/admin.html`
 
-## การทำงาน
-ระบบอ่านข้อมูลจากโฟลเดอร์ `../data/` ของ Dashboard เดิม จึงไม่ต้องคัดลอกข้อมูลซ้ำ
+## หลักการข้อมูล
 
-## วิธีอัปเดตข้อมูลจาก Admin
-1. เปิด `admin.html`
-2. เลือกปีและกดโหลดข้อมูล
-3. เพิ่ม/แก้ไข/ลบ
-4. กดส่งออก JSON
-5. อัปโหลดไฟล์ที่ได้ไปทับในโฟลเดอร์ `data` ของ Repository
-
-> GitHub Pages เป็น Static Site หน้า Admin จึงไม่สามารถบันทึกกลับ Repository โดยตรง
+- ปีงบประมาณยึดจากชุดข้อมูลโดยตรง ไม่คำนวณจากปี พ.ศ. ของวันที่เกิดเหตุ
+- Risk Profile และ Risk Register ใช้ “กลุ่ม/หน่วยงานหลักที่แก้ไข” เป็นมุมมองหลัก
+- ไม่ควรเผยแพร่ข้อมูลที่ระบุตัวบุคคล ผู้ป่วย หรือเจ้าหน้าที่ใน Repository สาธารณะ

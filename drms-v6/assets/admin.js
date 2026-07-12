@@ -93,9 +93,6 @@ function bind(){
   on('#saveSettings','click',saveSettings);on('#resetSettings','click',resetSettings);
   on('#loadRcaIncidents','click',loadRcaIncidents);
   on('#refreshRcaManifest','click',loadRcaManifest);
-  on('#saveGithubSession','click',saveGithubSession);
-  on('#clearGithubSession','click',clearGithubSession);
-  on('#testGithub','click',testGithubConnection);
   on('#rcaSearch','input',renderRcaRows);
   on('#rcaAvailability','change',renderRcaRows);
   on('#clearRcaFilter','click',()=>{$('#rcaSearch').value='';$('#rcaAvailability').value='';renderRcaRows()});
@@ -354,68 +351,7 @@ async function restoreJson(file){
 }
 
 
-function githubConfig(){
-  return {
-    owner:norm($('#githubOwner')?.value),
-    repo:norm($('#githubRepo')?.value),
-    branch:norm($('#githubBranch')?.value)||'main',
-    token:norm($('#githubToken')?.value)
-  }
-}
-function saveGithubSession(){
-  const c=githubConfig();
-  sessionStorage.setItem('drms_github_config',JSON.stringify(c));
-  setGithubStatus(c.token?'ตั้งค่าแล้ว':'ยังไม่มี Token',c.token?'good':'warn');
-  toast('บันทึกการตั้งค่าสำหรับแท็บนี้แล้ว')
-}
-function loadGithubSession(){
-  try{
-    const c=JSON.parse(sessionStorage.getItem('drms_github_config')||'{}');
-    if(c.owner&&$('#githubOwner'))$('#githubOwner').value=c.owner;
-    if(c.repo&&$('#githubRepo'))$('#githubRepo').value=c.repo;
-    if(c.branch&&$('#githubBranch'))$('#githubBranch').value=c.branch;
-    if(c.token&&$('#githubToken'))$('#githubToken').value=c.token;
-    setGithubStatus(c.token?'ตั้งค่าแล้ว':'ยังไม่ตั้งค่า',c.token?'good':'neutral')
-  }catch{}
-}
-function clearGithubSession(){
-  sessionStorage.removeItem('drms_github_config');
-  if($('#githubToken'))$('#githubToken').value='';
-  setGithubStatus('ล้าง Token แล้ว','neutral');
-  toast('ล้าง Token แล้ว')
-}
-function setGithubStatus(text,cls){
-  const e=$('#githubStatus');if(!e)return;
-  e.textContent=text;e.className=`quality-badge ${cls}`
-}
-async function githubApi(path,options={}){
-  const c=githubConfig();
-  if(!c.owner||!c.repo||!c.token)throw new Error('กรุณากรอก Owner, Repository และ Token');
-  const res=await fetch(`https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}${path}`,{
-    ...options,
-    headers:{
-      'Accept':'application/vnd.github+json',
-      'Authorization':`Bearer ${c.token}`,
-      'X-GitHub-Api-Version':'2022-11-28',
-      ...(options.headers||{})
-    }
-  });
-  const text=await res.text();
-  let data={};try{data=text?JSON.parse(text):{}}catch{data={message:text}}
-  if(!res.ok)throw new Error(data.message||`GitHub API ${res.status}`);
-  return data
-}
-async function testGithubConnection(){
-  try{
-    setGithubStatus('กำลังตรวจสอบ...','neutral');
-    await githubApi('');
-    saveGithubSession();
-    setGithubStatus('เชื่อมต่อสำเร็จ','good');
-    toast('เชื่อมต่อ GitHub สำเร็จ')
-  }catch(e){
-    console.error(e);setGithubStatus('เชื่อมต่อไม่สำเร็จ','bad');toast(e.message)
-  }
-}
+
 function isRcaSeverity(v){return ['E','F','G','H','I','3','4','5'].includes(norm(v).toUpperCase())}
 function incidentId(r,index){
   const id=norm(r[IDX.id]);
@@ -469,51 +405,48 @@ function renderRcaRows(){
       <td><span class="severity-pill">${esc(r[IDX.sev])}</span></td>
       <td>${e?'<span class="rca-has">✓ มี RCA</span>':'<span class="rca-missing">✕ ไม่มี RCA</span>'}</td>
       <td>${e?`<a class="download-link" href="${esc(e.file)}" target="_blank" rel="noopener">ดาวน์โหลด</a>`:'–'}</td>
-      <td><button class="upload-rca" data-incident="${esc(x.id)}">${e?'แทนที่ไฟล์':'แนบไฟล์'}</button></td>
+      <td><button class="prepare-rca" data-incident="${esc(x.id)}">${e?'เตรียมไฟล์แทนที่':'เตรียมไฟล์'}</button></td>
     </tr>`
   }).join('')||'<tr><td colspan="8" class="quality-empty">ไม่พบรายการ</td></tr>';
-  $$('.upload-rca').forEach(b=>b.onclick=()=>{rcaState.selectedIncident=b.dataset.incident;$('#rcaFileInput').click()})
-}
-function arrayBufferToBase64(buffer){
-  let binary='',bytes=new Uint8Array(buffer),chunk=0x8000;
-  for(let i=0;i<bytes.length;i+=chunk)binary+=String.fromCharCode(...bytes.subarray(i,i+chunk));
-  return btoa(binary)
-}
-async function getGithubContent(path){
-  const c=githubConfig();
-  try{return await githubApi(`/contents/${path}?ref=${encodeURIComponent(c.branch)}`)}
-  catch(e){if(/Not Found/i.test(e.message))return null;throw e}
-}
-async function putGithubContent(path,content,message,sha=null){
-  const c=githubConfig(),body={message,content,branch:c.branch};
-  if(sha)body.sha=sha;
-  return githubApi(`/contents/${path}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+  $$('.prepare-rca').forEach(b=>b.onclick=()=>{
+    rcaState.selectedIncident=b.dataset.incident;
+    const path=$('#rcaUploadPath');
+    if(path)path.textContent=`drms-v6/rca/${year}/${b.dataset.incident}.pdf`;
+    $('#rcaFileInput').click()
+  })
 }
 async function uploadSelectedRca(file){
   const incident=rcaState.selectedIncident,year=+$('#fiscalYear').value;
   if(!incident){toast('ไม่พบ Incident ที่เลือก');return}
   if(!/\.(pdf|doc|docx)$/i.test(file.name)){toast('รองรับเฉพาะ PDF, DOC และ DOCX');return}
-  if(file.size>10*1024*1024){toast('ไฟล์ต้องมีขนาดไม่เกิน 10 MB');return}
-  try{
-    saveGithubSession();setGithubStatus('กำลังอัปโหลด...','neutral');
-    const ext=file.name.split('.').pop().toLowerCase();
-    const repoPath=`drms-v6/rca/${year}/${incident}.${ext}`;
-    const publicPath=`rca/${year}/${incident}.${ext}`;
-    const existing=await getGithubContent(repoPath);
-    await putGithubContent(repoPath,arrayBufferToBase64(await file.arrayBuffer()),`เพิ่ม RCA ${incident} ปีงบประมาณ ${year}`,existing?.sha||null);
+  if(file.size>20*1024*1024){toast('ไฟล์ต้องมีขนาดไม่เกิน 20 MB');return}
 
-    const manifestPath='data/rca.json',current=await getGithubContent(manifestPath);
-    let manifest=[];
-    if(current?.content){
-      try{manifest=JSON.parse(decodeURIComponent(escape(atob(current.content.replace(/\n/g,'')))))}catch{manifest=[]}
-    }
-    if(!Array.isArray(manifest))manifest=manifest.items||[];
-    manifest=manifest.filter(x=>!(String(x.incident)===String(incident)&&Number(x.year)===year));
-    manifest.push({incident,year,file:publicPath,filename:file.name,uploadedAt:new Date().toISOString()});
-    await putGithubContent(manifestPath,btoa(unescape(encodeURIComponent(JSON.stringify(manifest,null,2)))),`อัปเดตรายการ RCA ${incident}`,current?.sha||null);
+  const ext=file.name.split('.').pop().toLowerCase();
+  const renamed=`${incident}.${ext}`;
+  const publicPath=`rca/${year}/${renamed}`;
 
-    rcaState.manifest=manifest;renderRcaRows();setGithubStatus('อัปโหลดสำเร็จ','good');toast(`อัปโหลด RCA ของ ${incident} แล้ว`)
-  }catch(e){console.error(e);setGithubStatus('อัปโหลดไม่สำเร็จ','bad');toast(e.message)}
+  // Download renamed RCA file
+  download(await file.arrayBuffer(),renamed,file.type||'application/octet-stream');
+
+  // Create updated manifest without touching GitHub directly
+  let manifest=Array.isArray(rcaState.manifest)?[...rcaState.manifest]:[];
+  manifest=manifest.filter(x=>!(String(x.incident)===String(incident)&&Number(x.year)===year));
+  manifest.push({
+    incident,
+    year,
+    file:publicPath,
+    filename:renamed,
+    originalFilename:file.name,
+    preparedAt:new Date().toISOString()
+  });
+  manifest.sort((a,b)=>Number(a.year)-Number(b.year)||String(a.incident).localeCompare(String(b.incident)));
+
+  setTimeout(()=>download('\ufeff'+JSON.stringify(manifest,null,2),'rca.json','application/json'),500);
+
+  rcaState.manifest=manifest;
+  renderRcaRows();
+  addLog('Prepare RCA files',1,`${renamed} + rca.json`);
+  toast(`เตรียม ${renamed} และ rca.json แล้ว`)
 }
 
 function addLog(action,count,file){
@@ -526,4 +459,4 @@ function renderLog(){
   $('#importLog').innerHTML=logs.length?logs.map(x=>`<div class="log-row"><div><b>${esc(x.action)}</b><small>${esc(x.file||'')}</small></div><span>ปี ${esc(x.year)} • ${Number(x.count||0).toLocaleString()} รายการ</span><time>${esc(x.at)}</time></div>`).join(''):'<div class="quality-empty">ยังไม่มีประวัติ</div>'
 }
 
-applySettings();loadGithubSession();bind();renderAll();
+applySettings();bind();renderAll();

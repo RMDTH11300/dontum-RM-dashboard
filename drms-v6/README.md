@@ -69,3 +69,13 @@ Master หน่วยงานอยู่ที่ `config/departments.json`
 - Token ไม่ถูกฝังในโปรแกรม และเก็บเฉพาะ Session Storage
 - อัปเดต `data/rca.json` อัตโนมัติ
 - หน้า Public แสดงมี/ไม่มี RCA และปุ่มดาวน์โหลด
+
+
+## V6.5 – RCA Easy Upload
+- ไม่ใช้ GitHub Token
+- Admin เลือก Incident และไฟล์ RCA
+- ระบบเปลี่ยนชื่อไฟล์ตาม Incident อัตโนมัติ
+- ดาวน์โหลดไฟล์ RCA ที่พร้อมอัปโหลด
+- ดาวน์โหลด `rca.json` ฉบับอัปเดต
+- ผู้ดูแลอัปโหลดไฟล์ RCA ไปที่ `drms-v6/rca/ปี/`
+- ผู้ดูแลอัปโหลด `rca.json` ไปที่โฟลเดอร์ `data` กลาง

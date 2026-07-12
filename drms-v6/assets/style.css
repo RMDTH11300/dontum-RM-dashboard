@@ -116,3 +116,30 @@
     min-width:52px;
   }
 }
+
+
+/* V6.14 – Fix hospital logo rendering */
+.logo.hospital-logo{
+  width:86px !important;
+  height:58px !important;
+  min-width:86px !important;
+  padding:4px !important;
+  border-radius:12px !important;
+  background:#ffffff !important;
+  overflow:hidden !important;
+  border:1px solid rgba(255,255,255,.55);
+}
+.logo.hospital-logo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  display:block !important;
+}
+@media(max-width:700px){
+  .logo.hospital-logo{
+    width:72px !important;
+    height:50px !important;
+    min-width:72px !important;
+  }
+}

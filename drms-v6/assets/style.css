@@ -143,3 +143,80 @@
     min-width:72px !important;
   }
 }
+
+
+/* V6.15 – Official dual-logo header */
+.official-brand{
+  display:flex !important;
+  align-items:center !important;
+  gap:16px !important;
+  min-width:0;
+}
+.official-logos{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:5px 8px;
+  border-radius:12px;
+  background:#ffffff;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+  flex:0 0 auto;
+}
+.official-logos img{
+  display:block;
+  object-fit:contain;
+  background:#fff;
+}
+.official-logos .moph-logo{
+  width:48px;
+  height:48px;
+}
+.official-logos .hospital-logo-wide{
+  width:94px;
+  height:48px;
+}
+.official-brand-text{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.official-brand-text b{
+  font-size:19px;
+  line-height:1.2;
+  color:#fff;
+  white-space:nowrap;
+}
+.official-brand-text small{
+  margin-top:4px;
+  font-size:12px;
+  color:#dbe7f5;
+  white-space:nowrap;
+}
+.official-version{
+  margin-left:auto;
+  padding:7px 12px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  background:rgba(255,255,255,.08);
+}
+.logo.hospital-logo{
+  display:none !important;
+}
+@media(max-width:900px){
+  .official-logos .moph-logo{width:42px;height:42px}
+  .official-logos .hospital-logo-wide{width:78px;height:42px}
+  .official-brand-text b{font-size:16px}
+  .official-brand-text small{font-size:11px}
+  .official-version{display:none}
+}
+@media(max-width:650px){
+  .official-brand{gap:9px !important}
+  .official-logos{gap:5px;padding:4px 6px}
+  .official-logos .moph-logo{width:34px;height:34px}
+  .official-logos .hospital-logo-wide{width:60px;height:34px}
+  .official-brand-text b{font-size:13px;white-space:normal}
+  .official-brand-text small{display:none}
+}

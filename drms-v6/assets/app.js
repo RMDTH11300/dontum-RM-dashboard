@@ -190,7 +190,74 @@ function isHigh(s){return ['E','F','G','H','I','3','4','5'].includes(String(s||'
 function monthOf(v){if(!v)return'';const d=new Date(v);return Number.isNaN(d.getTime())?'':d.getMonth()+1}
 function rowMatchesSelectedUnit(v){if(!state.selected.size)return true;const text=normUnit(v);if(state.selected.has(text))return true;return [...state.selected].some(u=>text.split(/[\n,;]+/).map(x=>x.trim()).includes(u))}
 function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||r.some(v=>String(v??'').toLowerCase().includes(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
-function renderDashboard(){const a=state.filtered;$('#kTotal').textContent=a.length.toLocaleString();$('#kClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#kNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#kHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));countChart('#severity',a.map(r=>String(r[IDX.sev]||'ไม่ระบุ')));rank('#topRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));rank('#topUnits',a.map(r=>normUnit(r[IDX.mainUnit]))) }
+function renderDashboard(){const a=state.filtered;$('#kTotal').textContent=a.length.toLocaleString();$('#kClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#kNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#kHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));renderSeveritySplit(a);rank('#topRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));rank('#topUnits',a.map(r=>normUnit(r[IDX.mainUnit]))) }
+
+function renderSeveritySplit(rows){
+  const clinicalLevels=['A','B','C','D','E','F','G','H','I'];
+  const nonClinicalLevels=['1','2','3','4','5'];
+
+  const clinicalRows=rows.filter(r=>riskType(r)==='Clinical');
+  const nonClinicalRows=rows.filter(r=>riskType(r)==='Non-clinical');
+
+  const clinicalCounts=Object.fromEntries(clinicalLevels.map(x=>[x,0]));
+  const nonClinicalCounts=Object.fromEntries(nonClinicalLevels.map(x=>[x,0]));
+
+  clinicalRows.forEach(r=>{
+    const level=String(r[IDX.sev]||'').trim().toUpperCase();
+    if(level in clinicalCounts)clinicalCounts[level]++
+  });
+  nonClinicalRows.forEach(r=>{
+    const level=String(r[IDX.sev]||'').trim();
+    if(level in nonClinicalCounts)nonClinicalCounts[level]++
+  });
+
+  severityBarChart('#severityClinical',clinicalLevels.map(level=>({
+    label:level,
+    count:clinicalCounts[level],
+    color:clinicalSeverityColor(level)
+  })));
+
+  severityBarChart('#severityNonClinical',nonClinicalLevels.map(level=>({
+    label:level,
+    count:nonClinicalCounts[level],
+    color:nonClinicalSeverityColor(level)
+  })));
+}
+function clinicalSeverityColor(level){
+  return ({
+    A:'#22c55e',
+    B:'#4ade80',
+    C:'#84cc16',
+    D:'#eab308',
+    E:'#f59e0b',
+    F:'#f97316',
+    G:'#ef4444',
+    H:'#dc2626',
+    I:'#991b1b'
+  })[level]||'#94a3b8'
+}
+function nonClinicalSeverityColor(level){
+  return ({
+    '1':'#22c55e',
+    '2':'#84cc16',
+    '3':'#f59e0b',
+    '4':'#f97316',
+    '5':'#dc2626'
+  })[level]||'#94a3b8'
+}
+function severityBarChart(sel,data){
+  const max=Math.max(1,...data.map(x=>x.count));
+  $(sel).innerHTML=data.map(x=>`
+    <div class="bar-row severity-row">
+      <span class="severity-level" style="border-color:${x.color};color:${x.color}">${esc(x.label)}</span>
+      <div class="bar-track">
+        <div class="bar-fill severity-fill" style="width:${x.count/max*100}%;background:${x.color}"></div>
+      </div>
+      <b>${x.count.toLocaleString()}</b>
+    </div>
+  `).join('')
+}
+
 function barChart(sel,data){const max=Math.max(1,...data.map(x=>x.count));$(sel).innerHTML=data.map(x=>`<div class="bar-row"><span>${esc(x.label)}</span><div class="bar-track"><div class="bar-fill" style="width:${x.count/max*100}%"></div></div><b>${x.count.toLocaleString()}</b></div>`).join('')}
 function countChart(sel,arr){const m={};arr.forEach(x=>m[x]=(m[x]||0)+1);barChart(sel,Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([label,count])=>({label,count})))}
 function rank(sel,arr){const m={};arr.forEach(x=>m[x]=(m[x]||0)+1);$(sel).innerHTML=Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([x,n],i)=>`<div class="rank"><b>${i+1}</b><span>${esc(x)}</span><b>${n.toLocaleString()}</b></div>`).join('')||'<p class="empty">ไม่พบข้อมูล</p>'}

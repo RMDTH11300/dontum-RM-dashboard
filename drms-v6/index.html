@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.16-production-final">
+  <link rel="stylesheet" href="assets/style.css?v=6.17-severity-split">
 </head>
 <body>
 <header class="topbar">
@@ -53,7 +53,25 @@
     <article class="purple"><span>Non-clinical</span><strong id="kNon">0</strong><small>รายการ</small></article>
     <article class="red"><span>High Risk</span><strong id="kHigh">0</strong><small>รายการ</small></article>
   </div>
-  <div class="grid2"><section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="monthly" class="bars"></div></section><section class="panel"><h3>ระดับความรุนแรง</h3><div id="severity" class="bars"></div></section></div>
+  <div class="grid2"><section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="monthly" class="bars"></div></section><section class="panel severity-panel">
+  <h3>ระดับความรุนแรง</h3>
+  <div class="severity-groups">
+    <div class="severity-group clinical-severity">
+      <div class="severity-group-title">
+        <span class="severity-dot clinical-dot"></span>
+        <div><b>Clinical</b><small>เรียงระดับ A–I</small></div>
+      </div>
+      <div id="severityClinical" class="bars severity-bars"></div>
+    </div>
+    <div class="severity-group nonclinical-severity">
+      <div class="severity-group-title">
+        <span class="severity-dot nonclinical-dot"></span>
+        <div><b>Non-clinical</b><small>เรียงระดับ 1–5</small></div>
+      </div>
+      <div id="severityNonClinical" class="bars severity-bars"></div>
+    </div>
+  </div>
+</section></div>
   <div class="grid2"><section class="panel"><h3>Top 10 ความเสี่ยง</h3><div id="topRisks"></div></section><section class="panel"><h3>Top 10 หน่วยงานหลักที่แก้ไข</h3><div id="topUnits"></div></section></div>
 </section>
 <section id="incidents" class="view">
@@ -373,15 +391,7 @@
         <div><dt>เวอร์ชัน</dt><dd>V6.16</dd></div>
         <div><dt>สถานะ</dt><dd>Production Release</dd></div>
         <div><dt>หน่วยงานเจ้าของระบบ</dt><dd>คณะกรรมการบริหารงานคุณภาพและความปลอดภัย โรงพยาบาลดอนตูม</dd></div>
-        <div>
-    <dt>ผู้ดูแลข้อมูล</dt>
-    <dd>
-        นางสาวสุขจิต จันทร์มาก<br>
-        นักกายภาพบำบัดชำนาญการ<br>
-        เลขานุการทีมบริหารความเสี่ยง<br>
-        โรงพยาบาลดอนตูม
-    </dd>
-</div>
+        <div><dt>ผู้ดูแลข้อมูล</dt><dd>เลขานุการทีมบริหารความเสี่ยง</dd></div>
         <div><dt>ช่องทางใช้งาน</dt><dd>GitHub Pages</dd></div>
       </dl>
     </section>
@@ -435,5 +445,5 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.16-production-final"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.17-severity-split"></script>
 </body></html>

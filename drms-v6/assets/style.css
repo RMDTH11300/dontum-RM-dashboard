@@ -249,3 +249,28 @@
     min-width:125px;
   }
 }
+
+
+/* V6.17 – Separate Clinical and Non-clinical severity */
+.severity-panel{min-width:0}
+.severity-groups{display:grid;grid-template-columns:1.35fr .85fr;gap:18px;padding:12px 18px 18px}
+.severity-group{min-width:0;padding:14px;border:1px solid #dfe7f1;border-radius:12px;background:#fbfdff}
+.severity-group-title{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e8eef5}
+.severity-group-title>div{display:flex;flex-direction:column}
+.severity-group-title b{color:#17365d;font-size:15px}
+.severity-group-title small{margin-top:2px;color:#718398;font-size:11px}
+.severity-dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}
+.clinical-dot{background:#1f8b4c}
+.nonclinical-dot{background:#7c3aed}
+.severity-bars .bar-row{grid-template-columns:38px minmax(100px,1fr) 62px}
+.severity-level{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:2px solid;border-radius:8px;background:#fff;font-weight:900}
+.severity-fill{min-width:0;border-radius:999px;transition:width .25s ease}
+.severity-row b{text-align:right}
+@media(max-width:1100px){
+  .severity-groups{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  .severity-groups{padding:10px;gap:12px}
+  .severity-group{padding:10px}
+  .severity-bars .bar-row{grid-template-columns:34px minmax(70px,1fr) 52px}
+}

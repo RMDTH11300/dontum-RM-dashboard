@@ -65,23 +65,29 @@ function showTab(id){
   $$('.dc-tab').forEach(x=>x.classList.toggle('active',x.id===id));
   $$('.dc-nav').forEach(x=>x.classList.toggle('active',x.dataset.tab===id))
 }
+function on(selector,event,handler){
+  const el=$(selector);
+  if(el)el.addEventListener(event,handler);
+}
 function bind(){
   $$('.dc-nav').forEach(x=>x.onclick=()=>showTab(x.dataset.tab));
-  $('#chooseExcel').onclick=$('#browseExcel').onclick=()=>$('#excelFile').click();
-  $('#excelFile').onchange=e=>{if(e.target.files[0])readExcel(e.target.files[0])};
-  $('#dropZone').ondragover=e=>{e.preventDefault();e.currentTarget.classList.add('dragover')};
-  $('#dropZone').ondragleave=e=>e.currentTarget.classList.remove('dragover');
-  $('#dropZone').ondrop=e=>{e.preventDefault();e.currentTarget.classList.remove('dragover');const f=e.dataTransfer.files[0];if(f)readExcel(f)};
-  $('#loadCurrent').onclick=$('#restoreCurrent').onclick=loadCurrent;
-  $('#exportJson').onclick=exportJson;
-  $('#exportErrors').onclick=exportIssues;
-  $('#clearLog').onclick=()=>{localStorage.removeItem('drms_admin_log');renderLog();toast('ล้างประวัติแล้ว')};
-  $('#downloadBackup').onclick=downloadBackup;
-  $('#chooseRestore').onclick=()=>$('#restoreFile').click();
-  $('#restoreFile').onchange=e=>{if(e.target.files[0])restoreJson(e.target.files[0])};
-  $('#fiscalYear').onchange=()=>{dataset.fiscalYear=+$('#fiscalYear').value;$('#sumYear').textContent=dataset.fiscalYear;if(dataset.rows.length)validateAndRender()};
-  $('#saveSettings').onclick=saveSettings;
-  $('#resetSettings').onclick=resetSettings
+  const openExcel=()=>$('#excelFile')?.click();
+  on('#chooseExcel','click',openExcel);on('#browseExcel','click',openExcel);
+  on('#excelFile','change',e=>{if(e.target.files[0])readExcel(e.target.files[0])});
+  const dz=$('#dropZone');
+  if(dz){
+    dz.ondragover=e=>{e.preventDefault();e.currentTarget.classList.add('dragover')};
+    dz.ondragleave=e=>e.currentTarget.classList.remove('dragover');
+    dz.ondrop=e=>{e.preventDefault();e.currentTarget.classList.remove('dragover');const f=e.dataTransfer.files[0];if(f)readExcel(f)}
+  }
+  on('#loadCurrent','click',loadCurrent);on('#restoreCurrent','click',loadCurrent);
+  on('#exportJson','click',exportJson);on('#exportErrors','click',exportIssues);
+  on('#clearLog','click',()=>{localStorage.removeItem('drms_admin_log');renderLog();toast('ล้างประวัติแล้ว')});
+  on('#downloadBackup','click',downloadBackup);
+  on('#chooseRestore','click',()=>$('#restoreFile')?.click());
+  on('#restoreFile','change',e=>{if(e.target.files[0])restoreJson(e.target.files[0])});
+  on('#fiscalYear','change',()=>{dataset.fiscalYear=+$('#fiscalYear').value;const y=$('#sumYear');if(y)y.textContent=dataset.fiscalYear;if(dataset.rows.length)validateAndRender()});
+  on('#saveSettings','click',saveSettings);on('#resetSettings','click',resetSettings)
 }
 
 async function readExcel(file){

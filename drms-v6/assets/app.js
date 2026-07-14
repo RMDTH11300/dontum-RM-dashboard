@@ -615,43 +615,57 @@ function yearlyCellHtml(counts){
 
 function renderEssentialYearlyMatrix(){
   const tbody=$('#essentialMatrixRows');
-  const thead=$('#matrixYearHeader');
-  if(!tbody||!thead)return;
+  const headerRow=$('#matrixHeaderRow');
+  if(!tbody||!headerRow)return;
 
   const years=(state.years||[]).map(Number).filter(Boolean).sort((a,b)=>a-b);
   const standards=state.essentialStandards||[];
   const allRowsByYear=state.allYearRows||{};
 
-  // Ensure all years are loaded from cache/state; if not, use currently loaded rows for selected year
-  if(state.year!=='all' && state.rows?.length){
+  if(state.year!=='all'&&state.rows?.length){
     allRowsByYear[state.year]=state.rows
   }
 
-  thead.outerHTML=years.map(y=>`<th>ปีงบประมาณ ${y}</th>`).join('');
+  headerRow.innerHTML=
+    '<th>มาตรฐานสำคัญจำเป็น</th><th>Incident</th>'+
+    years.map(y=>`<th>ปีงบประมาณ ${y}</th>`).join('');
 
   let totalCodes=0;
   let grandTotal=0;
   const body=[];
 
-  standards.forEach((standard)=>{
-    totalCodes+=standard.codes.length;
-    standard.codes.forEach((code,codeIndex)=>{
+  standards.forEach((standard,index)=>{
+    const codeItems=(standard.codes||[]).map(item=>
+      typeof item==='string'
+        ? {code:item,description:''}
+        : {code:String(item.code||''),description:String(item.description||'')}
+    ).filter(item=>item.code);
+
+    totalCodes+=codeItems.length;
+
+    codeItems.forEach((item,codeIndex)=>{
+      const code=item.code;
+      const description=item.description||standard.shortTitle||'';
+
       const yearCells=years.map(year=>{
         const rows=(allRowsByYear[year]||[]).filter(row=>getIncidentCode(row)===code);
         grandTotal+=rows.length;
+
         const counts={'A-B':0,'C-D':0,'E-F':0,'G-H':0,'I':0};
         rows.forEach(row=>{
-          const g=severityGroup(row[IDX.sev]);
-          if(g)counts[g]=(counts[g]||0)+1
+          const group=severityGroup(row[IDX.sev]);
+          if(group)counts[group]=(counts[group]||0)+1
         });
+
         const cls=yearlyCellClass(counts);
-        const html=yearlyCellHtml(counts);
-        return `<td class="${cls}">${html||''}</td>`
+        const content=yearlyCellHtml(counts);
+        return `<td class="${cls}">${content||''}</td>`
       }).join('');
 
+      const standardCode=standard.groupCode||`G${String(index+1).padStart(4,'0')}`;
       const standardCell=codeIndex===0
-        ? `<th class="matrix-standard-title" rowspan="${standard.codes.length}">
-            <b>${esc(standard.id||'')}</b>
+        ? `<th class="matrix-standard-title" rowspan="${codeItems.length}">
+            <b>${esc(standardCode)}</b>
             <span>${esc(standard.title||standard.shortTitle||'')}</span>
           </th>`
         : '';
@@ -660,7 +674,7 @@ function renderEssentialYearlyMatrix(){
         ${standardCell}
         <th class="matrix-risk-title">
           <b>${esc(code)}</b>
-          <span>${esc(standard.shortTitle||'')}</span>
+          <span>${esc(description)}</span>
         </th>
         ${yearCells}
       </tr>`)

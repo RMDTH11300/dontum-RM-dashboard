@@ -370,3 +370,25 @@
   background:#e74c3c!important;
   color:#fff!important;
 }
+
+
+/* V6.20.1 – Correct yearly matrix rendering */
+.yearly-matrix-table td.risk-low{
+  background:#2ecc71!important;
+  color:#063d20!important;
+}
+.yearly-matrix-table td.risk-moderate{
+  background:#ffeb3b!important;
+  color:#5c4900!important;
+}
+.yearly-matrix-table td.risk-extreme{
+  background:#e74c3c!important;
+  color:#ffffff!important;
+}
+.yearly-matrix-table td.matrix-empty{
+  background:#ffffff!important;
+}
+.yearly-matrix-table td:not(.matrix-empty){
+  text-align:center;
+  font-weight:800;
+}

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.18-essential-standards">
+  <link rel="stylesheet" href="assets/style.css?v=6.19-risk-matrix">
 </head>
 <body>
 <header class="topbar">
@@ -201,7 +201,14 @@
       </div>
     </div>
 
-    <div class="essential-kpis">
+    
+    <div class="essential-tabs">
+      <button id="essentialRegisterTab" class="essential-tab active">Risk Register</button>
+      <button id="essentialMatrixTab" class="essential-tab">Risk Matrix 5×5</button>
+    </div>
+
+    <div id="essentialRegisterView">
+<div class="essential-kpis">
       <article><span>Incident ทั้งหมด</span><b id="essentialTotal">0</b><small>รายการ</small></article>
       <article class="red"><span>High Risk</span><b id="essentialHigh">0</b><small>รายการ</small></article>
       <article class="green"><span>มี RCA</span><b id="essentialRca">0</b><small>รายการ</small></article>
@@ -216,7 +223,68 @@
         <tbody id="essentialRows"></tbody>
       </table>
     </div>
-  </section>
+  
+    </div>
+
+    <div id="essentialMatrixView" class="hidden">
+      <div class="matrix-toolbar">
+        <div>
+          <h3>รายงาน Risk Matrix 5×5</h3>
+          <p>คำนวณโอกาสเกิดจากจำนวนเหตุการณ์ของแต่ละรหัสในช่วงปีงบประมาณที่เลือก</p>
+        </div>
+        <div class="matrix-legend">
+          <span class="risk-low">ต่ำ</span>
+          <span class="risk-moderate">ปานกลาง</span>
+          <span class="risk-high">สูง</span>
+          <span class="risk-extreme">สูงมาก</span>
+        </div>
+      </div>
+
+      <div class="matrix-summary-grid">
+        <article><span>จำนวนรหัสความเสี่ยง</span><b id="matrixRiskCodes">0</b></article>
+        <article><span>จำนวน Incident</span><b id="matrixIncidentTotal">0</b></article>
+        <article><span>คะแนนเสี่ยงสูงสุด</span><b id="matrixMaxScore">0</b></article>
+        <article><span>ระดับสูงมาก</span><b id="matrixExtremeCount">0</b></article>
+      </div>
+
+      <div class="matrix-table-wrap">
+        <table class="risk-matrix-table">
+          <thead>
+            <tr>
+              <th rowspan="2">Risk ID / รายการ</th>
+              <th colspan="5">โอกาสเกิด (Likelihood)</th>
+              <th rowspan="2">รวม</th>
+            </tr>
+            <tr>
+              <th>1<br><small>น้อยมาก</small></th>
+              <th>2<br><small>น้อย</small></th>
+              <th>3<br><small>ปานกลาง</small></th>
+              <th>4<br><small>สูง</small></th>
+              <th>5<br><small>สูงมาก</small></th>
+            </tr>
+          </thead>
+          <tbody id="essentialMatrixRows"></tbody>
+          <tfoot>
+            <tr>
+              <th>รวมทั้งหมด</th>
+              <th id="matrixCol1">0</th>
+              <th id="matrixCol2">0</th>
+              <th id="matrixCol3">0</th>
+              <th id="matrixCol4">0</th>
+              <th id="matrixCol5">0</th>
+              <th id="matrixGrandTotal">0</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="matrix-note">
+        <b>เกณฑ์โอกาสเกิดอัตโนมัติ:</b>
+        1 ครั้ง = ระดับ 1, 2–3 ครั้ง = ระดับ 2, 4–6 ครั้ง = ระดับ 3,
+        7–12 ครั้ง = ระดับ 4 และมากกว่า 12 ครั้ง = ระดับ 5
+      </div>
+    </div>
+</section>
 </section>
 
 <section id="analytics" class="view">
@@ -490,5 +558,5 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.18-essential-standards"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.19-risk-matrix"></script>
 </body></html>

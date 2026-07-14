@@ -80,6 +80,11 @@ function bind(){
   $('#exportEssentialCsv').onclick=exportEssentialCsv;
   $('#exportEssentialExcel').onclick=exportEssentialExcel;
   $('#printEssential').onclick=()=>window.print();
+
+  const registerTab=$('#essentialRegisterTab');
+  const matrixTab=$('#essentialMatrixTab');
+  if(registerTab)registerTab.onclick=()=>showEssentialMode('register');
+  if(matrixTab)matrixTab.onclick=()=>showEssentialMode('matrix');
 }
 function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
 
@@ -538,6 +543,8 @@ function renderEssentialDetail(standard){
     const rca=codeRows.filter((r,i)=>hasRcaForRow(r,i)).length;
     return `<tr><td><b>${esc(code)}</b></td><td>${esc(description||'-')}</td><td>${codeRows.length.toLocaleString()}</td><td><span class="severity-pill">${esc(maximumSeverity(codeRows)||'-')}</span></td><td>${high.toLocaleString()}</td><td>${esc(units.slice(0,6).join(', ')||'-')}</td><td>${rca.toLocaleString()}</td></tr>`
   }).join('')
+
+  renderEssentialMatrix(standard);
 }
 function essentialExportRows(){
   const standard=state.selectedEssential;if(!standard)return[];
@@ -545,6 +552,149 @@ function essentialExportRows(){
     standard.id,standard.title,getIncidentCode(row),row[IDX.date]||'',row[IDX.risk]||'',row[IDX.sub]||'',row[IDX.sev]||'',row[IDX.mainUnit]||'',hasRcaForRow(row,index)?'มี':'ไม่มี'
   ])
 }
+
+function showEssentialMode(mode){
+  const registerView=$('#essentialRegisterView');
+  const matrixView=$('#essentialMatrixView');
+  const registerTab=$('#essentialRegisterTab');
+  const matrixTab=$('#essentialMatrixTab');
+  if(!registerView||!matrixView)return;
+
+  const isMatrix=mode==='matrix';
+  registerView.classList.toggle('hidden',isMatrix);
+  matrixView.classList.toggle('hidden',!isMatrix);
+  registerTab?.classList.toggle('active',!isMatrix);
+  matrixTab?.classList.toggle('active',isMatrix);
+
+  if(isMatrix&&state.selectedEssential){
+    renderEssentialMatrix(state.selectedEssential)
+  }
+}
+
+function likelihoodFromCount(count){
+  if(count<=1)return count===0?0:1;
+  if(count<=3)return 2;
+  if(count<=6)return 3;
+  if(count<=12)return 4;
+  return 5
+}
+
+function severityScore(level){
+  const value=String(level||'').trim().toUpperCase();
+  const clinical={A:1,B:1,C:2,D:2,E:3,F:3,G:4,H:4,I:5};
+  const general={'1':1,'2':2,'3':3,'4':4,'5':5};
+  return clinical[value]||general[value]||1
+}
+
+function severityLabel(level){
+  const value=String(level||'').trim().toUpperCase();
+  if(['A','B'].includes(value))return 'A-B';
+  if(['C','D'].includes(value))return 'C-D';
+  if(['E','F'].includes(value))return 'E-F';
+  if(['G','H'].includes(value))return 'G-H';
+  if(value==='I')return 'I';
+  return value||'-'
+}
+
+function matrixRiskClass(score){
+  if(score<=4)return 'risk-low';
+  if(score<=9)return 'risk-moderate';
+  if(score<=16)return 'risk-high';
+  return 'risk-extreme'
+}
+
+function renderEssentialMatrix(standard){
+  const tbody=$('#essentialMatrixRows');
+  if(!tbody||!standard)return;
+
+  const rows=essentialRowsByStandard(standard);
+  const grouped={};
+
+  rows.forEach(row=>{
+    const code=getIncidentCode(row);
+    if(!code)return;
+    if(!grouped[code])grouped[code]=[];
+    grouped[code].push(row)
+  });
+
+  const columnTotals=[0,0,0,0,0];
+  let grandTotal=0;
+  let maxScore=0;
+  let extremeCount=0;
+
+  tbody.innerHTML=standard.codes.map(code=>{
+    const codeRows=grouped[code]||[];
+    const count=codeRows.length;
+    const likelihood=likelihoodFromCount(count);
+    grandTotal+=count;
+
+    const riskText=codeRows.length
+      ? String(codeRows[0][IDX.risk]||code)
+      : code;
+
+    let maxSeverityLevel='';
+    let maxSeverityScore=0;
+    const severityCounts={};
+
+    codeRows.forEach(row=>{
+      const level=String(row[IDX.sev]||'').trim().toUpperCase();
+      if(!level)return;
+      severityCounts[level]=(severityCounts[level]||0)+1;
+      const score=severityScore(level);
+      if(score>maxSeverityScore){
+        maxSeverityScore=score;
+        maxSeverityLevel=level
+      }
+    });
+
+    const riskScore=likelihood*maxSeverityScore;
+    maxScore=Math.max(maxScore,riskScore);
+    if(riskScore>=17)extremeCount++;
+
+    const cells=[1,2,3,4,5].map(col=>{
+      if(col!==likelihood||count===0)return '<td class="matrix-empty">-</td>';
+
+      columnTotals[col-1]+=count;
+      const groupedLabels={};
+      Object.entries(severityCounts).forEach(([level,n])=>{
+        const label=severityLabel(level);
+        groupedLabels[label]=(groupedLabels[label]||0)+n
+      });
+
+      const detail=Object.entries(groupedLabels)
+        .sort((a,b)=>a[0].localeCompare(b[0],'th'))
+        .map(([label,n])=>`${esc(label)}: ${n.toLocaleString()}`)
+        .join('<br>');
+
+      return `<td class="${matrixRiskClass(riskScore)}">
+        <b>${detail||count.toLocaleString()}</b>
+        <small>คะแนน ${riskScore}</small>
+      </td>`
+    }).join('');
+
+    return `<tr>
+      <th class="matrix-risk-title">
+        <b>${esc(code)}</b>
+        <span>${esc(riskText.replace(code,'').replace(/^[:\s-]+/,''))}</span>
+        <small>ระดับสูงสุด ${esc(maxSeverityLevel||'-')} • โอกาสเกิด ${likelihood||'-'}</small>
+      </th>
+      ${cells}
+      <td class="matrix-total">${count.toLocaleString()}</td>
+    </tr>`
+  }).join('');
+
+  $('#matrixRiskCodes').textContent=standard.codes.length.toLocaleString();
+  $('#matrixIncidentTotal').textContent=grandTotal.toLocaleString();
+  $('#matrixMaxScore').textContent=maxScore.toLocaleString();
+  $('#matrixExtremeCount').textContent=extremeCount.toLocaleString();
+
+  columnTotals.forEach((n,i)=>{
+    const el=$(`#matrixCol${i+1}`);
+    if(el)el.textContent=n.toLocaleString()
+  });
+  $('#matrixGrandTotal').textContent=grandTotal.toLocaleString()
+}
+
 function exportEssentialCsv(){
   const standard=state.selectedEssential;if(!standard)return toast('กรุณาเลือกมาตรฐาน');
   const lines=[['มาตรฐาน','ชื่อมาตรฐาน','รหัส Incident','วันที่','รายการความเสี่ยง','เรื่องย่อย','ระดับ','หน่วยงานหลักที่แก้ไข','RCA'],...essentialExportRows()];

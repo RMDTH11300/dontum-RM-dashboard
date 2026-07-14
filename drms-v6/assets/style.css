@@ -278,3 +278,43 @@
 
 /* V6.18 – Essential Standards 9 */
 .essential-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}.essential-card{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:16px;text-align:left;background:#fff;border:1px solid #d9e3ef;border-radius:12px;cursor:pointer;box-shadow:0 2px 8px rgba(23,54,93,.05)}.essential-card:hover,.essential-card.active{border-color:#2470d8;box-shadow:0 5px 16px rgba(24,77,139,.14)}.essential-card.active{background:#f2f7ff}.essential-number{display:flex;align-items:center;justify-content:center;width:36px;height:36px;color:#fff;background:#17365d;border-radius:50%;font-weight:800}.essential-card-text{display:flex;flex-direction:column;gap:4px;min-width:0}.essential-card-text b{color:#17365d;font-size:15px}.essential-card-text small{color:#63788e;line-height:1.4}.essential-card-text span{color:#1f69ba;font-weight:800}.essential-high,.essential-safe{grid-column:2;font-size:12px}.essential-high{color:#c62828}.essential-safe{color:#16834f}.essential-detail{margin-top:16px}.essential-panel-title{padding:16px}.essential-panel-title>div{display:grid;grid-template-columns:auto 1fr;gap:5px 10px;align-items:center}.essential-panel-title h3{margin:0}.essential-panel-title p{grid-column:2;margin:0;color:#687b90}.essential-badge{grid-row:1/3;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:12px;background:#17365d;color:#fff;font-weight:900}.essential-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:0 16px 16px}.essential-kpis article{padding:14px;border:1px solid #dce5ef;border-left:5px solid #2470d8;border-radius:10px;background:#f8fbff}.essential-kpis article.red{border-left-color:#dc2626}.essential-kpis article.green{border-left-color:#16834f}.essential-kpis article.purple{border-left-color:#7c3aed}.essential-kpis span,.essential-kpis b,.essential-kpis small{display:block}.essential-kpis span{color:#63788e}.essential-kpis b{margin-top:5px;color:#17365d;font-size:28px}.essential-table-wrap table{min-width:1100px}@media(max-width:1050px){.essential-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.essential-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.essential-grid,.essential-kpis{grid-template-columns:1fr}.essential-card{grid-template-columns:38px 1fr}.essential-panel-title>div{grid-template-columns:1fr}.essential-badge{grid-row:auto;width:auto;height:auto;padding:6px 9px;justify-self:start}.essential-panel-title p{grid-column:auto}}
+
+
+/* V6.19 – Essential Standards Risk Matrix 5×5 */
+.hidden{display:none!important}
+.essential-tabs{display:flex;gap:8px;padding:0 16px 14px}
+.essential-tab{padding:9px 14px;border:1px solid #cdd9e8;border-radius:8px;background:#fff;color:#17365d;font-weight:800;cursor:pointer}
+.essential-tab.active{background:#1769d2;color:#fff;border-color:#1769d2}
+.matrix-toolbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:16px}
+.matrix-toolbar h3{margin:0 0 5px;color:#17365d}
+.matrix-toolbar p{margin:0;color:#66798d}
+.matrix-legend{display:flex;flex-wrap:wrap;gap:7px}
+.matrix-legend span{padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800}
+.matrix-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:0 16px 16px}
+.matrix-summary-grid article{padding:13px;border:1px solid #dce5ef;border-radius:10px;background:#f8fbff}
+.matrix-summary-grid span,.matrix-summary-grid b{display:block}
+.matrix-summary-grid span{color:#66798d;font-size:12px}
+.matrix-summary-grid b{margin-top:5px;color:#17365d;font-size:26px}
+.matrix-table-wrap{overflow:auto;padding:0 16px 16px}
+.risk-matrix-table{width:100%;min-width:980px;border-collapse:collapse}
+.risk-matrix-table th,.risk-matrix-table td{border:1px solid #d8e1ec;padding:10px;text-align:center;vertical-align:middle}
+.risk-matrix-table thead th{background:#eef4fb;color:#17365d}
+.matrix-risk-title{width:32%;text-align:left!important;background:#fbfdff}
+.matrix-risk-title b,.matrix-risk-title span,.matrix-risk-title small{display:block}
+.matrix-risk-title span{margin-top:3px;color:#445b72;font-weight:500}
+.matrix-risk-title small{margin-top:5px;color:#76899d}
+.matrix-empty{background:#f7f9fc;color:#a6b2c0}
+.matrix-total{font-weight:900;background:#f1f6fb}
+.risk-low{background:#c9f2d7!important;color:#17653b!important}
+.risk-moderate{background:#fff3a6!important;color:#7a5a00!important}
+.risk-high{background:#ffc76c!important;color:#7a3f00!important}
+.risk-extreme{background:#ef5350!important;color:#fff!important}
+.risk-matrix-table td small{display:block;margin-top:5px;font-weight:700;opacity:.85}
+.matrix-note{margin:0 16px 16px;padding:12px 14px;border-left:4px solid #1769d2;background:#edf5ff;color:#345574;line-height:1.55}
+@media(max-width:900px){
+  .matrix-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .matrix-toolbar{flex-direction:column}
+}
+@media(max-width:600px){
+  .matrix-summary-grid{grid-template-columns:1fr}
+}

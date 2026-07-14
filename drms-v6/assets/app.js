@@ -1,6 +1,6 @@
 const PARENT='../data/';
 const IDX={id:0,risk:1,sub:2,sev:3,reportUnit:4,place:6,summary:12,keyword:13,detail:14,initial:15,suggest:16,mainUnit:17,status:26,date:27};
-const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},rcaManifest:[],allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary'};
+const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},essentialStandards:[],selectedEssential:null,rcaManifest:[],allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary'};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.style.display='none',2400)}
@@ -13,6 +13,14 @@ async function init(){
 
     try{state.orgTree=await json('config/departments.json')}
     catch(e){console.warn('ไม่พบ departments.json ใช้รายชื่อหน่วยงานแบบเดิม',e);state.orgTree={groups:[]}}
+
+    try{
+      const e=await json('config/essential-standards.json');
+      state.essentialStandards=e.standards||[]
+    }catch(e){
+      console.warn('ไม่พบ essential-standards.json',e);
+      state.essentialStandards=[]
+    }
 
     try{
       const r=await json(PARENT+'rca.json');
@@ -69,8 +77,11 @@ function bind(){
   $('#exportProfileExcel').onclick=()=>exportTableDocument('profile','excel');
   $('#exportRegisterWord').onclick=()=>exportTableDocument('register','word');
   $('#exportRegisterExcel').onclick=()=>exportTableDocument('register','excel');
+  $('#exportEssentialCsv').onclick=exportEssentialCsv;
+  $('#exportEssentialExcel').onclick=exportEssentialExcel;
+  $('#printEssential').onclick=()=>window.print();
 }
-function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='rca')renderPublicRca();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
+function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
 
 async function loadAllYears(){
   const years=(state.years||[]).map(Number).filter(Boolean);
@@ -189,7 +200,7 @@ function riskType(r){const text=String(r[IDX.risk]||'').toUpperCase();if(text.st
 function isHigh(s){return ['E','F','G','H','I','3','4','5'].includes(String(s||'').trim().toUpperCase())}
 function monthOf(v){if(!v)return'';const d=new Date(v);return Number.isNaN(d.getTime())?'':d.getMonth()+1}
 function rowMatchesSelectedUnit(v){if(!state.selected.size)return true;const text=normUnit(v);if(state.selected.has(text))return true;return [...state.selected].some(u=>text.split(/[\n,;]+/).map(x=>x.trim()).includes(u))}
-function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||r.some(v=>String(v??'').toLowerCase().includes(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
+function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||r.some(v=>String(v??'').toLowerCase().includes(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
 function renderDashboard(){const a=state.filtered;$('#kTotal').textContent=a.length.toLocaleString();$('#kClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#kNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#kHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));renderSeveritySplit(a);rank('#topRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));rank('#topUnits',a.map(r=>normUnit(r[IDX.mainUnit]))) }
 
 function renderSeveritySplit(rows){
@@ -460,6 +471,92 @@ function renderPublicRca(){
       <td>${e?'<span class="rca-has">✓ มี RCA</span>':'<span class="rca-missing">✕ ไม่มี RCA</span>'}</td>
       <td>${e?`<a class="download-link" href="${esc(e.file)}" target="_blank" rel="noopener">ดาวน์โหลด</a>`:'–'}</td></tr>`
   }).join('')||'<tr><td colspan="7" class="empty">ไม่พบข้อมูลระดับ E–I หรือ 3–5</td></tr>'
+}
+
+
+function getIncidentCode(row){
+  const text=[row[IDX.risk],row[IDX.sub],row[IDX.keyword]].map(x=>String(x||'').toUpperCase()).join(' ');
+  const match=text.match(/\b[A-Z]{3}\d{3}\b/);
+  return match?match[0]:''
+}
+function essentialCodeList(standard){return (standard?.codes||[]).map(x=>typeof x==='string'?x:x.code)}
+function essentialRowsByStandard(standard){
+  const allowed=new Set(essentialCodeList(standard));
+  return state.filtered.filter(row=>allowed.has(getIncidentCode(row)))
+}
+function severityRank(value){
+  const s=String(value||'').trim().toUpperCase();
+  const clinical=['A','B','C','D','E','F','G','H','I'];
+  const general=['1','2','3','4','5'];
+  const ci=clinical.indexOf(s);if(ci>=0)return ci;
+  const gi=general.indexOf(s);if(gi>=0)return gi+10;
+  return -1
+}
+function maximumSeverity(rows){
+  let best='',score=-1;
+  rows.forEach(r=>{const s=String(r[IDX.sev]||'').trim().toUpperCase(),n=severityRank(s);if(n>score){score=n;best=s}});
+  return best
+}
+function fiscalYearForRow(row){return Number(row.__fiscalYear||state.year)||0}
+function hasRcaForRow(row,index){
+  const id=publicIncidentId(row,index),year=fiscalYearForRow(row);
+  return (state.rcaManifest||[]).some(x=>String(x.incident)===String(id)&&Number(x.year)===year)
+}
+function renderEssentialStandards(){
+  const cards=$('#essentialCards');if(!cards)return;
+  const standards=state.essentialStandards||[];
+  cards.innerHTML=standards.map((standard,index)=>{
+    const rows=essentialRowsByStandard(standard),high=rows.filter(r=>isHigh(r[IDX.sev])).length;
+    const active=state.selectedEssential?.id===standard.id?' active':'';
+    return `<button class="essential-card${active}" data-essential="${esc(standard.id)}">
+      <span class="essential-number">${standard.number||index+1}</span>
+      <div class="essential-card-text"><b>${esc(standard.shortTitle)}</b><small>${esc(standard.title)}</small><span>${rows.length.toLocaleString()} รายการ</span></div>
+      <strong class="${high?'essential-high':'essential-safe'}">${high?`${high.toLocaleString()} High Risk`:'ไม่พบ High Risk'}</strong>
+    </button>`
+  }).join('')||'<p class="empty">ไม่พบข้อมูลมาตรฐาน</p>';
+  $$('.essential-card').forEach(button=>button.onclick=()=>{
+    state.selectedEssential=standards.find(x=>x.id===button.dataset.essential)||null;
+    renderEssentialStandards()
+  });
+  if(!state.selectedEssential&&standards.length)state.selectedEssential=standards[0];
+  if(state.selectedEssential)renderEssentialDetail(state.selectedEssential)
+}
+function renderEssentialDetail(standard){
+  const rows=essentialRowsByStandard(standard),codes=standard.codes||[];
+  $('#essentialBadge').textContent=standard.id;
+  $('#essentialTitle').textContent=standard.title;
+  $('#essentialCodes').textContent=`รหัส: ${essentialCodeList(standard).join(', ')}`;
+  $('#essentialTotal').textContent=rows.length.toLocaleString();
+  $('#essentialHigh').textContent=rows.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();
+  $('#essentialRca').textContent=rows.filter((r,i)=>hasRcaForRow(r,i)).length.toLocaleString();
+  $('#essentialCodeCount').textContent=new Set(rows.map(getIncidentCode).filter(Boolean)).size.toLocaleString();
+  $('#essentialRows').innerHTML=codes.map(item=>{
+    const code=typeof item==='string'?item:item.code,description=typeof item==='string'?item:item.description;
+    const codeRows=rows.filter(r=>getIncidentCode(r)===code);
+    const units=[...new Set(codeRows.flatMap(r=>String(r[IDX.mainUnit]||'').split(/[\n,;]+/).map(normUnit)).filter(Boolean))];
+    const high=codeRows.filter(r=>isHigh(r[IDX.sev])).length;
+    const rca=codeRows.filter((r,i)=>hasRcaForRow(r,i)).length;
+    return `<tr><td><b>${esc(code)}</b></td><td>${esc(description||'-')}</td><td>${codeRows.length.toLocaleString()}</td><td><span class="severity-pill">${esc(maximumSeverity(codeRows)||'-')}</span></td><td>${high.toLocaleString()}</td><td>${esc(units.slice(0,6).join(', ')||'-')}</td><td>${rca.toLocaleString()}</td></tr>`
+  }).join('')
+}
+function essentialExportRows(){
+  const standard=state.selectedEssential;if(!standard)return[];
+  return essentialRowsByStandard(standard).map((row,index)=>[
+    standard.id,standard.title,getIncidentCode(row),row[IDX.date]||'',row[IDX.risk]||'',row[IDX.sub]||'',row[IDX.sev]||'',row[IDX.mainUnit]||'',hasRcaForRow(row,index)?'มี':'ไม่มี'
+  ])
+}
+function exportEssentialCsv(){
+  const standard=state.selectedEssential;if(!standard)return toast('กรุณาเลือกมาตรฐาน');
+  const lines=[['มาตรฐาน','ชื่อมาตรฐาน','รหัส Incident','วันที่','รายการความเสี่ยง','เรื่องย่อย','ระดับ','หน่วยงานหลักที่แก้ไข','RCA'],...essentialExportRows()];
+  const csv='\ufeff'+lines.map(row=>row.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+  download(csv,`Essential_${standard.id}_${state.year}.csv`,'text/csv')
+}
+function exportEssentialExcel(){
+  const standard=state.selectedEssential;if(!standard)return toast('กรุณาเลือกมาตรฐาน');
+  const rows=essentialExportRows();
+  const body=rows.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('');
+  const doc=`\ufeff<html><head><meta charset="utf-8"><style>table{border-collapse:collapse}th,td{border:1px solid #333;padding:5px}th{background:#dbe7f5}</style></head><body><h2>${esc(standard.title)}</h2><p>ปีงบประมาณ ${esc(state.year==='all'?'ทุกปี':state.year)}</p><table><thead><tr><th>มาตรฐาน</th><th>ชื่อมาตรฐาน</th><th>รหัส Incident</th><th>วันที่</th><th>รายการความเสี่ยง</th><th>เรื่องย่อย</th><th>ระดับ</th><th>หน่วยงานหลักที่แก้ไข</th><th>RCA</th></tr></thead><tbody>${body}</tbody></table></body></html>`;
+  download(doc,`Essential_${standard.id}_${state.year}.xls`,'application/vnd.ms-excel')
 }
 
 function exportHaCsv(){

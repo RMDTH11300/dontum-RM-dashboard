@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.17-severity-split">
+  <link rel="stylesheet" href="assets/style.css?v=6.18-essential-standards">
 </head>
 <body>
 <header class="topbar">
@@ -17,7 +17,7 @@
     <b>DON TUM RISK MANAGEMENT SYSTEM</b>
     <small>ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม</small>
   </div>
-  <div class="official-version">V6.15</div>
+  <div class="official-version">V6.18</div>
 </div>
   <div class="top-actions"><a href="../" class="ghost">Dashboard V1</a><span class="tag">DRMS 1.0</span></div>
 </header>
@@ -27,6 +27,7 @@
   <button class="nav" data-view="incidents">▦ รายการอุบัติการณ์</button>
   <button class="nav" data-view="profile">▤ Risk Profile</button>
   <button class="nav" data-view="register">▥ Risk Register</button>
+  <button class="nav" data-view="essential">✦ มาตรฐานสำคัญจำเป็น 9 ด้าน</button>
   <button class="nav" data-view="analytics">◫ Analytics</button>
   <button class="nav" data-view="documents">📚 เอกสารและแบบฟอร์ม</button>
   <button class="nav" data-view="rca">📑 RCA</button>
@@ -172,6 +173,49 @@
       <h3>ประวัติการบันทึกร่าง</h3>
       <div id="registerHistory" class="history-list"></div>
     </section>
+  </section>
+</section>
+
+
+<section id="essential" class="view">
+  <div class="page-title">
+    <div>
+      <h1>มาตรฐานสำคัญจำเป็น 9 ด้าน</h1>
+      <p>Risk Register อัตโนมัติจากข้อมูล Incident ตามรหัสมาตรฐานสำคัญจำเป็น</p>
+    </div>
+    <div class="actions">
+      <button id="exportEssentialCsv">CSV</button>
+      <button id="exportEssentialExcel">Excel</button>
+      <button id="printEssential" class="primary">พิมพ์ / PDF</button>
+    </div>
+  </div>
+
+  <div id="essentialCards" class="essential-grid"></div>
+
+  <section class="panel essential-detail">
+    <div class="panel-title essential-panel-title">
+      <div>
+        <span id="essentialBadge" class="essential-badge">ES01</span>
+        <h3 id="essentialTitle">เลือกรายการมาตรฐาน</h3>
+        <p id="essentialCodes"></p>
+      </div>
+    </div>
+
+    <div class="essential-kpis">
+      <article><span>Incident ทั้งหมด</span><b id="essentialTotal">0</b><small>รายการ</small></article>
+      <article class="red"><span>High Risk</span><b id="essentialHigh">0</b><small>รายการ</small></article>
+      <article class="green"><span>มี RCA</span><b id="essentialRca">0</b><small>รายการ</small></article>
+      <article class="purple"><span>รหัสที่พบเหตุการณ์</span><b id="essentialCodeCount">0</b><small>รหัส</small></article>
+    </div>
+
+    <div class="table-wrap essential-table-wrap">
+      <table>
+        <thead><tr>
+          <th>Risk ID</th><th>Risk Title / Description</th><th>จำนวน</th><th>ระดับสูงสุด</th><th>High Risk</th><th>หน่วยงานหลักที่แก้ไข</th><th>RCA</th>
+        </tr></thead>
+        <tbody id="essentialRows"></tbody>
+      </table>
+    </div>
   </section>
 </section>
 
@@ -376,7 +420,7 @@
       <h2>DRMS</h2>
       <p>ระบบบริหารจัดการความเสี่ยง โรงพยาบาลดอนตูม จังหวัดนครปฐม</p>
       <div class="about-badges">
-        <span>Version 6.16</span>
+        <span>Version 6.18</span>
         <span>Production Release</span>
         <span>ปรับปรุงล่าสุด กรกฎาคม 2569</span>
       </div>
@@ -388,18 +432,10 @@
       <h3>ข้อมูลระบบ</h3>
       <dl class="about-list">
         <div><dt>ชื่อระบบ</dt><dd>Don Tum Risk Management System: DRMS</dd></div>
-        <div><dt>เวอร์ชัน</dt><dd>V6.16</dd></div>
+        <div><dt>เวอร์ชัน</dt><dd>V6.18</dd></div>
         <div><dt>สถานะ</dt><dd>Production Release</dd></div>
         <div><dt>หน่วยงานเจ้าของระบบ</dt><dd>คณะกรรมการบริหารงานคุณภาพและความปลอดภัย โรงพยาบาลดอนตูม</dd></div>
-       <div>
-    <dt>ผู้ดูแลข้อมูล</dt>
-    <dd>
-        นางสาวสุขจิต จันทร์มาก<br>
-        นักกายภาพบำบัดชำนาญการ<br>
-        เลขานุการทีมบริหารความเสี่ยง<br>
-        โรงพยาบาลดอนตูม
-    </dd>
-</div>
+        <div><dt>ผู้ดูแลข้อมูล</dt><dd>เลขานุการทีมบริหารความเสี่ยง</dd></div>
         <div><dt>ช่องทางใช้งาน</dt><dd>GitHub Pages</dd></div>
       </dl>
     </section>
@@ -434,6 +470,7 @@
   <section class="about-card version-history">
     <h3>ประวัติเวอร์ชัน</h3>
     <div class="version-list">
+      <div><b>V6.18</b><span>เพิ่ม Risk Register ตามมาตรฐานสำคัญจำเป็น 9 ด้าน</span></div>
       <div><b>V6.16</b><span>เปลี่ยนโลโก้หน้า “เกี่ยวกับระบบ” และกำหนดเป็น Production Release</span></div>
       <div><b>V6.15</b><span>ปรับ Header เป็นรูปแบบทางการ พร้อมโลโก้หน่วยงาน</span></div>
       <div><b>V6.12</b><span>เพิ่มหน้า About / Version</span></div>
@@ -453,5 +490,5 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.17-severity-split"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.18-essential-standards"></script>
 </body></html>

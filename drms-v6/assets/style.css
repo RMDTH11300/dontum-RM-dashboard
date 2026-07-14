@@ -318,3 +318,55 @@
 @media(max-width:600px){
   .matrix-summary-grid{grid-template-columns:1fr}
 }
+
+
+/* V6.20 – Essential Standards yearly severity matrix */
+.yearly-matrix-table{
+  min-width:1180px;
+}
+.yearly-matrix-table thead th{
+  white-space:nowrap;
+}
+.matrix-standard-title{
+  width:230px;
+  text-align:left!important;
+  vertical-align:top!important;
+  background:#f4f8fd!important;
+}
+.matrix-standard-title b,
+.matrix-standard-title span{
+  display:block;
+}
+.matrix-standard-title b{
+  color:#17365d;
+}
+.matrix-standard-title span{
+  margin-top:6px;
+  color:#465d75;
+  line-height:1.45;
+  font-weight:600;
+}
+.yearly-matrix-table .matrix-risk-title{
+  width:280px;
+}
+.yearly-matrix-table td{
+  min-width:145px;
+  font-weight:800;
+  line-height:1.5;
+}
+.yearly-matrix-table .matrix-empty{
+  background:#fff!important;
+  color:#a6b2c0!important;
+}
+.yearly-matrix-table .risk-low{
+  background:#2ecc71!important;
+  color:#0b3d22!important;
+}
+.yearly-matrix-table .risk-moderate{
+  background:#ffeb3b!important;
+  color:#5c4900!important;
+}
+.yearly-matrix-table .risk-extreme{
+  background:#e74c3c!important;
+  color:#fff!important;
+}

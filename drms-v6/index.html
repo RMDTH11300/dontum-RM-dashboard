@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.19-risk-matrix">
+  <link rel="stylesheet" href="assets/style.css?v=6.20-essential-yearly">
 </head>
 <body>
 <header class="topbar">
@@ -204,7 +204,7 @@
     
     <div class="essential-tabs">
       <button id="essentialRegisterTab" class="essential-tab active">Risk Register</button>
-      <button id="essentialMatrixTab" class="essential-tab">Risk Matrix 5×5</button>
+      <button id="essentialMatrixTab" class="essential-tab">รายงาน Risk Matrix รายปี</button>
     </div>
 
     <div id="essentialRegisterView">
@@ -226,62 +226,45 @@
   
     </div>
 
+    
     <div id="essentialMatrixView" class="hidden">
       <div class="matrix-toolbar">
         <div>
-          <h3>รายงาน Risk Matrix 5×5</h3>
-          <p>คำนวณโอกาสเกิดจากจำนวนเหตุการณ์ของแต่ละรหัสในช่วงปีงบประมาณที่เลือก</p>
+          <h3>รายงาน Risk Matrix มาตรฐานสำคัญจำเป็น</h3>
+          <p>สรุปจำนวนเหตุการณ์แยกตามรหัส Incident ระดับความรุนแรง และปีงบประมาณ</p>
         </div>
         <div class="matrix-legend">
-          <span class="risk-low">ต่ำ</span>
-          <span class="risk-moderate">ปานกลาง</span>
-          <span class="risk-high">สูง</span>
-          <span class="risk-extreme">สูงมาก</span>
+          <span class="risk-low">A–B / C–D</span>
+          <span class="risk-moderate">E–F</span>
+          <span class="risk-extreme">G–H / I</span>
         </div>
       </div>
 
       <div class="matrix-summary-grid">
-        <article><span>จำนวนรหัสความเสี่ยง</span><b id="matrixRiskCodes">0</b></article>
-        <article><span>จำนวน Incident</span><b id="matrixIncidentTotal">0</b></article>
-        <article><span>คะแนนเสี่ยงสูงสุด</span><b id="matrixMaxScore">0</b></article>
-        <article><span>ระดับสูงมาก</span><b id="matrixExtremeCount">0</b></article>
+        <article><span>จำนวนมาตรฐาน</span><b id="matrixStandardCount">9</b></article>
+        <article><span>จำนวนรหัส Incident</span><b id="matrixRiskCodes">0</b></article>
+        <article><span>จำนวน Incident รวม</span><b id="matrixIncidentTotal">0</b></article>
+        <article><span>ปีงบประมาณที่แสดง</span><b id="matrixYearCount">0</b></article>
       </div>
 
       <div class="matrix-table-wrap">
-        <table class="risk-matrix-table">
+        <table class="risk-matrix-table yearly-matrix-table">
           <thead>
             <tr>
-              <th rowspan="2">Risk ID / รายการ</th>
-              <th colspan="5">โอกาสเกิด (Likelihood)</th>
-              <th rowspan="2">รวม</th>
-            </tr>
-            <tr>
-              <th>1<br><small>น้อยมาก</small></th>
-              <th>2<br><small>น้อย</small></th>
-              <th>3<br><small>ปานกลาง</small></th>
-              <th>4<br><small>สูง</small></th>
-              <th>5<br><small>สูงมาก</small></th>
+              <th>มาตรฐานสำคัญจำเป็น</th>
+              <th>Incident</th>
+              <th id="matrixYearHeader"></th>
             </tr>
           </thead>
           <tbody id="essentialMatrixRows"></tbody>
-          <tfoot>
-            <tr>
-              <th>รวมทั้งหมด</th>
-              <th id="matrixCol1">0</th>
-              <th id="matrixCol2">0</th>
-              <th id="matrixCol3">0</th>
-              <th id="matrixCol4">0</th>
-              <th id="matrixCol5">0</th>
-              <th id="matrixGrandTotal">0</th>
-            </tr>
-          </tfoot>
         </table>
       </div>
 
       <div class="matrix-note">
-        <b>เกณฑ์โอกาสเกิดอัตโนมัติ:</b>
-        1 ครั้ง = ระดับ 1, 2–3 ครั้ง = ระดับ 2, 4–6 ครั้ง = ระดับ 3,
-        7–12 ครั้ง = ระดับ 4 และมากกว่า 12 ครั้ง = ระดับ 5
+        <b>เกณฑ์สี:</b>
+        สีเขียว = พบเฉพาะระดับ A–B หรือ C–D,
+        สีเหลือง = พบระดับ E–F,
+        สีแดง = พบระดับ G–H หรือ I
       </div>
     </div>
 </section>
@@ -558,5 +541,5 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.19-risk-matrix"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.20-essential-yearly"></script>
 </body></html>

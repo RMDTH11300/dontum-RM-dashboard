@@ -173,7 +173,7 @@ function renderUnits(){
     const departments=g.departments.filter(d=>!q||[d.name,...d.units].join(' ').toLowerCase().includes(q)||g.name.toLowerCase().includes(q));
     const deptHtml=departments.map((d,di)=>{
       const dUnits=allDescendantUnits(d),ds=checkboxState(dUnits);
-      const leaves=d.units.filter(u=>state.units.includes(u)&&(!q||[g.name,d.name,u].join(' ').toLowerCase().includes(q)));
+      const leaves=d.units.filter(u=>!q||[g.name,d.name,u].join(' ').toLowerCase().includes(q));
       if(!leaves.length)return'';
       return `<details class="org-dept" open>
         <summary><label class="org-parent"><input type="checkbox" data-kind="dept" data-units="${esc(dUnits.join('||'))}" ${ds.checked?'checked':''}><span>${esc(d.name)}</span></label></summary>

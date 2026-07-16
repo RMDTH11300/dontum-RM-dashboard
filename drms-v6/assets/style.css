@@ -392,3 +392,61 @@
   text-align:center;
   font-weight:800;
 }
+
+
+/* V6.21 – Mobile Responsive */
+.mobile-menu-btn{display:none;width:44px;height:44px;min-width:44px;border:1px solid rgba(255,255,255,.35);border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:23px;font-weight:800;cursor:pointer;align-items:center;justify-content:center;margin-right:10px;z-index:1202}
+.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(9,30,56,.48);backdrop-filter:blur(2px);z-index:1090}
+button,select,input,a.nav,.nav{min-height:42px}
+.table-wrap,.matrix-table-wrap,.essential-table-wrap{-webkit-overflow-scrolling:touch}
+
+@media(max-width:1100px){
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .grid2{grid-template-columns:1fr!important}
+  .essential-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .document-grid,.about-grid{grid-template-columns:1fr!important}
+}
+
+@media(max-width:900px){
+  header{position:sticky;top:0;z-index:1200;padding:8px 12px!important;min-height:64px}
+  .mobile-menu-btn{display:flex}
+  header .brand,header .official-brand{flex:1;min-width:0}
+  header .brand b,header .official-brand-text b{font-size:14px!important;white-space:normal!important;line-height:1.2}
+  header .brand small,header .official-brand-text small,header .official-version,header .top-actions{display:none!important}
+  aside,.sidebar{position:fixed!important;top:0;left:0;bottom:0;width:min(86vw,320px)!important;max-width:320px;transform:translateX(-105%);transition:transform .25s ease;z-index:1150;overflow-y:auto!important;padding-top:78px!important;box-shadow:8px 0 24px rgba(0,0,0,.22);background:#fff}
+  body.mobile-nav-open aside,body.mobile-nav-open .sidebar{transform:translateX(0)}
+  body.mobile-nav-open .mobile-overlay{display:block}
+  main,.main,.content{margin-left:0!important;width:100%!important;max-width:100%!important;padding:14px!important}
+  .layout,.app,.shell{display:block!important}
+  .page-title{flex-direction:column!important;align-items:stretch!important;gap:10px!important}
+  .page-title h1{font-size:25px!important;line-height:1.2}
+  .page-title button,.page-title .actions{width:100%}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .cards article{min-width:0;padding:14px!important}
+  .cards article strong{font-size:28px!important}
+  .essential-grid{grid-template-columns:1fr!important}
+  .essential-card{width:100%}
+  .essential-tabs{overflow-x:auto;white-space:nowrap;padding-bottom:10px}
+  .essential-tab{flex:0 0 auto}
+  .matrix-summary-grid,.essential-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .filter-row,.filters,.toolbar,.panel-title{flex-direction:column!important;align-items:stretch!important}
+  .filter-row>*,.filters>*,.toolbar>*{width:100%!important}
+  table{font-size:13px}
+  th,td{padding:9px 8px!important}
+  .document-hero,.about-hero{flex-direction:column!important;align-items:flex-start!important}
+}
+
+@media(max-width:600px){
+  header{min-height:58px}
+  .mobile-menu-btn{width:40px;height:40px;min-width:40px}
+  .cards{grid-template-columns:1fr!important}
+  .matrix-summary-grid,.essential-kpis{grid-template-columns:1fr!important}
+  .page-title h1{font-size:22px!important}
+  h2{font-size:20px!important} h3{font-size:17px!important}
+  .panel{border-radius:10px!important}
+  .bar-row{grid-template-columns:44px minmax(80px,1fr) 54px!important;gap:7px!important}
+  .document-actions{flex-direction:column!important}
+  .document-actions a,.document-actions button{width:100%!important}
+  .about-logo.about-hospital-logo{width:130px!important;height:82px!important;min-width:130px!important}
+  .yearly-matrix-table{min-width:980px!important}
+}

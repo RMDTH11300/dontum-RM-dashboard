@@ -717,3 +717,30 @@ init();
 function currentYearLabel(){
   return state.year==='all' ? 'ทุกปีงบประมาณ' : `ปีงบประมาณ ${state.year}`;
 }
+
+function initMobileNavigation(){
+  const btn=document.getElementById('mobileMenuBtn');
+  const overlay=document.getElementById('mobileOverlay');
+  const sidebar=document.querySelector('aside, .sidebar');
+  if(!btn||!overlay||!sidebar)return;
+  const closeMenu=()=>{
+    document.body.classList.remove('mobile-nav-open');
+    btn.setAttribute('aria-expanded','false');
+    btn.textContent='☰';
+  };
+  const openMenu=()=>{
+    document.body.classList.add('mobile-nav-open');
+    btn.setAttribute('aria-expanded','true');
+    btn.textContent='✕';
+  };
+  btn.addEventListener('click',()=>document.body.classList.contains('mobile-nav-open')?closeMenu():openMenu());
+  overlay.addEventListener('click',closeMenu);
+  sidebar.querySelectorAll('.nav').forEach(item=>item.addEventListener('click',()=>{if(window.innerWidth<=900)closeMenu()}));
+  window.addEventListener('resize',()=>{if(window.innerWidth>900)closeMenu()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initMobileNavigation);
+}else{
+  initMobileNavigation();
+}

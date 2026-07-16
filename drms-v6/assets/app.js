@@ -148,7 +148,14 @@ async function loadYear(){
     toast('โหลดข้อมูลไม่สำเร็จ ตรวจสอบโครงสร้างไฟล์')
   }
 }
-function normUnit(v){return String(v||'ไม่ระบุ').trim()||'ไม่ระบุ'}
+const UNIT_ALIAS_MAP={
+  'ฝังเข็ม':'แพทย์แผนจีน',
+  'งานฝังเข็ม':'แพทย์แผนจีน',
+  'แพทย์แผนจีน':'แพทย์แผนจีน',
+  'งานแพทย์แผนจีน':'แพทย์แผนจีน'
+};
+function cleanUnitName(v){return String(v||'ไม่ระบุ').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim()||'ไม่ระบุ'}
+function normUnit(v){const name=cleanUnitName(v);return UNIT_ALIAS_MAP[name]||name}
 function allDescendantUnits(node){
   if(Array.isArray(node.units))return node.units.filter(u=>state.units.includes(u));
   if(Array.isArray(node.departments))return node.departments.flatMap(allDescendantUnits);
@@ -204,7 +211,11 @@ function renderUnits(){
 function riskType(r){const text=String(r[IDX.risk]||'').toUpperCase();if(text.startsWith('C'))return'Clinical';if(text.startsWith('G')||text.startsWith('N'))return'Non-clinical';return'อื่นๆ'}
 function isHigh(s){return ['E','F','G','H','I','3','4','5'].includes(String(s||'').trim().toUpperCase())}
 function monthOf(v){if(!v)return'';const d=new Date(v);return Number.isNaN(d.getTime())?'':d.getMonth()+1}
-function rowMatchesSelectedUnit(v){if(!state.selected.size)return true;const text=normUnit(v);if(state.selected.has(text))return true;return [...state.selected].some(u=>text.split(/[\n,;]+/).map(x=>x.trim()).includes(u))}
+function rowMatchesSelectedUnit(v){
+  if(!state.selected.size)return true;
+  const units=String(v||'').split(/[\n,;]+/).map(x=>normUnit(x)).filter(Boolean);
+  return [...state.selected].some(selected=>units.includes(normUnit(selected)))
+}
 function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||r.some(v=>String(v??'').toLowerCase().includes(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
 function renderDashboard(){const a=state.filtered;$('#kTotal').textContent=a.length.toLocaleString();$('#kClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#kNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#kHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));renderSeveritySplit(a);rank('#topRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));rank('#topUnits',a.map(r=>normUnit(r[IDX.mainUnit]))) }
 

@@ -450,3 +450,67 @@ button,select,input,a.nav,.nav{min-height:42px}
   .about-logo.about-hospital-logo{width:130px!important;height:82px!important;min-width:130px!important}
   .yearly-matrix-table{min-width:980px!important}
 }
+
+
+/* V6.22.3 – Mobile year and unit filters */
+@media(max-width:1000px){
+  .sidebar .sidebox{
+    display:block!important;
+  }
+}
+@media(max-width:900px){
+  aside.sidebar,
+  .sidebar{
+    padding-top:76px!important;
+    padding-bottom:24px!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  .sidebar .sidebox{
+    display:block!important;
+    position:relative!important;
+    z-index:1160!important;
+    margin:12px 10px!important;
+    padding:12px!important;
+    background:#f9fbfe!important;
+  }
+  .sidebar .sidebox select,
+  .sidebar .sidebox input,
+  .sidebar .sidebox button{
+    display:block!important;
+    width:100%!important;
+    min-height:44px!important;
+    font-size:16px!important;
+    pointer-events:auto!important;
+    touch-action:manipulation;
+    position:relative;
+    z-index:1161;
+  }
+  .sidebar .sidebox select{
+    appearance:auto!important;
+    -webkit-appearance:menulist!important;
+    background-color:#fff!important;
+  }
+  .sidebar .unit-list{
+    display:block!important;
+    max-height:42vh!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:12px;
+  }
+  .sidebar .unit-list label{
+    min-height:42px;
+    padding:9px 4px!important;
+    align-items:center!important;
+  }
+  .sidebar .unit-list input[type="checkbox"]{
+    width:20px!important;
+    height:20px!important;
+    min-height:20px!important;
+    flex:0 0 20px;
+  }
+  body.mobile-nav-open{
+    overflow:hidden;
+  }
+}

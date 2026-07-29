@@ -764,3 +764,26 @@ if(document.readyState==='loading'){
 }else{
   initMobileNavigation();
 }
+
+
+async function loadRca2569Additions(){
+  try{
+    const obj=await json('config/rca-2569-additions.json');
+    const items=Array.isArray(obj)?obj:(obj.items||[]);
+    state.rcaManifest=state.rcaManifest||[];
+    const existing=new Map(state.rcaManifest.map((x,i)=>[`${x.year}|${x.incident}`,i]));
+    items.forEach(item=>{
+      const key=`${item.year}|${item.incident}`;
+      if(existing.has(key))state.rcaManifest[existing.get(key)]={...state.rcaManifest[existing.get(key)],...item};
+      else state.rcaManifest.push(item)
+    })
+  }catch(e){
+    console.warn('ไม่พบข้อมูล RCA ปี 2569 เพิ่มเติม',e)
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>loadRca2569Additions().then(()=>{try{renderRca&&renderRca()}catch(e){}}));
+}else{
+  loadRca2569Additions().then(()=>{try{renderRca&&renderRca()}catch(e){}})
+}

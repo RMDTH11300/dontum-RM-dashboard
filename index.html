@@ -2,226 +2,548 @@
 <html lang="th">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Dashboard ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม แยกตามปีงบประมาณ">
-  <title>Dashboard ความเสี่ยง | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/styles.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DRMS | โรงพยาบาลดอนตูม</title>
+  <link rel="stylesheet" href="assets/style.css?v=6.22.4-rca68">
 </head>
 <body>
-  <div id="loading" class="loading-screen" role="status">
-    <div class="loader"></div>
-    <strong>กำลังโหลดข้อมูลความเสี่ยง…</strong>
+<header class="topbar"><button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
+  <div class="brand official-brand">
+  <div class="official-logos">
+    <img class="moph-logo" src="assets/moph-logo.png?v=6.15" alt="กระทรวงสาธารณสุข">
+    <img class="hospital-logo-wide" src="assets/dontum-hospital-logo.png?v=6.15" alt="โรงพยาบาลดอนตูม">
+  </div>
+  <div class="official-brand-text">
+    <b>DON TUM RISK MANAGEMENT SYSTEM</b>
+    <small>ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม</small>
+  </div>
+  <div class="official-version">V6.18</div>
+</div>
+  <div class="top-actions"><a href="../" class="ghost">Dashboard V1</a><span class="tag">DRMS 1.0</span></div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <button class="nav active" data-view="dashboard">⌂ ภาพรวม</button>
+  <button class="nav" data-view="incidents">▦ รายการอุบัติการณ์</button>
+  <button class="nav" data-view="profile">▤ Risk Profile</button>
+  <button class="nav" data-view="register">▥ Risk Register</button>
+  <button class="nav" data-view="essential">✦ มาตรฐานสำคัญจำเป็น 9 ด้าน</button>
+  <button class="nav" data-view="analytics">◫ Analytics</button>
+  <button class="nav" data-view="documents">📚 เอกสารและแบบฟอร์ม</button>
+  <button class="nav" data-view="rca">📑 RCA</button>
+  <button class="nav" data-view="haReport">▧ รายงาน HA หน่วยงาน</button>
+  <button class="nav" data-view="about">ℹ️ เกี่ยวกับระบบ</button>
+  <a class="nav link" href="admin.html">⚙ หน้า Admin</a>
+  <div class="sidebox">
+    <label>ปีงบประมาณ</label><select id="year"><option value="all">ทุกปีงบประมาณ</option></select>
+    <small>ยึดจากชุดข้อมูล ไม่คำนวณจากวันที่</small>
+  </div>
+  <div class="sidebox">
+    <div class="side-title"><b>กลุ่มงาน / งาน / งานย่อย</b><span id="selectedCount">ทั้งหมด</span></div>
+    <div class="unit-actions"><button id="allUnits">เลือกทั้งหมด</button><button id="expandUnits">ย่อทั้งหมด</button><button id="clearUnits">ล้าง</button></div>
+    <input id="unitSearch" placeholder="ค้นหากลุ่มงาน งาน หรืองานย่อย">
+    <div id="units" class="unit-list"></div>
+  </div>
+</aside>
+<main class="main">
+<section id="dashboard" class="view active">
+  <div class="page-title"><div><h1>ภาพรวมความเสี่ยง</h1><p>ข้อมูลตามปีงบประมาณและกลุ่ม/หน่วยงานหลักที่แก้ไข</p></div><button class="primary" id="refresh">↻ รีเฟรชข้อมูล</button></div>
+  <div class="cards">
+    <article><span>อุบัติการณ์ทั้งหมด</span><strong id="kTotal">0</strong><small>รายการ</small></article>
+    <article class="green"><span>Clinical</span><strong id="kClinical">0</strong><small>รายการ</small></article>
+    <article class="purple"><span>Non-clinical</span><strong id="kNon">0</strong><small>รายการ</small></article>
+    <article class="red"><span>High Risk</span><strong id="kHigh">0</strong><small>รายการ</small></article>
+  </div>
+  <div class="grid2"><section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="monthly" class="bars"></div></section><section class="panel severity-panel">
+  <h3>ระดับความรุนแรง</h3>
+  <div class="severity-groups">
+    <div class="severity-group clinical-severity">
+      <div class="severity-group-title">
+        <span class="severity-dot clinical-dot"></span>
+        <div><b>Clinical</b><small>เรียงระดับ A–I</small></div>
+      </div>
+      <div id="severityClinical" class="bars severity-bars"></div>
+    </div>
+    <div class="severity-group nonclinical-severity">
+      <div class="severity-group-title">
+        <span class="severity-dot nonclinical-dot"></span>
+        <div><b>Non-clinical</b><small>เรียงระดับ 1–5</small></div>
+      </div>
+      <div id="severityNonClinical" class="bars severity-bars"></div>
+    </div>
+  </div>
+</section></div>
+  <div class="grid2"><section class="panel"><h3>Top 10 ความเสี่ยง</h3><div id="topRisks"></div></section><section class="panel"><h3>Top 10 หน่วยงานหลักที่แก้ไข</h3><div id="topUnits"></div></section></div>
+</section>
+<section id="incidents" class="view">
+  <div class="page-title"><div><h1>รายการอุบัติการณ์</h1><p>ค้นหาและตรวจสอบข้อมูลจากฐานข้อมูลกลาง</p></div></div>
+  <div class="toolbar filterbar"><input id="q" placeholder="ค้นหารหัส เรื่องย่อย รายละเอียด หน่วยงาน..."><select id="type"><option value="">ทุกประเภท</option><option>Clinical</option><option>Non-clinical</option></select><select id="sev"><option value="">ทุกระดับ</option></select><select id="month"><option value="">ทุกเดือนงบประมาณ</option></select><button id="reset">ล้างตัวกรอง</button></div>
+  <section class="panel table-wrap"><div class="table-head"><b id="resultCount">0 รายการ</b><button id="csv">ส่งออก CSV</button></div><table><thead><tr><th>ลำดับ</th><th>วันที่เกิด</th><th>รหัส/เรื่อง</th><th>เรื่องย่อย</th><th>ความรุนแรง</th><th>หน่วยงานรายงาน</th><th>หน่วยงานหลักที่แก้ไข</th><th>รายละเอียด</th></tr></thead><tbody id="incidentRows"></tbody></table><div id="pager" class="pager"></div></section>
+</section>
+<section id="profile" class="view">
+  <div class="page-title"><div><h1>บัญชีรายการความเสี่ยง (Risk Profile)</h1><p>สร้างร่างอัตโนมัติจาก Incident ตามกลุ่ม/หน่วยงานหลักที่แก้ไข และใช้แบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions">
+<button id="profileSummaryMode" class="mode-btn active">มุมมองสรุป</button>
+<button id="profileHaMode" class="mode-btn">แบบฟอร์ม HA</button>
+<button id="saveProfileDraft">บันทึกร่าง HA</button>
+<button id="exportProfileWord">Word</button>
+<button id="exportProfileExcel">Excel</button>
+<button id="exportProfileCsv">CSV</button>
+<button id="printProfile" class="primary">พิมพ์ / PDF</button>
+</div></div>
+  <section id="profileSummaryPane" class="profile-sheet">
+    <div class="profile-heading">
+      <h2>บัญชีรายการความเสี่ยง (Risk Profile)</h2>
+      <p id="profileUnitTitle">หน่วยงาน: ภาพรวมโรงพยาบาล</p>
+      <p id="profilePeriod">ประจำปีงบประมาณ</p>
+      <p class="profile-help">จัดทำรายการความเสี่ยง วิเคราะห์โอกาสเกิดและผลกระทบ จัดระดับตาม Risk Matrix และกำหนดมาตรการควบคุม/ป้องกัน/แก้ไข</p>
+    </div>
+    <div class="context-note" id="profileContext"></div>
+    <div class="profile-note"><b>หลักการคำนวณ:</b> โอกาส 1 = 1–2 ครั้ง, 2 = 3–20 ครั้ง, 3 = 21–50 ครั้ง, 4 = 51–100 ครั้ง, 5 = มากกว่า 100 ครั้ง • คะแนน = โอกาส × ผลกระทบ</div>
+    <section class="profile-block">
+      <h3>ความเสี่ยงด้านคลินิก (Clinical risk) — Top 10</h3>
+      <div class="table-wrap profile-table"><table><thead><tr><th rowspan="2">ลำดับ</th><th rowspan="2">รายการความเสี่ยง</th><th colspan="3">การประเมินความเสี่ยง</th><th rowspan="2">ระดับความเสี่ยง</th><th rowspan="2">มาตรการควบคุม/ป้องกัน/แก้ไขความเสี่ยง</th></tr><tr><th>โอกาส<br>(ความถี่) 1–5</th><th>ผลกระทบ<br>(ความรุนแรง) 1–5</th><th>ผลคูณ<br>1–25</th></tr></thead><tbody id="profileClinicalRows"></tbody></table></div>
+    </section>
+    <section class="profile-block">
+      <h3>ความเสี่ยงด้านทั่วไป (Non-clinical risk) — Top 10</h3>
+      <div class="table-wrap profile-table"><table><thead><tr><th rowspan="2">ลำดับ</th><th rowspan="2">รายการความเสี่ยง</th><th colspan="3">การประเมินความเสี่ยง</th><th rowspan="2">ระดับความเสี่ยง</th><th rowspan="2">มาตรการควบคุม/ป้องกัน/แก้ไขความเสี่ยง</th></tr><tr><th>โอกาส<br>(ความถี่) 1–5</th><th>ผลกระทบ<br>(ความรุนแรง) 1–5</th><th>ผลคูณ<br>1–25</th></tr></thead><tbody id="profileNonRows"></tbody></table></div>
+    </section>
+    <p class="profile-warning">หมายเหตุ: ค่า Impact และมาตรการเป็นร่างตั้งต้นจาก Risk Profile ของโรงพยาบาล หากเป็นรายหน่วยงานควรให้หน่วยงานเจ้าภาพทบทวนรับรองก่อนใช้เป็นหลักฐาน HA</p>
+  </section>
+  <section id="profileHaPane" class="ha-form-pane hidden">
+    <div class="ha-form-header">
+      <div>
+        <h2>แบบฟอร์ม Risk Profile สำหรับ HA</h2>
+        <p id="profileHaContext">ใช้ข้อมูลจาก Incident และให้หน่วยงานเจ้าภาพทบทวนรายละเอียด</p>
+      </div>
+      <div class="draft-meta"><span id="profileDraftStatus">ยังไม่บันทึกร่าง</span></div>
+    </div>
+    <div class="ha-instruction"><b>วิธีใช้:</b> คลิกช่องสีขาวเพื่อกรอกหรือแก้ไขข้อมูล แล้วกด “บันทึกร่าง HA” ข้อมูลจะเก็บไว้ในเบราว์เซอร์เครื่องนี้</div>
+    <div class="table-wrap ha-edit-table">
+      <table id="profileHaTable">
+        <thead><tr>
+          <th>ลำดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน/ระดับ</th>
+          <th>วัตถุประสงค์</th><th>ตัวชี้วัด</th><th>เป้าหมาย</th><th>มาตรการเดิม</th>
+          <th>มาตรการเพิ่มเติม</th><th>ผู้รับผิดชอบ</th><th>กำหนดเวลา</th><th>ผลการติดตาม</th>
+        </tr></thead>
+        <tbody id="profileHaRows"></tbody>
+      </table>
+    </div>
+    <section class="history-panel">
+      <h3>ประวัติการบันทึกร่าง</h3>
+      <div id="profileHistory" class="history-list"></div>
+    </section>
+  </section>
+</section>
+<section id="register" class="view">
+  <div class="page-title"><div><h1>Risk Register</h1><p>สร้างร่างทะเบียนความเสี่ยงอัตโนมัติจาก Incident และ Risk Profile ตามแบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions">
+<button id="registerSummaryMode" class="mode-btn active">มุมมองสรุป</button>
+<button id="registerHaMode" class="mode-btn">แบบฟอร์ม HA</button>
+<button id="saveRegisterDraft">บันทึกร่าง HA</button>
+<button id="exportRegisterWord">Word</button>
+<button id="exportRegisterExcel">Excel</button>
+<button id="exportRegisterCsv">CSV</button>
+<button id="printRegister" class="primary">พิมพ์ / PDF</button>
+</div></div>
+  <div id="registerSummaryPane">
+  <div class="context-note" id="registerContext"></div>
+  <div class="profile-note"><b>หลักการ:</b> ดึงความเสี่ยงสำคัญจาก Incident ที่ผ่านตัวกรองปัจจุบัน จัดอันดับด้วยคะแนน Risk Matrix และใช้มาตรการจากทะเบียนความเสี่ยงเดิมเป็นค่าตั้งต้นเมื่อรหัสตรงกัน</div>
+  <section class="panel table-wrap register-table"><table><thead><tr><th>ลำดับ/รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียดและหลักฐาน</th><th>ช่วงเวลาติดตาม</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน/ควบคุม</th><th>ตัวชี้วัดและการติดตาม</th><th>การลดผลกระทบ</th><th>ผู้รับผิดชอบ</th></tr></thead><tbody id="registerRows"></tbody></table></section>
+  <p class="profile-warning">หมายเหตุ: เป็นร่างอัตโนมัติสำหรับให้หน่วยงานเจ้าภาพทบทวน ปรับมาตรการ ตัวชี้วัด ผู้รับผิดชอบ และกำหนดเวลาติดตามก่อนใช้เป็นหลักฐาน HA</p>
+  </div>
+  <section id="registerHaPane" class="ha-form-pane hidden">
+    <div class="ha-form-header">
+      <div>
+        <h2>แบบฟอร์ม Risk Register สำหรับ HA</h2>
+        <p id="registerHaContext">ทะเบียนความเสี่ยงสำหรับกำหนดแผนควบคุมและติดตาม</p>
+      </div>
+      <div class="draft-meta"><span id="registerDraftStatus">ยังไม่บันทึกร่าง</span></div>
+    </div>
+    <div class="ha-instruction"><b>วิธีใช้:</b> คลิกช่องสีขาวเพื่อปรับมาตรการ ตัวชี้วัด ผู้รับผิดชอบ กำหนดเวลา และผลติดตาม แล้วกด “บันทึกร่าง HA”</div>
+    <div class="table-wrap ha-edit-table">
+      <table id="registerHaTable">
+        <thead><tr>
+          <th>รหัส</th><th>ชื่อความเสี่ยง</th><th>หลักฐาน/สถานการณ์</th><th>L</th><th>I</th><th>ระดับ</th>
+          <th>มาตรการป้องกัน/ควบคุม</th><th>ตัวชี้วัด</th><th>เป้าหมาย</th>
+          <th>ผู้รับผิดชอบ</th><th>กำหนดเวลา</th><th>ผลการติดตาม</th><th>หลักฐานประกอบ</th>
+        </tr></thead>
+        <tbody id="registerHaRows"></tbody>
+      </table>
+    </div>
+    <section class="history-panel">
+      <h3>ประวัติการบันทึกร่าง</h3>
+      <div id="registerHistory" class="history-list"></div>
+    </section>
+  </section>
+</section>
+
+
+<section id="essential" class="view">
+  <div class="page-title">
+    <div>
+      <h1>มาตรฐานสำคัญจำเป็น 9 ด้าน</h1>
+      <p>Risk Register อัตโนมัติจากข้อมูล Incident ตามรหัสมาตรฐานสำคัญจำเป็น</p>
+    </div>
+    <div class="actions">
+      <button id="exportEssentialCsv">CSV</button>
+      <button id="exportEssentialExcel">Excel</button>
+      <button id="printEssential" class="primary">พิมพ์ / PDF</button>
+    </div>
   </div>
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true">RM</div>
+  <div id="essentialCards" class="essential-grid"></div>
+
+  <section class="panel essential-detail">
+    <div class="panel-title essential-panel-title">
       <div>
-        <h1>Dashboard ระบบบริหารความเสี่ยง</h1>
-        <p>โรงพยาบาลดอนตูม</p>
+        <span id="essentialBadge" class="essential-badge">ES01</span>
+        <h3 id="essentialTitle">เลือกรายการมาตรฐาน</h3>
+        <p id="essentialCodes"></p>
       </div>
     </div>
-    <div class="year-control">
-      <label for="yearSelect">ปีงบประมาณ</label>
-      <select id="yearSelect"></select>
+
+    
+    <div class="essential-tabs">
+      <button id="essentialRegisterTab" class="essential-tab active">Risk Register</button>
+      <button id="essentialMatrixTab" class="essential-tab">รายงาน Risk Matrix รายปี</button>
     </div>
-  </header>
 
-  <nav class="tabs" aria-label="เมนูหลัก">
-    <button class="tab active" data-view="dashboard">ภาพรวม</button>
-    <button class="tab" data-view="incidents">ค้นหาอุบัติการณ์</button>
-    <button class="tab" data-view="profile">Risk Profile</button>
-    <button class="tab" data-view="register">Risk Register</button>
-    <button class="tab" data-view="about">เกี่ยวกับระบบ</button>
-  </nav>
+    <div id="essentialRegisterView">
+<div class="essential-kpis">
+      <article><span>Incident ทั้งหมด</span><b id="essentialTotal">0</b><small>รายการ</small></article>
+      <article class="red"><span>High Risk</span><b id="essentialHigh">0</b><small>รายการ</small></article>
+      <article class="green"><span>มี RCA</span><b id="essentialRca">0</b><small>รายการ</small></article>
+      <article class="purple"><span>รหัสที่พบเหตุการณ์</span><b id="essentialCodeCount">0</b><small>รหัส</small></article>
+    </div>
 
-  <main>
-    <section id="view-dashboard" class="view active">
-      <div class="notice fiscal-notice">
-        <span class="notice-icon">✓</span>
+    <div class="table-wrap essential-table-wrap">
+      <table>
+        <thead><tr>
+          <th>Risk ID</th><th>Risk Title / Description</th><th>จำนวน</th><th>ระดับสูงสุด</th><th>High Risk</th><th>หน่วยงานหลักที่แก้ไข</th><th>RCA</th>
+        </tr></thead>
+        <tbody id="essentialRows"></tbody>
+      </table>
+    </div>
+  
+    </div>
+
+    
+    <div id="essentialMatrixView" class="hidden">
+      <div class="matrix-toolbar">
         <div>
-          <strong>ระบบนี้ยึดปีงบประมาณจากไฟล์ต้นทางโดยตรง</strong>
-          <p>ไม่คำนวณปีจากวันที่เกิดอุบัติการณ์ จึงไม่เกิดปัญหาจับปี พ.ศ. แทนปีงบประมาณ</p>
+          <h3>รายงาน Risk Matrix มาตรฐานสำคัญจำเป็น</h3>
+          <p>สรุปจำนวนเหตุการณ์แยกตามรหัส Incident ระดับความรุนแรง และปีงบประมาณ</p>
+        </div>
+        <div class="matrix-legend">
+          <span class="risk-low">A–B / C–D</span>
+          <span class="risk-moderate">E–F</span>
+          <span class="risk-extreme">G–H / I</span>
         </div>
       </div>
 
-      <div id="selectedYearTitle" class="section-heading"></div>
-      <div id="kpiGrid" class="kpi-grid"></div>
-
-      <div class="dashboard-grid">
-        <article class="panel span-2">
-          <div class="panel-head">
-            <div>
-              <h2>แนวโน้มจำนวนอุบัติการณ์รายปีงบประมาณ</h2>
-              <p>เปรียบเทียบข้อมูลตั้งแต่ปี 2566–2569</p>
-            </div>
-          </div>
-          <div id="yearComparisonChart" class="chart"></div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>อุบัติการณ์ตามเดือนงบประมาณ</h2>
-              <p>เรียงเดือน ต.ค. – ก.ย.</p>
-            </div>
-          </div>
-          <div id="monthlyChart" class="chart"></div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>ระดับความรุนแรง</h2>
-              <p>แสดงตามค่าที่บันทึกใน HRMS</p>
-            </div>
-          </div>
-          <div id="severityChart" class="chart"></div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>10 รหัสความเสี่ยงที่พบบ่อย</h2>
-              <p>จัดอันดับตามจำนวนครั้ง</p>
-            </div>
-          </div>
-          <div id="riskChart" class="chart"></div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>10 หน่วยงานที่รายงานมากที่สุด</h2>
-              <p>หน่วยงานที่บันทึกรายงาน</p>
-            </div>
-          </div>
-          <div id="unitChart" class="chart"></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="view-incidents" class="view">
-      <div class="section-heading">
-        <div>
-          <h2>ค้นหาอุบัติการณ์</h2>
-          <p>ค้นหาได้จากรหัส เรื่องย่อย รายละเอียด หน่วยงาน และสถานที่</p>
-        </div>
-        <button id="exportCsvBtn" class="btn secondary">ส่งออก CSV ที่กรองแล้ว</button>
+      <div class="matrix-summary-grid">
+        <article><span>จำนวนมาตรฐาน</span><b id="matrixStandardCount">9</b></article>
+        <article><span>จำนวนรหัส Incident</span><b id="matrixRiskCodes">0</b></article>
+        <article><span>จำนวน Incident รวม</span><b id="matrixIncidentTotal">0</b></article>
+        <article><span>ปีงบประมาณที่แสดง</span><b id="matrixYearCount">0</b></article>
       </div>
 
-      <div class="filter-panel">
-        <div class="filter wide">
-          <label for="searchInput">คำค้นหา</label>
-          <input id="searchInput" type="search" placeholder="เช่น Falling, Patient Identification, Medication error…">
-        </div>
-        <div class="filter">
-          <label for="typeFilter">ประเภท</label>
-          <select id="typeFilter"><option value="">ทั้งหมด</option></select>
-        </div>
-        <div class="filter">
-          <label for="severityFilter">ความรุนแรง</label>
-          <select id="severityFilter"><option value="">ทั้งหมด</option></select>
-        </div>
-        <div class="filter">
-          <label for="unitFilter">หน่วยงานรายงาน</label>
-          <select id="unitFilter"><option value="">ทั้งหมด</option></select>
-        </div>
-        <div class="filter">
-          <label for="mainUnitFilter">กลุ่ม/หน่วยงานหลักที่แก้ไข</label>
-          <select id="mainUnitFilter"><option value="">ทั้งหมด</option></select>
-        </div>
-        <div class="filter">
-          <label for="monthFilter">เดือนงบประมาณ</label>
-          <select id="monthFilter"><option value="">ทั้งหมด</option></select>
-        </div>
-        <button id="clearFiltersBtn" class="btn ghost">ล้างตัวกรอง</button>
-      </div>
-
-      <div class="table-summary">
-        <span id="resultCount">0 รายการ</span>
-        <span id="dataSourceLabel"></span>
-      </div>
-      <div class="table-wrap">
-        <table id="incidentTable">
+      <div class="matrix-table-wrap">
+        <table class="risk-matrix-table yearly-matrix-table">
           <thead>
-            <tr>
-              <th>ปีงบประมาณ</th>
-              <th>วันที่เกิด</th>
-              <th>รหัส / เรื่องอุบัติการณ์</th>
-              <th>เรื่องย่อย</th>
-              <th>ความรุนแรง</th>
-              <th>หน่วยงานรายงาน</th>
-              <th>สถานที่</th>
-              <th>รายละเอียด</th>
+            <tr id="matrixHeaderRow">
+              <th>มาตรฐานสำคัญจำเป็น</th>
+              <th>Incident</th>
             </tr>
           </thead>
-          <tbody id="incidentTbody"></tbody>
+          <tbody id="essentialMatrixRows"></tbody>
         </table>
       </div>
-      <div id="pagination" class="pagination"></div>
-    </section>
 
-    <section id="view-profile" class="view">
-      <div class="section-heading">
-        <div>
-          <h2>Risk Profile</h2>
-          <p>ความเสี่ยงสำคัญ Top 10 ด้าน Clinical และ Non-clinical</p>
-        </div>
+      <div class="matrix-note">
+        <b>เกณฑ์สี:</b>
+        สีเขียว = พบเฉพาะระดับ A–B หรือ C–D,
+        สีเหลือง = พบระดับ E–F,
+        สีแดง = พบระดับ G–H หรือ I
       </div>
-      <div id="profileContent"></div>
-    </section>
-
-    <section id="view-register" class="view">
-      <div class="section-heading">
-        <div>
-          <h2>Risk Register</h2>
-          <p>แผนป้องกัน การติดตามควบคุม และแนวทางบรรเทาความเสียหาย</p>
-        </div>
-      </div>
-      <div class="filter-panel compact">
-        <div class="filter wide">
-          <label for="registerSearch">ค้นหาใน Risk Register</label>
-          <input id="registerSearch" type="search" placeholder="ค้นหารหัส ชื่อความเสี่ยง หรือมาตรการ…">
-        </div>
-      </div>
-      <div id="registerContent"></div>
-    </section>
-
-    <section id="view-about" class="view">
-      <div class="about-grid">
-        <article class="panel">
-          <h2>หลักการกำหนดปีงบประมาณ</h2>
-          <p>ข้อมูลแต่ละแถวได้รับค่า <strong>ปีงบประมาณ</strong> จากไฟล์ที่นำเข้า เช่น ไฟล์ปี 66 จะถูกกำหนดเป็นปีงบประมาณ 2566 ทุกแถว แม้ว่าวันที่เกิดเหตุบางรายการจะอยู่ในปี พ.ศ. 2565 หรือ 2566 ก็ตาม</p>
-          <div class="code-rule">ปีงบประมาณ 2566 = 1 ต.ค. 2565 – 30 ก.ย. 2566</div>
-          <div class="code-rule">ปีงบประมาณ 2567 = 1 ต.ค. 2566 – 30 ก.ย. 2567</div>
-          <div class="code-rule">ปีงบประมาณ 2568 = 1 ต.ค. 2567 – 30 ก.ย. 2568</div>
-          <div class="code-rule">ปีงบประมาณ 2569 = 1 ต.ค. 2568 – 30 ก.ย. 2569</div>
-        </article>
-        <article class="panel">
-          <h2>ชุดข้อมูลในระบบ</h2>
-          <div id="validationList" class="validation-list"></div>
-        </article>
-        <article class="panel span-2 warning-panel">
-          <h2>ข้อควรระวังด้านข้อมูล</h2>
-          <p>GitHub Pages เป็นเว็บไซต์สาธารณะและไม่มีระบบล็อกอินจริง ข้อมูลในไฟล์ JSON จะถูกดาวน์โหลดได้ทั้งหมด ควรตรวจสอบและลบข้อมูลที่ระบุตัวบุคคลหรือข้อมูลผู้ป่วยก่อนเผยแพร่สู่สาธารณะ หากใช้ภายในองค์กร ควรวางระบบบนเซิร์ฟเวอร์ที่มีการยืนยันตัวตน</p>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <dialog id="detailDialog" class="detail-dialog">
-    <div class="dialog-head">
-      <div>
-        <span id="dialogYearBadge" class="badge"></span>
-        <h2 id="dialogTitle">รายละเอียดอุบัติการณ์</h2>
-      </div>
-      <button id="closeDialogBtn" class="icon-btn" aria-label="ปิด">×</button>
     </div>
-    <div id="dialogContent" class="detail-grid"></div>
-  </dialog>
+</section>
+</section>
 
-  <div id="toast" class="toast" role="status"></div>
-  <script src="assets/app.js" defer></script>
-</body>
-</html>
+<section id="analytics" class="view">
+  <div class="page-title"><div><h1>Analytics</h1><p>วิเคราะห์แนวโน้ม ความถี่ และสัดส่วนความเสี่ยงจากข้อมูลที่กรองไว้</p></div><button id="printAnalytics">พิมพ์ / บันทึก PDF</button></div>
+  <div class="cards">
+    <article><span>เหตุการณ์ทั้งหมด</span><strong id="aTotal">0</strong><small>รายการ</small></article>
+    <article class="red"><span>High Risk</span><strong id="aHigh">0</strong><small>รายการ</small></article>
+    <article class="green"><span>Near Miss / A-B</span><strong id="aNear">0</strong><small>รายการ</small></article>
+    <article class="purple"><span>หน่วยงานที่เกี่ยวข้อง</span><strong id="aUnits">0</strong><small>หน่วยงาน</small></article>
+  </div>
+  <div class="grid2">
+    <section class="panel"><h3>Pareto ความเสี่ยงสำคัญ</h3><div id="paretoRisks" class="pareto-list"></div></section>
+    <section class="panel"><h3>สัดส่วน Clinical / Non-clinical</h3><div id="typeSummary" class="summary-block"></div></section>
+  </div>
+  <div class="grid2">
+    <section class="panel"><h3>ความรุนแรงแยกตามประเภท</h3><div id="severityByType" class="matrix-table"></div></section>
+    <section class="panel"><h3>เดือนที่มีการรายงานสูงสุด</h3><div id="peakMonths" class="bars"></div></section>
+  </div>
+  <div class="grid2">
+    <section class="panel"><h3>Risk Matrix 5 × 5</h3><div class="panel-help">จำนวนประเด็นความเสี่ยงจาก Risk Profile ที่สร้างอัตโนมัติ แยกตามโอกาสเกิดและผลกระทบ</div><div id="riskMatrix" class="risk-matrix"></div></section>
+    <section class="panel"><h3>แนวโน้มเปรียบเทียบรายปีงบประมาณ</h3><div class="panel-help">ใช้ตัวกรองหน่วยงาน ประเภท ความรุนแรง และเดือนเดียวกับหน้าปัจจุบัน</div><div id="yearTrend" class="bars"></div></section>
+  </div>
+  <section class="panel readiness-panel"><h3>ความพร้อมของข้อมูลสำหรับ HA</h3><div id="haReadiness" class="readiness-list"></div></section>
+</section>
+
+
+<section id="documents" class="view">
+  <div class="page-title">
+    <div>
+      <h1>เอกสารและแบบฟอร์ม</h1>
+      <p>ศูนย์รวมคู่มือและแบบฟอร์มมาตรฐานด้านการบริหารความเสี่ยง โรงพยาบาลดอนตูม</p>
+    </div>
+  </div>
+
+  <section class="document-hero">
+    <div>
+      <span class="document-eyebrow">DOCUMENT CENTER</span>
+      <h2>ดาวน์โหลดเอกสารมาตรฐานจากแหล่งเดียว</h2>
+      <p>สำหรับใช้จัดทำ Risk Profile, Risk Register และวิเคราะห์สาเหตุราก (RCA) ให้เป็นรูปแบบเดียวกันทั้งโรงพยาบาล</p>
+    </div>
+    <div class="document-count">4<small>รายการ</small></div>
+  </section>
+
+  <div class="document-grid">
+    <article class="document-card manual">
+      <div class="document-icon">📘</div>
+      <div class="document-content">
+        <span class="document-type">คู่มือ</span>
+        <h3>คู่มือระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม 2569</h3>
+        <p>นโยบาย กระบวนการบริหารความเสี่ยง แนวทาง RCA และบัญชีอุบัติการณ์ HRMS</p>
+        <div class="document-meta"><span>PDF</span><span>111 หน้า</span></div>
+      </div>
+      <div class="document-actions">
+        <a href="docs/risk-management-manual-2569.pdf" target="_blank" rel="noopener">เปิดดู</a>
+        <a href="docs/risk-management-manual-2569.pdf" download>ดาวน์โหลด</a>
+      </div>
+    </article>
+
+    <article class="document-card">
+      <div class="document-icon">📋</div>
+      <div class="document-content">
+        <span class="document-type">แบบฟอร์ม</span>
+        <h3>แบบฟอร์ม Risk Profile</h3>
+        <p>บัญชีรายการความเสี่ยงด้านคลินิกและด้านทั่วไป พร้อมประเมินโอกาส ผลกระทบ และมาตรการควบคุม</p>
+        <div class="document-meta"><span>Word</span><span>แก้ไขได้</span></div>
+      </div>
+      <div class="document-actions">
+        <a href="docs/risk-profile-form.docx" download>ดาวน์โหลด</a>
+      </div>
+    </article>
+
+    <article class="document-card">
+      <div class="document-icon">📊</div>
+      <div class="document-content">
+        <span class="document-type">แบบฟอร์ม</span>
+        <h3>แบบฟอร์ม Risk Register</h3>
+        <p>ทะเบียนจัดการความเสี่ยง ครอบคลุม Risk Owner, การติดตาม ทบทวน และ Residual Risk</p>
+        <div class="document-meta"><span>Word</span><span>แก้ไขได้</span></div>
+      </div>
+      <div class="document-actions">
+        <a href="docs/risk-register-form.docx" download>ดาวน์โหลด</a>
+      </div>
+    </article>
+
+    <article class="document-card">
+      <div class="document-icon">🔎</div>
+      <div class="document-content">
+        <span class="document-type">แบบฟอร์ม</span>
+        <h3>แบบฟอร์ม RCA</h3>
+        <p>แบบบันทึกการวิเคราะห์หาสาเหตุราก สำหรับทบทวนเหตุการณ์สำคัญและกำหนดมาตรการป้องกันการเกิดซ้ำ</p>
+        <div class="document-meta"><span>Word</span><span>6 หน้า</span></div>
+      </div>
+      <div class="document-actions">
+        <a href="docs/rca-form.docx" download>ดาวน์โหลด</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="rca" class="view">
+  <div class="page-title">
+    <div><h1>RCA</h1><p>แสดงเฉพาะความเสี่ยงระดับ E–I และ 3–5 พร้อมสถานะมี/ไม่มี RCA และลิงก์ดาวน์โหลด</p></div>
+  </div>
+  <div class="cards rca-public-kpis">
+    <article><span>ต้องมี RCA</span><strong id="pubRcaRequired">0</strong><small>รายการ</small></article>
+    <article class="green"><span>มี RCA</span><strong id="pubRcaHas">0</strong><small>รายการ</small></article>
+    <article class="red"><span>ไม่มี RCA</span><strong id="pubRcaMissing">0</strong><small>รายการ</small></article>
+  </div>
+  <section class="panel">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>วันที่</th><th>Incident No.</th><th>เรื่องความเสี่ยง</th><th>หน่วยงานหลักที่แก้ไข</th><th>ระดับ</th><th>RCA</th><th>ดาวน์โหลด</th></tr></thead>
+        <tbody id="pubRcaRows"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+<section id="haReport" class="view">
+  <div class="page-title">
+    <div><h1>รายงาน HA ของหน่วยงาน</h1><p>สร้างรายงานจาก Incident, Risk Profile และ Risk Register พร้อมแก้ไขข้อความและส่งออกเอกสาร</p></div>
+    <div class="actions">
+      <button id="refreshHaReport">สร้างสรุปใหม่</button>
+      <button id="saveHaDraft">บันทึกร่างรายงาน</button>
+      <button id="exportHaWord">Word</button>
+      <button id="exportHaExcel">Excel</button>
+      <button id="exportHaCsv">CSV</button>
+      <button id="printHa" class="primary">พิมพ์ / PDF</button>
+    </div>
+  </div>
+
+  <div class="ha-cover panel">
+    <h2>รายงานบริหารความเสี่ยงเพื่อการพัฒนาคุณภาพและการประเมิน HA</h2>
+    <p><b>โรงพยาบาลดอนตูม</b></p>
+    <div id="haContext" class="context-note"></div>
+    <div class="ha-kpis">
+      <div><span>อุบัติการณ์ทั้งหมด</span><b id="haTotal">0</b></div>
+      <div><span>Clinical</span><b id="haClinical">0</b></div>
+      <div><span>Non-clinical</span><b id="haNon">0</b></div>
+      <div><span>High Risk</span><b id="haHigh">0</b></div>
+    </div>
+    <div class="draft-meta ha-draft-meta"><span id="haDraftStatus">ยังไม่บันทึกร่างรายงาน</span></div>
+  </div>
+
+  <div class="grid2">
+    <section class="panel"><h3>ประเด็นความเสี่ยงสำคัญ 10 อันดับ</h3><div id="haTopRisks"></div></section>
+    <section class="panel"><h3>แนวโน้มรายเดือนงบประมาณ</h3><div id="haMonthly" class="bars"></div></section>
+  </div>
+
+  <section class="panel report-section">
+    <h3>1. บริบทและภาพรวมของหน่วยงาน</h3>
+    <div id="haNarrative" class="ha-narrative editable-report" contenteditable="true" spellcheck="false"></div>
+  </section>
+
+  <section class="panel report-section">
+    <h3>2. จุดเด่นและผลลัพธ์สำคัญ</h3>
+    <div id="haStrengths" class="editable-report report-placeholder" contenteditable="true" spellcheck="false">ระบุจุดเด่นของระบบบริหารความเสี่ยง ผลลัพธ์ที่ดีขึ้น และแนวปฏิบัติที่หน่วยงานภาคภูมิใจ</div>
+  </section>
+
+  <section class="panel report-section">
+    <h3>3. ประเด็นพัฒนาและโอกาสปรับปรุง</h3>
+    <div id="haOpportunities" class="editable-report report-placeholder" contenteditable="true" spellcheck="false">ระบุประเด็นที่ต้องปรับปรุง ความเสี่ยงซ้ำ แนวโน้มที่ต้องเฝ้าระวัง และช่องว่างของมาตรการควบคุม</div>
+  </section>
+
+  <section class="panel report-section">
+    <h3>4. แผนพัฒนาและการติดตามผล</h3>
+    <div class="table-wrap ha-plan-table">
+      <table id="haActionTable">
+        <thead><tr><th>ประเด็นพัฒนา</th><th>กิจกรรม/มาตรการ</th><th>ตัวชี้วัด</th><th>เป้าหมาย</th><th>ผู้รับผิดชอบ</th><th>กำหนดเวลา</th><th>ผลติดตาม</th></tr></thead>
+        <tbody id="haActionRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel report-section">
+    <h3>5. Checklist หลักฐานประกอบการประเมิน HA</h3>
+    <div id="haEvidenceChecklist" class="evidence-grid"></div>
+  </section>
+
+  <section class="panel report-section"><h3>6. Risk Profile ที่เกี่ยวข้อง</h3><div class="table-wrap"><table id="haProfileTable"><thead><tr><th>อันดับ</th><th>ประเภท</th><th>ความเสี่ยงสำคัญ</th><th>L</th><th>I</th><th>คะแนน</th><th>ระดับ</th><th>มาตรการควบคุม</th></tr></thead><tbody id="haProfileRows"></tbody></table></div></section>
+  <section class="panel report-section"><h3>7. Risk Register ที่เกี่ยวข้อง</h3><div class="table-wrap"><table id="haRegisterTable"><thead><tr><th>รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียด</th><th>ช่วงเวลา</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน</th><th>การติดตาม</th><th>การลดผลกระทบ</th></tr></thead><tbody id="haRegisterRows"></tbody></table></div></section>
+
+  <section class="history-panel">
+    <h3>ประวัติการบันทึกร่างรายงาน HA</h3>
+    <div id="haReportHistory" class="history-list"></div>
+  </section>
+</section>
+
+<section id="about" class="view">
+  <div class="page-title">
+    <div>
+      <h1>เกี่ยวกับระบบ</h1>
+      <p>ข้อมูลเวอร์ชัน วัตถุประสงค์ และขอบเขตการใช้งานของ DRMS</p>
+    </div>
+  </div>
+
+  <section class="about-hero">
+    <div class="about-logo about-hospital-logo"><img src="assets/dontum-hospital-logo.png?v=6.16-final" alt="โลโก้โรงพยาบาลดอนตูม"></div>
+    <div>
+      <span class="about-eyebrow">DON TUM RISK MANAGEMENT SYSTEM</span>
+      <h2>DRMS</h2>
+      <p>ระบบบริหารจัดการความเสี่ยง โรงพยาบาลดอนตูม จังหวัดนครปฐม</p>
+      <div class="about-badges">
+        <span>Version 6.20.1</span>
+        <span>Production Release</span>
+        <span>ปรับปรุงล่าสุด กรกฎาคม 2569</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="about-grid">
+    <section class="about-card">
+      <h3>ข้อมูลระบบ</h3>
+      <dl class="about-list">
+        <div><dt>ชื่อระบบ</dt><dd>Don Tum Risk Management System: DRMS</dd></div>
+        <div><dt>เวอร์ชัน</dt><dd>V6.20.1</dd></div>
+        <div><dt>สถานะ</dt><dd>Production Release</dd></div>
+        <div><dt>หน่วยงานเจ้าของระบบ</dt><dd>คณะกรรมการบริหารงานคุณภาพและความปลอดภัย โรงพยาบาลดอนตูม</dd></div>
+        <div><dt>ผู้ดูแลข้อมูล</dt><dd>
+      นางสาวสุขจิต จันทร์มาก<br>
+      นักกายภาพบำบัดชำนาญการ<br>
+      เลขานุการทีมบริหารความเสี่ยงโรงพยาบาลดอนตูม
+    </dd></div>
+        <div><dt>ช่องทางใช้งาน</dt><dd>GitHub Pages</dd></div>
+      </dl>
+    </section>
+
+    <section class="about-card">
+      <h3>วัตถุประสงค์</h3>
+      <p>พัฒนาขึ้นเพื่อรวบรวม วิเคราะห์ และนำเสนอข้อมูลอุบัติการณ์ความเสี่ยง สนับสนุนการจัดทำ Risk Profile, Risk Register, RCA และรายงานข้อมูลความเสี่ยงของหน่วยงาน โรงพยาบาลดอนตูม</p>
+    </section>
+
+    <section class="about-card">
+      <h3>ขอบเขตการใช้งาน</h3>
+      <ul class="about-scope">
+        <li>Dashboard ภาพรวมรายปีและทุกปีงบประมาณ</li>
+        <li>รายการอุบัติการณ์และการค้นหาข้อมูล</li>
+        <li>ตัวกรองตามกลุ่มงาน งาน และงานย่อย</li>
+        <li>Risk Profile และ Risk Register</li>
+        <li>Analytics และรายงาน HA หน่วยงาน</li>
+        <li>RCA และเอกสารประกอบ</li>
+        <li>คู่มือและแบบฟอร์มมาตรฐาน</li>
+        <li>Data Center สำหรับผู้ดูแลระบบ</li>
+      </ul>
+    </section>
+
+    <section class="about-card warning">
+      <h3>ข้อควรทราบ</h3>
+      <p>ข้อมูลในระบบใช้เพื่อการบริหารจัดการความเสี่ยง การพัฒนาคุณภาพ และความปลอดภัยของโรงพยาบาล</p>
+      <p><b>ห้ามเผยแพร่ข้อมูลที่สามารถระบุตัวผู้ป่วย หรือข้อมูลส่วนบุคคลต่อบุคคลภายนอก</b></p>
+    </section>
+  </div>
+
+  
+  <section class="about-card version-history">
+    <h3>ประวัติเวอร์ชัน</h3>
+    <div class="version-list">
+      <div><b>V6.18</b><span>เพิ่ม Risk Register ตามมาตรฐานสำคัญจำเป็น 9 ด้าน</span></div>
+      <div><b>V6.16</b><span>เปลี่ยนโลโก้หน้า “เกี่ยวกับระบบ” และกำหนดเป็น Production Release</span></div>
+      <div><b>V6.15</b><span>ปรับ Header เป็นรูปแบบทางการ พร้อมโลโก้หน่วยงาน</span></div>
+      <div><b>V6.12</b><span>เพิ่มหน้า About / Version</span></div>
+      <div><b>V6.11</b><span>เพิ่มศูนย์เอกสารและแบบฟอร์ม</span></div>
+      <div><b>V6.10</b><span>เพิ่มการแสดงข้อมูลทุกปีงบประมาณ</span></div>
+      <div><b>V6.9</b><span>ปรับ Master โครงสร้างหน่วยงาน 3 ระดับ</span></div>
+      <div><b>V6.6</b><span>เพิ่ม RCA Manager และไฟล์ดาวน์โหลด RCA</span></div>
+      <div><b>V6.2</b><span>เพิ่ม Data Center และระบบตรวจสอบคุณภาพข้อมูล</span></div>
+      <div><b>V1.0</b><span>Dashboard ระบบบริหารความเสี่ยงรุ่นเริ่มต้น</span></div>
+    </div>
+  </section>
+
+  <section class="about-footer">
+    <strong>“No Blame, No Shame”</strong>
+    <span>พัฒนาเพื่อสนับสนุนวัฒนธรรมความปลอดภัย โรงพยาบาลดอนตูม</span>
+  </section>
+</section>
+
+</main></div>
+<div id="toast"></div><script src="assets/app.js?v=6.22.4-rca68"></script>
+<div id="mobileOverlay" class="mobile-overlay"></div>
+</body></html>

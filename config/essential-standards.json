@@ -1,0 +1,182 @@
+{
+  "version": "1.0",
+  "title": "มาตรฐานสำคัญจำเป็นต่อความปลอดภัย 9 ด้าน",
+  "standards": [
+    {
+      "id": "ES01",
+      "number": 1,
+      "shortTitle": "Wrong Surgery",
+      "title": "การผ่าตัดผิดคน ผิดข้าง ผิดตำแหน่ง ผิดหัตถการ",
+      "codes": [
+        {
+          "code": "CPS101",
+          "description": "ผ่าตัดผิดตำแหน่ง ผิดข้าง"
+        },
+        {
+          "code": "CPS102",
+          "description": "ผ่าตัดผิดคน"
+        },
+        {
+          "code": "CPS103",
+          "description": "ผ่าตัดผิดชนิดหรือผิดหัตถการ"
+        }
+      ]
+    },
+    {
+      "id": "ES02",
+      "number": 2,
+      "shortTitle": "Healthcare-associated Infection",
+      "title": "การติดเชื้อที่สำคัญในสถานพยาบาล",
+      "codes": [
+        {
+          "code": "CPI201",
+          "description": "CAUTI: Catheter Associated Urinary Tract Infection"
+        },
+        {
+          "code": "CPI202",
+          "description": "VAP: Ventilator-Associated Pneumonia"
+        },
+        {
+          "code": "CPI203",
+          "description": "CLABSI: Central Line-Associated Bloodstream Infection"
+        },
+        {
+          "code": "CPS111",
+          "description": "SSI: Surgical Site Infection"
+        }
+      ]
+    },
+    {
+      "id": "ES03",
+      "number": 3,
+      "shortTitle": "Occupational Infection",
+      "title": "บุคลากรติดเชื้อจากการปฏิบัติหน้าที่",
+      "codes": [
+        {
+          "code": "GPI201",
+          "description": "บุคลากรติดเชื้อแพร่ทางอากาศจากการปฏิบัติงาน"
+        },
+        {
+          "code": "GPI202",
+          "description": "บุคลากรติดเชื้อแพร่ผ่านละอองฝอยจากการปฏิบัติงาน"
+        },
+        {
+          "code": "GPI203",
+          "description": "บุคลากรติดเชื้อแพร่ทางการสัมผัสจากการปฏิบัติงาน"
+        },
+        {
+          "code": "GPI204",
+          "description": "บุคลากรติดเชื้อแพร่ผ่านพาหะจากการปฏิบัติงาน"
+        }
+      ]
+    },
+    {
+      "id": "ES04",
+      "number": 4,
+      "shortTitle": "Medication Safety",
+      "title": "การเกิด Medication Error และ Adverse Drug Event",
+      "codes": [
+        {
+          "code": "CPM101",
+          "description": "แพ้ยาซ้ำ"
+        },
+        {
+          "code": "CPM201",
+          "description": "Medication error: Prescribing"
+        },
+        {
+          "code": "CPM202",
+          "description": "Medication error: Transcribing"
+        },
+        {
+          "code": "CPM203",
+          "description": "Medication error: Pre-dispensing"
+        },
+        {
+          "code": "CPM204",
+          "description": "Medication error: Dispensing"
+        },
+        {
+          "code": "CPM205",
+          "description": "Medication error: Administration"
+        }
+      ]
+    },
+    {
+      "id": "ES05",
+      "number": 5,
+      "shortTitle": "Blood Safety",
+      "title": "การให้เลือดผิดคน ผิดหมู่ ผิดชนิด",
+      "codes": [
+        {
+          "code": "CPM501",
+          "description": "การให้เลือดผิดคน ผิดหมู่ หรือผิดชนิด"
+        }
+      ]
+    },
+    {
+      "id": "ES06",
+      "number": 6,
+      "shortTitle": "Patient Identification",
+      "title": "การระบุตัวผู้ป่วยผิดพลาด",
+      "codes": [
+        {
+          "code": "CPP101",
+          "description": "Patient Identification"
+        }
+      ]
+    },
+    {
+      "id": "ES07",
+      "number": 7,
+      "shortTitle": "Diagnostic Error",
+      "title": "ความคลาดเคลื่อนในการวินิจฉัยโรค",
+      "codes": [
+        {
+          "code": "CPP301",
+          "description": "Misdiagnosis or delay diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "ES08",
+      "number": 8,
+      "shortTitle": "Laboratory / Radiology",
+      "title": "การรายงานผลตรวจทางห้องปฏิบัติการหรือรังสีวิทยาคลาดเคลื่อน",
+      "codes": [
+        {
+          "code": "CPL201",
+          "description": "ผลการตรวจวิเคราะห์ทางห้องปฏิบัติการผิดพลาด ล่าช้า หรือไม่สามารถปฏิบัติการตรวจได้"
+        },
+        {
+          "code": "CPL203",
+          "description": "เตรียมตรวจหรือการตรวจทางรังสีผิดพลาด"
+        }
+      ]
+    },
+    {
+      "id": "ES09",
+      "number": 9,
+      "shortTitle": "Emergency Triage",
+      "title": "การคัดกรองที่ห้องฉุกเฉินคลาดเคลื่อน",
+      "codes": [
+        {
+          "code": "CPE402",
+          "description": "Under triage"
+        },
+        {
+          "code": "CPE403",
+          "description": "Over triage"
+        },
+        {
+          "code": "CPE405",
+          "description": "Delay Diagnosis and Delay treatment ในผู้ป่วยฉุกเฉินและ Fast Track"
+        },
+        {
+          "code": "CPE407",
+          "description": "Missed Diagnosis"
+        }
+      ]
+    }
+  ]
+}

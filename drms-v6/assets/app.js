@@ -27,6 +27,15 @@ async function init(){
       state.rcaManifest=Array.isArray(r)?r:(r.items||[])
     }catch(e){state.rcaManifest=[]}
 
+    try{
+      const extra=await json('config/rca-2568-additions.json');
+      const extraItems=Array.isArray(extra)?extra:(extra.items||[]);
+      for(const item of extraItems){
+        state.rcaManifest=state.rcaManifest.filter(x=>!(String(x.incident)===String(item.incident)&&Number(x.year)===Number(item.year)));
+        state.rcaManifest.push(item)
+      }
+    }catch(e){console.warn('ไม่พบ RCA ปี 2568 ชุดเพิ่มเติม',e)}
+
     state.years=(meta.years||[]).map(Number).filter(Boolean);
     $('#year').innerHTML='<option value="all">ทุกปีงบประมาณ</option>'+
       state.years.map(y=>`<option value="${y}">${y}</option>`).join('');
@@ -485,7 +494,7 @@ function renderPublicRca(){
       <td>${esc(x.r[IDX.risk]||'')}</td><td>${esc(x.r[IDX.mainUnit]||'')}</td>
       <td><span class="severity-pill">${esc(x.r[IDX.sev]||'')}</span></td>
       <td>${e?'<span class="rca-has">✓ มี RCA</span>':'<span class="rca-missing">✕ ไม่มี RCA</span>'}</td>
-      <td>${e?`<a class="download-link" href="${esc(e.file)}" target="_blank" rel="noopener">ดาวน์โหลด</a>`:'–'}</td></tr>`
+      <td>${e?`<div class="rca-action-buttons"><a class="rca-view-link" href="${esc(e.file)}" target="_blank" rel="noopener">👁 ดู RCA</a><a class="rca-download-link" href="${esc(e.file)}" download="${esc(e.filename||x.id+'.png')}">⬇ ดาวน์โหลด</a></div>`:'–'}</td></tr>`
   }).join('')||'<tr><td colspan="7" class="empty">ไม่พบข้อมูลระดับ E–I หรือ 3–5</td></tr>'
 }
 
@@ -754,4 +763,27 @@ if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded',initMobileNavigation);
 }else{
   initMobileNavigation();
+}
+
+
+async function loadRca2569Additions(){
+  try{
+    const obj=await json('config/rca-2569-additions.json');
+    const items=Array.isArray(obj)?obj:(obj.items||[]);
+    state.rcaManifest=state.rcaManifest||[];
+    const existing=new Map(state.rcaManifest.map((x,i)=>[`${x.year}|${x.incident}`,i]));
+    items.forEach(item=>{
+      const key=`${item.year}|${item.incident}`;
+      if(existing.has(key))state.rcaManifest[existing.get(key)]={...state.rcaManifest[existing.get(key)],...item};
+      else state.rcaManifest.push(item)
+    })
+  }catch(e){
+    console.warn('ไม่พบข้อมูล RCA ปี 2569 เพิ่มเติม',e)
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>loadRca2569Additions().then(()=>{try{renderRca&&renderRca()}catch(e){}}));
+}else{
+  loadRca2569Additions().then(()=>{try{renderRca&&renderRca()}catch(e){}})
 }

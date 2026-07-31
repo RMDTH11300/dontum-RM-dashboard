@@ -27,14 +27,16 @@ async function init(){
       state.rcaManifest=Array.isArray(r)?r:(r.items||[])
     }catch(e){state.rcaManifest=[]}
 
-    try{
-      const extra=await json('config/rca-2568-additions.json');
-      const extraItems=Array.isArray(extra)?extra:(extra.items||[]);
-      for(const item of extraItems){
-        state.rcaManifest=state.rcaManifest.filter(x=>!(String(x.incident)===String(item.incident)&&Number(x.year)===Number(item.year)));
-        state.rcaManifest.push(item)
-      }
-    }catch(e){console.warn('ไม่พบ RCA ปี 2568 ชุดเพิ่มเติม',e)}
+    for (const cfg of ['config/rca-2568-additions.json','config/rca-2569-additions.json']){
+      try{
+        const extra=await json(cfg);
+        const extraItems=Array.isArray(extra)?extra:(extra.items||[]);
+        for(const item of extraItems){
+          state.rcaManifest=state.rcaManifest.filter(x=>!(String(x.incident)===String(item.incident)&&Number(x.year)===Number(item.year)));
+          state.rcaManifest.push(item);
+        }
+      }catch(e){console.warn('ไม่พบไฟล์ RCA เพิ่มเติม',cfg,e)}
+    }
 
     state.years=(meta.years||[]).map(Number).filter(Boolean);
     $('#year').innerHTML='<option value="all">ทุกปีงบประมาณ</option>'+

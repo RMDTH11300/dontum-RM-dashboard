@@ -98,8 +98,13 @@ function bind(){
   const matrixTab=$('#essentialMatrixTab');
   if(registerTab)registerTab.onclick=()=>showEssentialMode('register');
   if(matrixTab)matrixTab.onclick=()=>showEssentialMode('matrix');
+
+  const heatmapRiskLimit=$('#heatmapRiskLimit');
+  const heatmapUnitLimit=$('#heatmapUnitLimit');
+  if(heatmapRiskLimit)heatmapRiskLimit.onchange=renderHeatmap;
+  if(heatmapUnitLimit)heatmapUnitLimit.onchange=renderHeatmap;
 }
-function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='riskCodes')renderRiskCodeSearch();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
+function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='heatmap')renderHeatmap();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='riskCodes')renderRiskCodeSearch();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
 
 async function loadAllYears(){
   const years=(state.years||[]).map(Number).filter(Boolean);
@@ -229,7 +234,7 @@ function rowMatchesSelectedUnit(v){
   const units=String(v||'').split(/[\n,;]+/).map(x=>normUnit(x)).filter(Boolean);
   return [...state.selected].some(selected=>units.includes(normUnit(selected)))
 }
-function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||rowRiskSearchText(r).includes(normalizeRiskSearch(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
+function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||rowRiskSearchText(r).includes(normalizeRiskSearch(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='heatmap')renderHeatmap();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
 function renderDashboard(){const a=state.filtered;$('#kTotal').textContent=a.length.toLocaleString();$('#kClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#kNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#kHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));renderSeveritySplit(a);rank('#topRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));rank('#topUnits',a.map(r=>normUnit(r[IDX.mainUnit]))) }
 
 function renderSeveritySplit(rows){
@@ -444,6 +449,89 @@ function buildHaNarrative(){
   const topText=top.length?top.map(([x,n])=>`${x} (${n.toLocaleString()} ครั้ง)`).join(', '):'ยังไม่มีข้อมูล';
   return `<p>ปีงบประมาณ <b>${state.year}</b> ${esc(contextText())} มีอุบัติการณ์ทั้งหมด <b>${total.toLocaleString()}</b> รายการ แบ่งเป็น Clinical <b>${clinical.toLocaleString()}</b> รายการ และ Non-clinical <b>${non.toLocaleString()}</b> รายการ โดยพบ High Risk <b>${high.toLocaleString()}</b> รายการ</p><p>ประเด็นความเสี่ยงที่พบสูงสุด ได้แก่ <b>${esc(topText)}</b>${peak.n?` และเดือนที่พบเหตุการณ์สูงสุดคือ <b>${names[peak.m]}</b> จำนวน <b>${peak.n.toLocaleString()}</b> รายการ`:''}</p><p>หน่วยงานควรทบทวน Risk Profile และ Risk Register ที่ระบบสร้างเป็นร่าง ตรวจสอบมาตรการควบคุม ตัวชี้วัด ผู้รับผิดชอบ และหลักฐานการติดตามก่อนใช้ในการประเมิน HA</p>`;
 }
+
+function heatmapRiskName(row){
+  const code=typeof getIncidentCode==='function'?getIncidentCode(row):'';
+  const title=String(row[IDX.risk]||'ไม่ระบุ').trim();
+  return code?`${code}: ${title.replace(code,'').replace(/^[:\s-]+/,'')}`:title
+}
+
+function heatmapClass(value,max){
+  if(!value)return 'hm-zero';
+  const ratio=value/Math.max(1,max);
+  if(ratio<=0.25)return 'hm-low';
+  if(ratio<=0.50)return 'hm-medium';
+  if(ratio<=0.75)return 'hm-high';
+  return 'hm-very-high'
+}
+
+function renderHeatmap(){
+  const head=$('#heatmapHead'),body=$('#heatmapBody');
+  if(!head||!body)return;
+
+  const rows=state.filtered||[];
+  const riskLimit=Number($('#heatmapRiskLimit')?.value||15);
+  const unitLimit=Number($('#heatmapUnitLimit')?.value||10);
+
+  const riskCounts={};
+  const unitCounts={};
+  const matrix={};
+
+  rows.forEach(row=>{
+    const risk=heatmapRiskName(row);
+    const units=String(row[IDX.mainUnit]||'ไม่ระบุ')
+      .split(/[\n,;]+/)
+      .map(x=>normUnit(x))
+      .filter(Boolean);
+
+    riskCounts[risk]=(riskCounts[risk]||0)+1;
+    units.forEach(unit=>{
+      unitCounts[unit]=(unitCounts[unit]||0)+1;
+      matrix[risk]=matrix[risk]||{};
+      matrix[risk][unit]=(matrix[risk][unit]||0)+1
+    })
+  });
+
+  const risks=Object.entries(riskCounts)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,riskLimit)
+    .map(([name,count])=>({name,count}));
+
+  const units=Object.entries(unitCounts)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,unitLimit)
+    .map(([name,count])=>({name,count}));
+
+  const values=[];
+  risks.forEach(r=>units.forEach(u=>values.push(matrix[r.name]?.[u.name]||0)));
+  const max=Math.max(0,...values);
+
+  head.innerHTML=`<tr>
+    <th class="heatmap-risk-head">ความเสี่ยง</th>
+    ${units.map(u=>`<th title="${esc(u.name)}">${esc(u.name)}</th>`).join('')}
+    <th>รวม</th>
+  </tr>`;
+
+  body.innerHTML=risks.map(r=>`
+    <tr>
+      <th class="heatmap-risk-name">
+        <span>${esc(r.name)}</span>
+        <small>รวม ${r.count.toLocaleString()} ครั้ง</small>
+      </th>
+      ${units.map(u=>{
+        const n=matrix[r.name]?.[u.name]||0;
+        return `<td class="${heatmapClass(n,max)}" title="${esc(r.name)} • ${esc(u.name)} • ${n} ครั้ง"><b>${n||''}</b></td>`
+      }).join('')}
+      <td class="heatmap-row-total"><b>${r.count.toLocaleString()}</b></td>
+    </tr>`).join('')||'<tr><td colspan="99" class="empty">ไม่พบข้อมูลสำหรับสร้าง Heatmap</td></tr>';
+
+  $('#heatmapContext').textContent=`ปีงบประมาณ ${state.year} • ${contextText()} • ใช้ข้อมูล ${rows.length.toLocaleString()} รายการ`;
+  $('#heatmapTotal').textContent=rows.length.toLocaleString();
+  $('#heatmapRiskCount').textContent=risks.length.toLocaleString();
+  $('#heatmapUnitCount').textContent=units.length.toLocaleString();
+  $('#heatmapMax').textContent=max.toLocaleString()
+}
+
 function renderAnalytics(){
   const a=state.filtered;
   $('#aTotal').textContent=a.length.toLocaleString();

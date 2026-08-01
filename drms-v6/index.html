@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.24-incident-detail">
+  <link rel="stylesheet" href="assets/style.css?v=6.25-heatmap">
 </head>
 <body>
 <header class="topbar"><button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
@@ -30,6 +30,7 @@
   <button class="nav" data-view="essential">✦ มาตรฐานสำคัญจำเป็น 9 ด้าน</button>
   <button class="nav" data-view="analytics">◫ Analytics</button>
   <button class="nav" data-view="documents">📚 เอกสารและแบบฟอร์ม</button>
+        <button class="nav" data-view="heatmap">🟧 Heatmap ความเสี่ยง</button>
   <button class="nav" data-view="rca">📑 RCA</button>
   <button class="nav" data-view="haReport">▧ รายงาน HA หน่วยงาน</button>
   <button class="nav" data-view="about">ℹ️ เกี่ยวกับระบบ</button>
@@ -366,6 +367,63 @@
   </div>
 </section>
 
+
+<section id="heatmap" class="view">
+  <div class="page-title">
+    <div>
+      <h1>Heatmap ความเสี่ยงรายหน่วยงาน</h1>
+      <p>เปรียบเทียบประเด็นความเสี่ยงกับหน่วยงานจากข้อมูล Incident ที่ผ่านตัวกรองปัจจุบัน</p>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-title heatmap-toolbar">
+      <div>
+        <h2>Risk × Unit Heatmap</h2>
+        <p id="heatmapContext">กำลังประมวลผลข้อมูล</p>
+      </div>
+      <div class="heatmap-controls">
+        <label>จำนวนความเสี่ยง
+          <select id="heatmapRiskLimit">
+            <option value="10">10 อันดับ</option>
+            <option value="15" selected>15 อันดับ</option>
+            <option value="20">20 อันดับ</option>
+          </select>
+        </label>
+        <label>จำนวนหน่วยงาน
+          <select id="heatmapUnitLimit">
+            <option value="8">8 หน่วยงาน</option>
+            <option value="10" selected>10 หน่วยงาน</option>
+            <option value="15">15 หน่วยงาน</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="heatmap-kpis">
+      <article><span>Incident ที่ใช้</span><b id="heatmapTotal">0</b></article>
+      <article><span>ความเสี่ยง</span><b id="heatmapRiskCount">0</b></article>
+      <article><span>หน่วยงาน</span><b id="heatmapUnitCount">0</b></article>
+      <article><span>ค่าสูงสุดต่อช่อง</span><b id="heatmapMax">0</b></article>
+    </div>
+
+    <div class="heatmap-legend">
+      <span class="hm-zero">0</span>
+      <span class="hm-low">ต่ำ</span>
+      <span class="hm-medium">ปานกลาง</span>
+      <span class="hm-high">สูง</span>
+      <span class="hm-very-high">สูงมาก</span>
+    </div>
+
+    <div class="heatmap-wrap">
+      <table class="heatmap-table">
+        <thead id="heatmapHead"></thead>
+        <tbody id="heatmapBody"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
 <section id="rca" class="view">
   <div class="page-title">
     <div><h1>RCA</h1><p>แสดงเฉพาะความเสี่ยงระดับ E–I และ 3–5 พร้อมสถานะมี/ไม่มี RCA และลิงก์ดาวน์โหลด</p></div>
@@ -544,7 +602,7 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.24-incident-detail"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.25-heatmap"></script>
 <div id="mobileOverlay" class="mobile-overlay"></div>
 
 <div id="incidentDetailModal" class="incident-modal" aria-hidden="true">

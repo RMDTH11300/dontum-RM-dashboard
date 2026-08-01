@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.22.6-rca-buttons">
+  <link rel="stylesheet" href="assets/style.css?v=6.24-incident-detail">
 </head>
 <body>
 <header class="topbar"><button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
@@ -544,6 +544,18 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.22.6-rca-buttons"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.24-incident-detail"></script>
 <div id="mobileOverlay" class="mobile-overlay"></div>
+
+<div id="incidentDetailModal" class="incident-modal" aria-hidden="true">
+  <div class="incident-modal-backdrop" data-close-incident-modal></div>
+  <section class="incident-modal-card" role="dialog" aria-modal="true">
+    <header class="incident-modal-header">
+      <div><small>INCIDENT DETAIL</small><h2>รายละเอียดอุบัติการณ์</h2></div>
+      <button type="button" data-close-incident-modal>✕</button>
+    </header>
+    <div id="incidentModalBody" class="incident-modal-body"></div>
+    <footer class="incident-modal-footer"><button type="button" data-close-incident-modal>ปิด</button></footer>
+  </section>
+</div>
 </body></html>

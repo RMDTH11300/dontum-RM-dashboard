@@ -301,7 +301,64 @@ function severityBarChart(sel,data){
 function barChart(sel,data){const max=Math.max(1,...data.map(x=>x.count));$(sel).innerHTML=data.map(x=>`<div class="bar-row"><span>${esc(x.label)}</span><div class="bar-track"><div class="bar-fill" style="width:${x.count/max*100}%"></div></div><b>${x.count.toLocaleString()}</b></div>`).join('')}
 function countChart(sel,arr){const m={};arr.forEach(x=>m[x]=(m[x]||0)+1);barChart(sel,Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([label,count])=>({label,count})))}
 function rank(sel,arr){const m={};arr.forEach(x=>m[x]=(m[x]||0)+1);$(sel).innerHTML=Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([x,n],i)=>`<div class="rank"><b>${i+1}</b><span>${esc(x)}</span><b>${n.toLocaleString()}</b></div>`).join('')||'<p class="empty">ไม่พบข้อมูล</p>'}
-function renderIncidents(){const total=state.filtered.length,max=Math.max(1,Math.ceil(total/state.pageSize));state.page=Math.min(state.page,max);const start=(state.page-1)*state.pageSize;$('#resultCount').textContent=`${total.toLocaleString()} รายการ`;$('#incidentRows').innerHTML=state.filtered.slice(start,start+state.pageSize).map((r,i)=>`<tr><td>${start+i+1}</td><td>${esc(fmtDate(r[IDX.date]))}</td><td>${esc(r[IDX.risk])}</td><td>${esc(r[IDX.sub])}</td><td><span class="badge ${isHigh(r[IDX.sev])?'high':''}">${esc(r[IDX.sev])}</span></td><td>${esc(r[IDX.reportUnit])}</td><td>${esc(normUnit(r[IDX.mainUnit]))}</td><td class="detail-cell">${esc(r[IDX.detail])}</td></tr>`).join('')||'<tr><td colspan="8" class="empty">ไม่พบข้อมูลตามตัวกรอง</td></tr>';const pages=[1,state.page-1,state.page,state.page+1,max].filter((x,i,a)=>x>=1&&x<=max&&a.indexOf(x)===i).sort((a,b)=>a-b);$('#pager').innerHTML=pages.map(p=>`<button class="${p===state.page?'active':''}" data-p="${p}">${p}</button>`).join('');$$('#pager button').forEach(b=>b.onclick=()=>{state.page=+b.dataset.p;renderIncidents()})}
+function renderIncidents(){
+  const total=state.filtered.length,max=Math.max(1,Math.ceil(total/state.pageSize));
+  state.page=Math.min(state.page,max);
+  const start=(state.page-1)*state.pageSize;
+  $('#resultCount').textContent=`${total.toLocaleString()} รายการ`;
+  $('#incidentRows').innerHTML=state.filtered.slice(start,start+state.pageSize).map((r,i)=>{
+    const idx=start+i;
+    return `<tr class="incident-clickable-row" data-incident-index="${idx}" tabindex="0">
+      <td>${idx+1}</td><td>${esc(fmtDate(r[IDX.date]))}</td><td>${esc(r[IDX.risk])}</td>
+      <td>${esc(r[IDX.sub])}</td><td><span class="badge ${isHigh(r[IDX.sev])?'high':''}">${esc(r[IDX.sev])}</span></td>
+      <td>${esc(r[IDX.reportUnit])}</td><td>${esc(normUnit(r[IDX.mainUnit]))}</td>
+      <td class="detail-cell">${esc(r[IDX.detail])}</td></tr>`
+  }).join('')||'<tr><td colspan="8" class="empty">ไม่พบข้อมูลตามตัวกรอง</td></tr>';
+  $$('#incidentRows .incident-clickable-row').forEach(tr=>{
+    const open=()=>openIncidentDetail(Number(tr.dataset.incidentIndex));
+    tr.onclick=open;
+    tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}
+  });
+  const pages=[1,state.page-1,state.page,state.page+1,max].filter((x,i,a)=>x>=1&&x<=max&&a.indexOf(x)===i).sort((a,b)=>a-b);
+  $('#pager').innerHTML=pages.map(p=>`<button class="${p===state.page?'active':''}" data-p="${p}">${p}</button>`).join('');
+  $$('#pager button').forEach(b=>b.onclick=()=>{state.page=+b.dataset.p;renderIncidents()})
+}
+
+function detailField(label,value,wide=false){
+  return `<div class="incident-detail-field${wide?' wide':''}"><span>${esc(label)}</span><div>${esc(String(value??'').trim()||'–').replaceAll('\n','<br>')}</div></div>`
+}
+function closeIncidentDetail(){
+  const m=$('#incidentDetailModal');if(!m)return;
+  m.classList.remove('open');m.setAttribute('aria-hidden','true');document.body.classList.remove('incident-modal-open')
+}
+function openIncidentDetail(index){
+  const r=state.filtered[index],m=$('#incidentDetailModal'),body=$('#incidentModalBody');
+  if(!r||!m||!body)return;
+  const id=publicIncidentId(r,index),year=Number(r.__fiscalYear||state.year)||state.year;
+  const code=typeof getIncidentCode==='function'?getIncidentCode(r):'';
+  const e=(state.rcaManifest||[]).find(x=>String(x.incident)===String(id)&&Number(x.year)===Number(year));
+  const rca=e&&e.file?`<div class="incident-rca-box available"><b>✓ มี RCA</b><div><a href="${esc(e.file)}" target="_blank">👁 ดู RCA</a><a href="${esc(e.file)}" download="${esc(e.filename||id+'.png')}">⬇ ดาวน์โหลด</a></div></div>`:`<div class="incident-rca-box missing"><b>ยังไม่มี RCA</b></div>`;
+  body.innerHTML=`<div class="incident-detail-summary">
+    <div><span>เลขอุบัติการณ์</span><b>${esc(id)}</b></div>
+    <div><span>ปีงบประมาณ</span><b>${esc(year)}</b></div>
+    <div><span>รหัสความเสี่ยง</span><b>${esc(code||'ไม่พบรหัส')}</b></div>
+    <div><span>ระดับ</span><b>${esc(r[IDX.sev]||'–')}</b></div></div>
+    <div class="incident-detail-grid">
+    ${detailField('วันที่เกิดเหตุ',fmtDate(r[IDX.date]))}
+    ${detailField('ประเภท',riskType(r))}
+    ${detailField('หน่วยงานรายงาน',r[IDX.reportUnit])}
+    ${detailField('หน่วยงานหลักที่แก้ไข',normUnit(r[IDX.mainUnit]))}
+    ${detailField('อุบัติการณ์หลัก',r[IDX.risk],true)}
+    ${detailField('อุบัติการณ์ย่อย',r[IDX.sub],true)}
+    ${detailField('รายละเอียดเหตุการณ์',r[IDX.detail],true)}
+    ${detailField('การแก้ไขเบื้องต้น',r[IDX.initial],true)}
+    ${detailField('ข้อเสนอแนะ',r[IDX.suggest],true)}
+    </div>${rca}`;
+  m.classList.add('open');m.setAttribute('aria-hidden','false');document.body.classList.add('incident-modal-open')
+}
+document.addEventListener('click',e=>{if(e.target.closest('[data-close-incident-modal]'))closeIncidentDetail()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeIncidentDetail()});
+
 function fmtDate(s){if(!s)return'';const d=new Date(s);return Number.isNaN(d.getTime())?s:d.toLocaleDateString('th-TH')}
 function contextText(){return state.selected.size?[...state.selected].join(' • '):'ภาพรวมโรงพยาบาล'}
 function codeOf(v){return String(v||'').split(':')[0].trim().split(/\s+/).pop()||''}

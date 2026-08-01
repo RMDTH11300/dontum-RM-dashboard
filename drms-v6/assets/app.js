@@ -27,14 +27,16 @@ async function init(){
       state.rcaManifest=Array.isArray(r)?r:(r.items||[])
     }catch(e){state.rcaManifest=[]}
 
-    try{
-      const extra=await json('config/rca-2568-additions.json');
-      const extraItems=Array.isArray(extra)?extra:(extra.items||[]);
-      for(const item of extraItems){
-        state.rcaManifest=state.rcaManifest.filter(x=>!(String(x.incident)===String(item.incident)&&Number(x.year)===Number(item.year)));
-        state.rcaManifest.push(item)
-      }
-    }catch(e){console.warn('ไม่พบ RCA ปี 2568 ชุดเพิ่มเติม',e)}
+    for(const cfg of ['config/rca-2568-additions.json','config/rca-2569-additions.json']){
+      try{
+        const extra=await json(cfg);
+        const extraItems=Array.isArray(extra)?extra:(extra.items||[]);
+        for(const item of extraItems){
+          state.rcaManifest=state.rcaManifest.filter(x=>!(String(x.incident)===String(item.incident)&&Number(x.year)===Number(item.year)));
+          state.rcaManifest.push(item)
+        }
+      }catch(e){console.warn('ไม่พบไฟล์ RCA เพิ่มเติม',cfg,e)}
+    }
 
     state.years=(meta.years||[]).map(Number).filter(Boolean);
     $('#year').innerHTML='<option value="all">ทุกปีงบประมาณ</option>'+
@@ -957,27 +959,4 @@ if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded',initMobileNavigation);
 }else{
   initMobileNavigation();
-}
-
-
-async function loadRca2569Additions(){
-  try{
-    const obj=await json('config/rca-2569-additions.json');
-    const items=Array.isArray(obj)?obj:(obj.items||[]);
-    state.rcaManifest=state.rcaManifest||[];
-    const existing=new Map(state.rcaManifest.map((x,i)=>[`${x.year}|${x.incident}`,i]));
-    items.forEach(item=>{
-      const key=`${item.year}|${item.incident}`;
-      if(existing.has(key))state.rcaManifest[existing.get(key)]={...state.rcaManifest[existing.get(key)],...item};
-      else state.rcaManifest.push(item)
-    })
-  }catch(e){
-    console.warn('ไม่พบข้อมูล RCA ปี 2569 เพิ่มเติม',e)
-  }
-}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',()=>loadRca2569Additions().then(()=>{try{renderRca&&renderRca()}catch(e){}}));
-}else{
-  loadRca2569Additions().then(()=>{try{renderRca&&renderRca()}catch(e){}})
 }

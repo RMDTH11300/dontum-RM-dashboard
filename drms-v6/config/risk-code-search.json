@@ -1,0 +1,2613 @@
+{
+  "version": "2568",
+  "source": "บัญชีอุบัติการณ์ความเสี่ยงระบบ NRLS & HRMS on Cloud ประจำปีงบประมาณ 2568 และรายการอุบัติการณ์ย่อยโรงพยาบาลดอนตูม",
+  "riskCodes": [
+    {
+      "code": "CPS101",
+      "title": "ผ่าตัดผิดตำแหน่ง ผิดข้าง (Surgery or other invasive procedure performed on the wrong body part)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS102",
+      "title": "ผ่าตัดผิดคน (Surgery or other invasive procedure performed on the wrong patient)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS103",
+      "title": "ผ่าตัดผิดชนิด (Wrong surgical or other invasive procedure performed on a patient)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS104",
+      "title": "Wrong implant/prosthetic",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS105",
+      "title": "บาดเจ็บอวัยวะข้างเคียงระหว่างผ่าตัด (Internal organ injury or Accidental puncture or laceration)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS106",
+      "title": "Perioperative hemorrhage or hematoma",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS107",
+      "title": "ภาวะแทรกซ้อนอื่น ๆ ของผู้ป่วยระหว่างการผ่าตัดที่ป้องกันได้",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS108",
+      "title": "ผ่าตัดซ้ำโดยไม่ได้วางแผน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS109",
+      "title": "ความคาดเคลื่อนของการส่งผลชิ้นเนื้อ หรือสิ่งส่งตรวจอื่นในกระบวนการผ่าตัด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS110",
+      "title": "Intraoperative or immediately postoperative/post procedure death in an ASA PS I patient",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS111",
+      "title": "SSI: Surgical Site Infection",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS112",
+      "title": "Postoperative Acute Kidney Injury Requiring Dialysis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS113",
+      "title": "Postoperative Hip Fracture",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS114",
+      "title": "Postoperative Respiratory failure",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS115",
+      "title": "Postoperative Sepsis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS116",
+      "title": "Postoperative Wound dehiscence",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS117",
+      "title": "ภาวะแทรกซ้อนอื่น ๆ ของผู้ป่วยหลังผ่าตัดที่ป้องกันได้",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS118",
+      "title": "เกิดภาวะ Venous Thromboembolism (VTE) หลังผ่าตัด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS201",
+      "title": "เกิดภาวะแทรกซ้อนที่เกี่ยวข้องกับการระงับความรู้สึก",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS202",
+      "title": "ภาวะหัวใจหยุดเต้นระหว่างผ่าตัดในผู้ป่วย ASA PS I, II",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS203",
+      "title": "ใส่ท่อหายใจซ้ำภายใน 2 ชั่วโมงหลังการถอดท่อหายใจ (re-intubation within 2 hrs. after ex-tubation)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS301",
+      "title": "สิ่งแวดล้อมในห้องผ่าตัดไม่ปลอดภัย",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS302",
+      "title": "ไฟฟ้าสำรองไม่ทำงานภายในระยะเวลาที่กำหนดเมื่อไฟดับระหว่างผ่าตัด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS303",
+      "title": "เครื่องมือ-อุปกรณ์สำหรับผ่าตัดไม่พร้อมใช้งาน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS304",
+      "title": "ภาวะแทรกซ้อนจากเครื่องมือ/อุปกรณ์เกี่ยวกับการผ่าตัด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS305",
+      "title": "เหตุการณ์ไม่พึงประสงค์ จากการไม่ปฏิบัติตามขั้นตอนกระบวนการดูแลผู้ป่วยที่มา รับการผ่าตัด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS306",
+      "title": "การเลื่อนการผ่าตัดที่ไม่เร่งด่วนจากความไม่พร้อมหรือการประเมินไม่ครบถ้วน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS307",
+      "title": "การมีอุปกรณ์หรือสิ่งตกค้างอื่นใดในร่างกายผู้ป่วย (Unintended retention of foreign object in a patient after surgery or other procedure)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPS308",
+      "title": "การปฏิบัติโดยไม่คำนึงถึงศักดิ์ศรีความเป็นมนุษย์และสิทธิผู้ป่วย 10 เรื่อง ได้แก่ เรื่อง",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI101",
+      "title": "ไม่ล้างมือ/ล้างไม่เหมาะสมตามข้อบ่งชี้ของการทำความสะอาดมือ (5 moments for hand hygiene)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI201",
+      "title": "CAUTI: Catheter Associated Urinary Tract Infection",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI202",
+      "title": "VAP: Ventilator-Associated Pneumonia",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI203",
+      "title": "CLABSI: Central Line-Associated Bloodstream Infection",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI204",
+      "title": "การไม่ปฏิบัติตามแนวทางป้องกันการแพร่กระจายเชื้อก่อโรคในสถานพยาบาล Standard Precautions (ยกเว้นการล้างมือ)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI205",
+      "title": "เกิดการติดเชื้อในกระแสโลหิตจากการสอดใส่สายสวนทางหลอดเลือดดำส่วน ปลาย (Peripheral Line Associated Bloodstream -PLABSI)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI301",
+      "title": "การเกิดระบาดโรคอุบัติใหม่ อุบัติซ้ำ",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI302",
+      "title": "เกิดการระบาดของโรคที่ป้องกันได้ด้วยวัคซีน (Vaccine Preventable Disease) ภายในโรงพยาบาล",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI303",
+      "title": "เกิดการระบาดของโรคติดต่ออื่น ๆ (Other Communication Disease) ภายใน โรงพยาบาล",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPI401",
+      "title": "การเกิดการติดเชื้อดื้อยา",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM101",
+      "title": "แพ้ยาซ้ำ",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM102",
+      "title": "ไม่มี/ไม่ปฏิบัติตาม Guideline ของการใช้ High Alert Drug",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM103",
+      "title": "ผู้ป่วยมีภาวะแทรกซ้อนที่ป้องกันได้จากการได้รับยาความเสี่ยงสูง",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM104",
+      "title": "Mis selection of a strong potassium containing solution",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM105",
+      "title": "แพ้ยา (ยกเว้น แพ้ยาซ้ำ)/ADE: Adverse Drug Events ที่มีความรุนแรงระดับ E ขึ้นไป",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM106",
+      "title": "ไม่มี/ไม่ปฏิบัติตาม Guideline ของการใช้ Fatal Drug",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM107",
+      "title": "ผู้ป่วยได้รับยาที่มีคู่ยาปฏิกิริยารุนแรง",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM201",
+      "title": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่ง ใช้ยา)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM202",
+      "title": "Medication error : Transcribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการ คัดลอกยา)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM203",
+      "title": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอน การจัดเตรียมจ่ายยา)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM204",
+      "title": "Medication error : Dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจ่าย ยา)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM205",
+      "title": "Medication error : Administration (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอน การให้ยา)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM206",
+      "title": "ไม่มี/ไม่ปฏิบัติตาม Guideline เกี่ยวกับ Look-Alike Sound-Alike Medication Names",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM207",
+      "title": "ผู้ป่วยได้รับยา ในกลุ่ม Look-Alike Sound-Alike Medication Names",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM208",
+      "title": "ไม่มี/ไม่ปฏิบัติตามมาตรฐาน หรือ Guideline ของการใช้ยา ยกเว้น HAD, Fatal drug, Look-Alike Sound-Alike, Antibiotics",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM301",
+      "title": "ไม่มี/ไม่ปฏิบัติตาม Guideline เกี่ยวกับ Medication Reconciliation",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM302",
+      "title": "ผู้ป่วยไม่ได้รับยาเดิมต่อเนื่องจากไม่ได้ทำ Medication Reconciliation",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM303",
+      "title": "ผู้ป่วยได้รับยาซ้ำซ้อนจากไม่ได้ทำ Medication Reconciliation",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM304",
+      "title": "ผู้ป่วยได้รับยาที่มีปฏิกิริยากันโดยไม่ได้ทำ Medication Reconciliation",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM401",
+      "title": "ไม่มี/ไม่ปฏิบัติตาม Guideline เกี่ยวกับ Rational Drug Use",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM402",
+      "title": "การใช้ยาปฏิชีวนะในโรคติดเชื้อที่ระบบการหายใจช่วงบนและหลอดลมอักเสบ เฉียบพลันในผู้ป่วยนอก",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM403",
+      "title": "การใช้ยาปฏิชีวนะในโรคอุจจาระร่วงเฉียบพลัน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM404",
+      "title": "การใช้ยาอย่างไม่สมเหตุผล (ยกเว้นยาปฏิชีวนะ)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM501",
+      "title": "การให้เลือดผิด (Incorrect blood component transfused, IBCT หรือ Wrong blood transfused)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM502",
+      "title": "การมีปฏิกิริยาจากการได้รับเลือด (Transfusion reaction)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM503",
+      "title": "การไม่ปฏิบัติตามข้อกำหนด (Specific requirements not met, SRNM) ซึ่งเป็น เหตุให้ผู้ป่วยได้รับส่วนประกอบของเลือดที่ไม่เป็นไปตามที่กำหนด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM504",
+      "title": "การให้เลือดที่ไม่เหมาะสม (Inappropriate transfusion)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM505",
+      "title": "เกิดความผิดพลาดในการนำส่งและจัดเก็บส่วนประกอบของเลือด (Handling and storage errors, HSE)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPM506",
+      "title": "กระบวนการปฏิบัติงาน/ขั้นตอนการดำเนินงานในการให้เลือดผู้ป่วยคลาดเคลื่อน จากข้อกำหนด (Right blood right patient, RBRP) ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP101",
+      "title": "Patient Identification",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP201",
+      "title": "การรายงานอาการ หรือสื่อสารข้อมูลเกี่ยวกับผู้ป่วยไม่เหมาะสม/ไม่ครบถ้วน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP202",
+      "title": "การสื่อสารเพื่อการส่งตรวจหรือการรักษาทางรังสีวิทยาผิดพลาด/ไม่ครบถ้วน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP203",
+      "title": "การสื่อสารเพื่อการส่งตรวจทางห้องปฏิบัติการผิดพลาด/ไม่ครบถ้วน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP204",
+      "title": "การสื่อสารหรือส่งต่อข้อมูลการรักษาพยาบาลผู้ป่วยผิดพลาด เช่น ไม่สื่อสาร/ สื่อสารผิด/สื่อสารไม่ครบถ้วน/สื่อสารล่าช้า",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP205",
+      "title": "ไม่รายงาน Critical Test Results หรือรายงานล่าช้า",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP206",
+      "title": "เกิดความผิดพลาดในการรักษาพยาบาลซึ่งมีสาเหตุมาจาก Verbal or Telephone Order/Communication",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP207",
+      "title": "เกิดความผิดพลาดจากการใช้สื่อในกระบวนการรักษาพยาบาล เช่น ใช้คำย่อ/ ชื่อย่อ/สัญลักษณ์ที่ไม่เป็นสากล",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP301",
+      "title": "Misdiagnosis or delay diagnosis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP302",
+      "title": "(Access & Entry) ผู้ป่วยเข้าถึงหรือได้รับบริการ ผิด/ล่าช้าไปจากเกณฑ์ หรือ โรคที่เป็น",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP303",
+      "title": "(Patient Assessment) ผู้ป่วยไม่ได้รับการประเมิน/ประเมินผิด/ประเมินไม่ ครบถ้วน ตามเกณฑ์ อาการหรือการดำเนินโรค",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP304",
+      "title": "(Planning of Care) ผู้ป่วยไม่ได้รับการวางแผนดูแล/วางแผนไม่ครอบคลุม หรือวางแผนผิดไปจากพยาธิสภาพ/สภาวะของโรค",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP305",
+      "title": "(Discharge Planning) ผู้ป่วยกลุ่มโรคจำเป็นไม่ได้รับการวางแผนจำหน่าย/ วางแผนไม่ครอบคลุม ตามเกณฑ์ หรือประเด็น",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP306",
+      "title": "(Patient Care Delivery) ผู้ป่วยได้รับการดูแลไม่ครอบคลุม/ ไม่เชื่อมโยง/ไม่ สอดคล้อง ตามเกณฑ์ อาการ หรือโรค",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP307",
+      "title": "(Patient Care Delivery) ผู้ป่วยได้รับการทำหัตถการที่มีความเสี่ยงใน สถานการณ์ หรือสถานที่ไม่เหมาะสม",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP308",
+      "title": "(Patient Care Delivery) ผู้ป่วยได้รับอาหารไม่เหมาะสมตามความต้องการ พื้นฐาน หรือข้อบ่งชี้ของโรค/การเจ็บป่วย",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP309",
+      "title": "(Information and Empowerment) ผู้ป่วย/ครอบครัวไม่ได้รับข้อมูลเพื่อ เสริมพลัง หรือได้รับไม่ชัดเจน/ ไม่ต่อเนื่อง/ไม่เหมาะสม กับการรับรู้หรือมี ส่วนร่วม",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP310",
+      "title": "(Information and Empowerment) ข้อมูลการวินิจฉัย/การดูแลรักษาของ ผู้ป่วยไม่ได้รับการบันทึกหรือได้รับการบันทึกไม่ครบถ้วน ไม่ชัดเจน ไม่เชื่อมโยง ต่อเนื่อง",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP311",
+      "title": "(Continuity of Care) ผู้ป่วยได้รับการดูแลไม่ต่อเนื่อง/ไม่เชื่อมโยง/ไม่ สอดคล้อง กับบริบทและสภาวะของโรค",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP401",
+      "title": "ผู้ป่วยเกิดภาวะแทรกซ้อนจากกระบวนการดูแลรักษาพยาบาลซึ่งป้องกันได้ (ยกเว้น เกิดแผลกดทับ, ตกเตียง/fall)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP402",
+      "title": "ผู้ป่วยพยายามฆ่าตัวตาย/ฆ่าตัวตาย",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP403",
+      "title": "ผู้ป่วยถูกลักพาตัว สลับ หรือสูญหาย หรือพลัดหลง หรือหลบหนี",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP404",
+      "title": "เกิดแผลกดทับ",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP405",
+      "title": "ตกเตียง/fall",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP406",
+      "title": "ผู้ป่วยอาละวาดก้าวร้าว",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP407",
+      "title": "เกิดภาวะแทรกซ้อนจากการให้ยา/สารน้ำ/เลือด/ส่วนประกอบของเลือดทาง หลอดเลือดดำส่วนปลาย (Infusion related complication)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP501",
+      "title": "ผู้ป่วยไม่ได้รับ หรือได้รับการบรรเทาอาการปวดไม่เหมาะสมกับสภาพอาการ",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP502",
+      "title": "ผู้ป่วยมีภาวะแทรกซ้อนหรือเหตุการณ์ไม่พึงประสงค์จากการจัดการความปวด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP503",
+      "title": "ผู้ป่วย Acute Pain ไม่ได้รับ หรือได้รับการบรรเทาอาการปวดไม่เหมาะสม",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP504",
+      "title": "Chronic Non-Cancer Patients ได้รับการสั่งใช้ Opioids ไม่เหมาะสม",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP505",
+      "title": "ผู้ป่วยมีภาวะแทรกซ้อนหรือเหตุการณ์ไม่พึงประสงค์จากการใช้ opioids ใน การระงับปวดเรื้อรังที่มิใช่มะเร็ง",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP506",
+      "title": "Management for Cancer Pain and Palliative Care ไม่เหมาะสม",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP601",
+      "title": "ผู้ป่วยที่จำเป็นต้องส่งต่อเพื่อการรักษา ไม่ได้รับการส่งต่อหรือส่งต่อได้ใน ช่วงเวลาไม่เหมาะสม",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPP602",
+      "title": "มีภาวะแทรกซ้อนหรือเหตุการณ์ไม่พึงประสงค์ที่ป้องกันได้ระหว่างส่งต่อ จำนวน 6 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPL101",
+      "title": "ท่อ เลื่อนหลุดเกิด re-intubation",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPL102",
+      "title": "Mis-connect, Dis-connect",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPL103",
+      "title": "ความคลาดเคลื่อนการให้สารน้ำจากการใช้ Infusion pump",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPL201",
+      "title": "ผลการตรวจวิเคราะห์ทางห้องปฏิบัติการผิดพลาด ล่าช้า หรือไม่สามารถ ปฏิบัติการตรวจวิเคราะห์ได้",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPL202",
+      "title": "สิ่งส่งตรวจไม่ถูกต้อง ไม่เหมาะสม หรือไม่มีสิ่งส่งตรวจ",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPL203",
+      "title": "เตรียมตรวจ/ตรวจทางรังสีผิดพลาด (เช่น ผิดประเภท/ผิดคำสั่ง/ผิดตำแหน่ง/ ผิดข้าง/ผิดเทคนิคการตรวจ) ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE101",
+      "title": "Un-planed Cardiopulmonary Resuscitation (CPR)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE201",
+      "title": "Sepsis with death",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE202",
+      "title": "ผู้ป่วย Acute Coronary Syndrome ไม่ได้รับการตรวจรักษาในช่วงเวลา golden period",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE203",
+      "title": "Acute Ischemic Stroke ที่ให้การรักษาไม่ทัน golden period",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE204",
+      "title": "เกิดภาวะแทรกซ้อนจากการทำ Cardiopulmonary Resuscitation (CPR)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE301",
+      "title": "PPH with Complicate",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE302",
+      "title": "มารดาเสียชีวิตจากการคลอด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE303",
+      "title": "ทารกเสียชีวิตจากการคลอด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE304",
+      "title": "ภาวะแทรกซ้อนจากการคลอดที่ป้องกันได้เกิดขึ้นกับมารดา",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE305",
+      "title": "ภาวะแทรกซ้อนจากการคลอดที่ป้องกันได้เกิดขึ้นกับทารก (Birth injury)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE306",
+      "title": "Severe Birth Asphyxia",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE401",
+      "title": "ผู้ป่วยฉุกเฉินไม่ได้รับการตรวจรักษาภายในระยะเวลา 30 นาที",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE402",
+      "title": "Under triage",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE403",
+      "title": "Over triage",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE404",
+      "title": "ผู้ป่วยไม่รอตรวจ ไม่พึงพอใจ ร้องเรียน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE405",
+      "title": "Delay Diagnosis and Delay treatment ในผู้ป่วย ฉุกเฉิน และผู้ป่วย Fast Track",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE406",
+      "title": "ผู้ป่วยเสียชีวิตที่ห้องฉุกเฉินระหว่างรอการตรวจรักษา",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE407",
+      "title": "Missed Diagnosis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE408",
+      "title": "Un-planed ICU ในผู้ป่วยฉุกเฉิน/ผู้ป่วยวิกฤติ",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE409",
+      "title": "ผู้ป่วยได้รับการตรวจรักษาในห้องฉุกเฉินนานมากกว่า 2 ชั่วโมงก่อน Admit หรือนานมากกว่า 4 ชั่วโมงก่อนการจำหน่ายกลับบ้าน",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE410",
+      "title": "เกิดอุบัติภัยหมู่ที่ให้ความช่วยเหลือได้ไม่ทันเวลา",
+      "group": "Clinical"
+    },
+    {
+      "code": "CPE411",
+      "title": "เกิด disaster หรือภาวะฉุกเฉินที่ไม่พึงประสงค์ต่าง ๆ ที่ ER รายการอุบัตกิ ารณ์ความเสีย่ งในกลุ่มอุบตั ิการณ์ความเสี่ยงด้านคลินกิ (Clinical Risk Incident: C) หมวดอุบัติการณ์ความเสี่ยงทางด้านคลินิกเฉพาะโรค (Specific Clinical Risk Incident: S) ประเภทย่อย จำนวน 14 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG101",
+      "title": "เกิดปัญหา in VBAC (Vaginal Birth after Cesarean) เช่น Uterine rupture/ตกเลือด",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG102",
+      "title": "เกิดปัญหาใน Preeclampsia (เช่น Eclampsia/HELLP Syndrome/Severe eclampsia/Abruption/SE from MgSO4)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG103",
+      "title": "เกิดปัญหาใน Pregnancy with GDM (เช่น Polyhydramnios/PIH/Macrosomia/DFIU)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG104",
+      "title": "เกิดปัญหาใน Pregnancy with HIV เช่น M-F transmission",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG105",
+      "title": "เกิดภาวะวิกฤติใน Placenta Previa (เช่น APH/PPH)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG106",
+      "title": "เกิดภาวะแทรกซ้อนใน Amniocentesis (เช่น Haemorrhage/Sepsis/Fetal loss/Abort/Uterine contraction)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG107",
+      "title": "เกิดปัญหาใน Premature Contraction (เช่น Preterm labour/SE from Inhibit)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG201",
+      "title": "เกิดปัญหาใน Twin (เช่น Preterm labour/PROM/PPH/Birth asphyxia/PIH/Discordant twin)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG301",
+      "title": "เกิด TOA (Tubo-ovarian abscess) ใน PID (Pelvic Inflammatory Disease)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG302",
+      "title": "เกิดภาวะวิกฤติ ใน Abort (เช่น Embolism/Shock)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG303",
+      "title": "เกิดภาวะวิกฤติใน Ectopic pregnancy (เช่น Rupture/Shock)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG304",
+      "title": "เกิดภาวะวิกฤติใน Ovarian tumor (เช่น Rupture/Twist)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG305",
+      "title": "เกิดภาวะแทรกซ้อนใน CIN (Cervical of intraepithelial neoplasia) (เช่น Persistence/Recurrent/CA Cervix)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSG306",
+      "title": "เกิดภาวะแทรกซ้อนใน Myoma uteri (เช่น Hypermenorrhea/Infertile/Urinary Incontinence) 11 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS101",
+      "title": "ทำ Perm-cath insertion แล้วเกิด Bleeding/Pneumothorax",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS102",
+      "title": "เกิด Bleeding with shock ในโรค Blunt abdominal injury",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS103",
+      "title": "เกิด Bowel gangrene ในโรค Hernia",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS104",
+      "title": "เกิด Gut obstruction ในโรค Carcinoma of colon",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS105",
+      "title": "เกิด Intracranial hemorrhage ในโรค Head injury",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS106",
+      "title": "เกิด Rupture ในโรค Acute appendicitis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS107",
+      "title": "เกิด Sepsis ในโรค Acute cholecystitis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS108",
+      "title": "เกิด Sepsis ในโรค Cellulitis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS201",
+      "title": "เกิด Bleeding ใน PCNC (Percutaneous Nephrocystostomy catheter)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS202",
+      "title": "เกิด Hydro-pneumothorax ใน PCNC (Percutaneous Nephrocystostomy catheter)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSS203",
+      "title": "เกิด Renal pelvis perforation ใน PCNC (Percutaneous Nephrocystostomy catheter) จำนวน 28 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM101",
+      "title": "เกิด Hypoxemia/Respiratory failure ใน Exacerbation of COPD",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM102",
+      "title": "เกิด Hypoxemia/Respiratory failure ใน Severe asthma",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM103",
+      "title": "เกิด Hypoxemia/Respiratory failure ในโรค Avian influenza",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM104",
+      "title": "เกิด Hypoxemia/Respiratory failure ในโรค H1N1 influenza",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM105",
+      "title": "เกิด Hypoxemia/Respiratory failure ในโรค SARS",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM106",
+      "title": "เกิดภาวะ Hypoxemia/Pneumothorax ในโรค PCP",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM107",
+      "title": "เกิดภาวะ Hypoxemia/Respiratory failure ในโรค TB Lung",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM201",
+      "title": "เกิด CHF/Arrhythmia/Cardiogenic shock ใน AMI",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM301",
+      "title": "เกิดภาวะ Hypokalemia ในโรค Acute/Chronic Diarrhea",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM302",
+      "title": "เกิดภาวะ Hypovolemic Shock ในโรค Acute/Chronic Diarrhea",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM303",
+      "title": "เกิดภาวะ Hypovolemic Shock ในโรค UGI Bleeding",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM401",
+      "title": "เกิดภาวะ Brain herniation ในโรค Toxoplasmosis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM402",
+      "title": "เกิดภาวะ Brain herniation ในโรค CVA",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM403",
+      "title": "เกิดภาวะ Aspirate pneumonia ในโรค CVA",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM404",
+      "title": "เกิดภาวะ IICP ในโรค Cryptococcal meningitis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM501",
+      "title": "เกิด Internal bleeding จากการทำ Liver biopsy",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM502",
+      "title": "เกิด Pneumothorax จากการทำ Bronchoscopy",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM503",
+      "title": "เกิด Brain herniation จากการทำ Lumbar puncture",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM504",
+      "title": "เกิด Gut perforation จากการทำ Gastroscopy/Colonoscopy",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM601",
+      "title": "เกิดภาวะ Sepsis/Malnutrition ใน Steven Johnson Syndrome",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM602",
+      "title": "เกิดภาวะ Septic shock ในโรค Acute pyelonephritis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM603",
+      "title": "เกิดภาวะ Septic shock/Cardiac arrest ใน Sepsis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM604",
+      "title": "เกิดภาวะ Severe acidosis ใน Lactic acidosis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM605",
+      "title": "เกิดภาวะ Shock/Arrhythmia จากการทำ Hemodialysis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM606",
+      "title": "เกิดภาวะแทรกซ้อนฉุกเฉินในโรค DM (เช่น Hypoglycemia/DKA)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM607",
+      "title": "เกิดภาวะแทรกซ้อนฉุกเฉินในโรค Dengue fever (เช่น Shock/Bleeding)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM608",
+      "title": "เกิดภาวะแทรกซ้อนฉุกเฉินในโรค ESRD (เช่น Fluid overload/Hyperkalemia)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSM609",
+      "title": "เกิดภาวะแทรกซ้อนฉุกเฉินในโรค HT (เช่น CVA/Encephalopathy) จำนวน 8 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSP101",
+      "title": "เกิด Apnea/RDS/BPD/ROP/NEC/Anemia ใน Preterm ที่ VLBW",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSP102",
+      "title": "เกิด Hypo-Hyperglycemia ใน Preterm ที่ VLBW",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSP103",
+      "title": "เกิด Hypo-Hyperthermia ใน Preterm ที่ VLBW",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSP104",
+      "title": "เกิด Hypo-Hyperglycemia/Polycythemia ใน Macrosomia/LGA/GDM",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSP105",
+      "title": "เกิด PPHN/Pneumothorax ใน MAS",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSP201",
+      "title": "เกิด Acidosis/Electrolyte Imbalance ในโรค Acute Diarrhea",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSP202",
+      "title": "เกิด Sepsis/Emphysema/IRDS/Hypoxia ในโรค Pneumonia",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSP203",
+      "title": "เกิด Shock/Bleeding/Pleural effusion ในโรค DHF จำนวน 6 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSO101",
+      "title": "กระดูกหักใกล้ข้อ/หลังเข้าเฝือก 24 ชั่วโมง แล้วเกิด Compartment syndrome",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSO102",
+      "title": "ดึงถ่วงน้ำหนักผ่านกระดูก แล้วเกิดการเปลี่ยนแปลงระบบไหลเวียนเลือด ส่วนปลาย และระบบประสาท",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSO103",
+      "title": "เกิดภาวะแทรกซ้อนในโรค Long bone fracture เช่น Chest injury/Abdominal injury/C-spine injury/Fat embolism",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSO104",
+      "title": "เกิดภาวะแทรกซ้อนใน Total knee replacement เช่น Active blood loss/spinal shock",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSO105",
+      "title": "เกิดภาวะแทรกซ้อนใน Hip replacement เช่น Dislocation/Sciatic nerve injury/Hematoma/Fracture",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSO106",
+      "title": "เกิดภาวะแทรกซ้อนใน Laminectomy/Discectomy เช่น Cauda equina syndrome/Nerve root injury ประเภทย่อย จำนวน 11 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE101",
+      "title": "Iris prolapsed ใน ECCE",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE102",
+      "title": "Rupture posterior capsule ใน ECCE",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE103",
+      "title": "Rupture posterior capsule ใน Phaco with IOL",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE104",
+      "title": "กระจกตาบวม ใน ECCE",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE105",
+      "title": "กระจกตาบวม ใน Phaco with IOL",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE106",
+      "title": "Endophthalmitis ใน ECCE",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE107",
+      "title": "Endophthalmitis ใน Phaco with IOL",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE108",
+      "title": "Endophthalmitis ใน Intravitreous",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE201",
+      "title": "เกิดภาวะแทรกซ้อนในการทำ Tracheostomy Tube (เช่น Subcutaneous Emphysema/Bleeding/Pneumothorax/T-E fistula/Nerve injury)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE202",
+      "title": "เกิดภาวะแทรกซ้อนใน Thyroidectomy (เช่น Nerve injury/Hematoma/Hypoparathyroidism/Dysphagia)",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSE203",
+      "title": "เกิดภาวะแทรกซ้อนใน Tonsillectomy (เช่น Bleeding/Nasopharyngeal stenosis) 11 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD101",
+      "title": "เกิดปัญหาใน Dental Tx ผู้ป่วยโรค DM เช่น Hypo-Hyperglycemia/แผล หายช้า/Advance Periodontitis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD102",
+      "title": "เกิดปัญหาใน Dental Tx in Hemorrhagic disorders เช่น Spontaneous or prolong bleeding/Delayed healing",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD103",
+      "title": "เกิด Airway obstruction ในโรค Ludwig's Angina",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD104",
+      "title": "เกิด Allergy to Local anesthesia ใน Dental Tx",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD105",
+      "title": "เกิด Chest pain/Acute MI ใน Dental Tx ผูป้ ่วยโรค Angina pectoris or MI",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD106",
+      "title": "เกิด Subacute bacterial endocarditis ใน Dental Tx ผู้ป่วยโรคลิ้นหัวใจ หรือใส่ลิ้นหัวใจเทียม",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD107",
+      "title": "เกิด Tumor that extends to malignancy ในโรค Oral lesion แผลในช่องปาก",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD108",
+      "title": "เกิดภาวะฉุกเฉินใน Emergency in dental clinic เช่น Syncope/Hyperventilation/Toxic effect of local anesthesia",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD109",
+      "title": "เกิดภาวะแทรกซ้อนในผู้ป่วย Head and neck cancer therapy เช่น Osteoradionecrosis/Halitosis/Mucositis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD110",
+      "title": "เกิดภาวะแทรกซ้อนใน Oral surgery/Simple-Surgical extraction เช่น Bleeding/Pain and Swelling/Fibrinolytic alveolitis",
+      "group": "Clinical"
+    },
+    {
+      "code": "CSD111",
+      "title": "แผลถอนฟันหายช้าและติดเชื้อ ในผู้ป่วย HIV/Immunosuppressive/On steroid หมวดอุบัติการณ์ความเสี่ยง Personnel Safety Goals: P มี 2 ประเภทย่อย จำนวน 10 เรื่อง ได้แก่",
+      "group": "Clinical"
+    },
+    {
+      "code": "GPS101",
+      "title": "เกิดอุบัติการณ์ด้านความมั่นคงปลอดภัยไซเบอร์ที่ทำให้ข้อมูลความลับของ สถานพยาบาลรั่วไหล (Confidentiality Failure)",
+      "group": "General"
+    },
+    {
+      "code": "GPS102",
+      "title": "เกิดอุบัติการณ์ด้านความมั่นคงปลอดภัยไซเบอร์ที่ทำให้ข้อมูลสารสนเทศของ สถานพยาบาลถูกแก้ไข/ลบ/เพิ่มเติม/ทำให้เสียหายหรือสูญหายโดยมิชอบ (Integrity Failure)",
+      "group": "General"
+    },
+    {
+      "code": "GPS103",
+      "title": "เกิดอุบัติการณ์ด้านความมั่นคงปลอดภัยไซเบอร์ที่ทำให้ระบบสารสนเทศของ สถานพยาบาลขัดข้อง/ใช้การไม่ได้/ทำงานช้าหรือไม่ปกติ (Availability Failure)",
+      "group": "General"
+    },
+    {
+      "code": "GPS104",
+      "title": "เกิดอุบัติการณ์ด้านความมั่นคงปลอดภัยไซเบอร์ที่ทำให้เกิดความเสียหายต่อข้อมูล หรือระบบสารสนเทศของสถานพยาบาลมากกว่าหนึ่งด้าน (Multiple Failures) ระหว่าง Confidentiality Failure, Integrity Failure และ Availability Failure",
+      "group": "General"
+    },
+    {
+      "code": "GPS105",
+      "title": "เกิดอุบัติการณ์การละเมิดความเป็นส่วนตัว (Privacy) ของข้อมูลส่วนบุคคลของ บุคลากรหรือนักศึกษาของสถานพยาบาล ที่ไม่ใช่อุบัติการณ์ด้านความมั่นคง ปลอดภัยไซเบอร์",
+      "group": "General"
+    },
+    {
+      "code": "GPS106",
+      "title": "เกิดอุบัติการณ์ความละเมิดความเป็นส่วนตัว (Privacy) ของข้อมูลส่วนบุคคลของ ผู้ป่วย/ผู้รับบริการ หรือบุคคลภายนอก ที่ไม่ใช่อุบัติการณ์ด้านความมั่นคง ปลอดภัยไซเบอร์",
+      "group": "General"
+    },
+    {
+      "code": "GPS201",
+      "title": "บุคลากรถูกกล่าวถึงหรือวิพากษ์วิจารณ์ในทางลบบนสื่อสังคมออนไลน์หรือสื่อ สาธารณะที่เกี่ยวข้องกับการปฏิบัติหน้าที่",
+      "group": "General"
+    },
+    {
+      "code": "GPS202",
+      "title": "บุคลากรถูกกล่าวถึงหรือวิพากษ์วิจารณ์ในทางลบบนสื่อสังคมออนไลน์หรือสื่อ สาธารณะที่ไม่ได้เกี่ยวข้องกับการปฏิบัติหน้าที่",
+      "group": "General"
+    },
+    {
+      "code": "GPS203",
+      "title": "บุคลากรใช้สื่อสังคมออนไลน์ไม่เหมาะสม เกิดผลกระทบทางลบต่อตนเอง บุคลากรคนอื่น สถานพยาบาล ผู้ป่วย/ผู้รับบริการ หรือบุคคลภายนอก",
+      "group": "General"
+    },
+    {
+      "code": "GPS204",
+      "title": "เกิดอุบัติการณ์ที่ส่งผลกระทบทางลบต่อสถานพยาบาลบนสื่อสังคมออนไลน์ เช่น Drama, Fake News แต่ไม่ได้เกิดจากบุคลากร และไม่กระทบบุคลากรคนใดคน หนึ่งโดยตรง ได้แก่",
+      "group": "General"
+    },
+    {
+      "code": "GPI101",
+      "title": "บุคลากรถูกวัสดุอุปกรณ์มีคมทิ่มตำ",
+      "group": "General"
+    },
+    {
+      "code": "GPI102",
+      "title": "บุคลากรสัมผัสเลือดหรือสารคัดหลั่งบริเวณเยื่อบุหรือผิวหนังที่มีแผล (mucous membrane and non-intact skin exposure to blood and body fluid)",
+      "group": "General"
+    },
+    {
+      "code": "GPI103",
+      "title": "บุคลากรไม่ได้รับการสร้างภูมิคุ้มกันโรคก่อนสัมผัส (pre-exposure prophylaxis, active immunization) ที่เหมาะสมตามลำดับความสำคัญและหน้าที่",
+      "group": "General"
+    },
+    {
+      "code": "GPI104",
+      "title": "บุคลากรไม่ได้รับการป้องกันการติดเชื้อหลังสัมผัสเชื้อที่อาจก่อโรคได้จากการ ปฏิบัติงาน (post-exposure prophylaxis, passive immunization)",
+      "group": "General"
+    },
+    {
+      "code": "GPI201",
+      "title": "บุคลากรติดเชื้อที่แพร่ทางอากาศ (airborne transmission) จากการปฏิบัติงาน ได้แก่ วัณโรค หัด และอีสุกอีใส",
+      "group": "General"
+    },
+    {
+      "code": "GPI202",
+      "title": "บุคลากรติดเชื้อที่แพร่ผ่านละอองฝอย (droplet transmission) จากการ ปฏิบัติงาน เช่น ไข้หวัดใหญ่ หัดเยอรมัน ฯลฯ",
+      "group": "General"
+    },
+    {
+      "code": "GPI203",
+      "title": "บุคลากรติดเชื้อที่แพร่ทางการสัมผัส (contact transmission) จากการปฏิบัติงาน เช่น เอชไอวี ตับอักเสบบี ตับอักเสบซี ฯลฯ",
+      "group": "General"
+    },
+    {
+      "code": "GPI204",
+      "title": "บุคลากรติดเชื้อที่แพร่ผ่านพาหะ (vector borne transmission) จากการ ปฏิบัติงาน เช่น ไข้เลือดออก ซิก้า ฯลฯ 10 เรื่อง ได้แก่",
+      "group": "General"
+    },
+    {
+      "code": "GPM101",
+      "title": "เจ้าหน้าที่ทะเลาะกันในขณะปฏิบัติงาน",
+      "group": "General"
+    },
+    {
+      "code": "GPM102",
+      "title": "เจ้าหน้าที่ถูกคุกคามทางจิตใจ",
+      "group": "General"
+    },
+    {
+      "code": "GPM103",
+      "title": "เจ้าหน้าที่มีภาวะเป็น second victim",
+      "group": "General"
+    },
+    {
+      "code": "GPM104",
+      "title": "เจ้าหน้าที่มีภาวะเครียดจากการทำงาน",
+      "group": "General"
+    },
+    {
+      "code": "GPM203",
+      "title": "เกิดเรื่องร้องเรียนจากการบริการทางการแพทย์",
+      "group": "General"
+    },
+    {
+      "code": "GPM204",
+      "title": "เกิดเรื่องร้องเรียนทั่วไป ซึ่งไม่เกี่ยวกับการบริการทางการแพทย์",
+      "group": "General"
+    },
+    {
+      "code": "GPM205",
+      "title": "เกิดเรื่องฟ้องร้องทางคดีผู้บริโภค",
+      "group": "General"
+    },
+    {
+      "code": "GPM206",
+      "title": "เกิดเรื่องฟ้องร้องทางคดีแพ่ง",
+      "group": "General"
+    },
+    {
+      "code": "GPM207",
+      "title": "เกิดเรื่องฟ้องร้องทางคดีอาญา",
+      "group": "General"
+    },
+    {
+      "code": "GPM208",
+      "title": "เกิดเรื่องฟ้องร้องทางคดีปกครอง",
+      "group": "General"
+    },
+    {
+      "code": "GPP101",
+      "title": "บุคลากรปฏิบัติงานโดยมีภาระงานที่มากเกินเกณฑ์มาตรฐาน (work load)",
+      "group": "General"
+    },
+    {
+      "code": "GPP102",
+      "title": "บุคลากรที่มีภาวะเสี่ยงต่อการติดเชื้อ หรือรับการแพร่กระจายเชื้อ ไม่ได้รับการ ป้องกันหรือดูแลที่เหมาะสม",
+      "group": "General"
+    },
+    {
+      "code": "GPP103",
+      "title": "บุคลากรประสบอุบัติเหตุหรือบาดเจ็บจากการปฏิบัติงาน (ยกเว้น ถูกวัสดุอุปกรณ์ มีคมทิ่มตำ)",
+      "group": "General"
+    },
+    {
+      "code": "GPP201",
+      "title": "องค์กรเกิดภาวะที่คุกคามบุคลากรด้านกายภาพ ได้แก่ เสียงดัง (noise) แสงสว่าง (light) ความร้อน (heat)",
+      "group": "General"
+    },
+    {
+      "code": "GPP202",
+      "title": "บุคลากรไม่ได้รับ/ไม่ได้ใช้อุปกรณ์ หรือใช้ไม่ถูกต้องในการป้องกันและคุ้มครอง ความปลอดภัยทางกายภาพ",
+      "group": "General"
+    },
+    {
+      "code": "GPP203",
+      "title": "บุคลากรเกิดโรคจากการทำงาน ซึ่งมีสาเหตุจาก Physical Hazard",
+      "group": "General"
+    },
+    {
+      "code": "GPP204",
+      "title": "องค์กรมีภาวะความไม่ปลอดภัยจากสารเคมีและวัตถุอันตราย",
+      "group": "General"
+    },
+    {
+      "code": "GPP205",
+      "title": "บุคลากรไม่ได้รับ/ไม่ได้ใช้อุปกรณ์ หรือใช้ไม่ถูกต้องในการป้องกันและคุ้มครอง ความปลอดภัยทางเคมี",
+      "group": "General"
+    },
+    {
+      "code": "GPP206",
+      "title": "บุคลากรเกิดโรคจากการทำงาน ซึ่งมีสาเหตุจาก Chemical Hazard",
+      "group": "General"
+    },
+    {
+      "code": "GPP207",
+      "title": "องค์กรเกิดความไม่ปลอดภัยจากรังสีในที่ทำงาน เช่น เกิดการรั่วไหลของรังสี",
+      "group": "General"
+    },
+    {
+      "code": "GPP208",
+      "title": "บุคลากรไม่ได้รับ/ไม่ได้ใช้อุปกรณ์ หรือใช้ไม่ถูกต้องในการป้องกันและคุ้มครอง ความปลอดภัยทางรังสี",
+      "group": "General"
+    },
+    {
+      "code": "GPP209",
+      "title": "บุคลากรเกิดโรคจากการทำงาน ซึ่งมีสาเหตุจาก Radiation Hazard",
+      "group": "General"
+    },
+    {
+      "code": "GPP210",
+      "title": "บุคคลากรมีการทำงานในท่าทางหรือลักษณะอันอาจมีผลกระทบต่อสุขภาพด้าน โครงร่างของกระดูกและกล้ามเนื้อ",
+      "group": "General"
+    },
+    {
+      "code": "GPP211",
+      "title": "บุคลากรไม่ได้รับคำแนะนำ/อุปกรณ์ในการปรับ การทำงานเพื่อลดผลกระทบต่อ สุขภาพด้านโครงร่างของกระดูกและกล้ามเนื้อ",
+      "group": "General"
+    },
+    {
+      "code": "GPP212",
+      "title": "บุคลากรเกิดโรคจากการทำงานเกี่ยวกับโครงร่างกระดูกและกล้ามเนื้อ ซึ่งมีสาเหตุ จาก Biomechanical Hazard",
+      "group": "General"
+    },
+    {
+      "code": "GPP301",
+      "title": "บุคลากรไม่ได้ตรวจสุขภาพก่อนการรับเข้าทำงาน",
+      "group": "General"
+    },
+    {
+      "code": "GPP302",
+      "title": "บุคลากรได้รับการตรวจสุขภาพประจำปี ซึ่งมีโปรแกรมการตรวจไม่ครบถ้วน เหมาะสม ตรงตามลักษณะงาน",
+      "group": "General"
+    },
+    {
+      "code": "GPP303",
+      "title": "บุคลากรที่มีโอกาสแพร่กระจายเชื้อต่างๆ มาทำงานโดยไม่ป้องกันและควบคุม จำนวน 11 เรื่อง ได้แก่",
+      "group": "General"
+    },
+    {
+      "code": "GPL101",
+      "title": "อุปกรณ์บนรถพยาบาลไม่พร้อมใช้ ไม่เหมาะสมและไม่ปลอดภัยสำหรับการส่งต่อ ผู้ป่วย",
+      "group": "General"
+    },
+    {
+      "code": "GPL102",
+      "title": "บุคคลากรที่เกิดอุบัติเหตุจากการคมนาคมหรือการเดินทางโดยระบบขนส่ง สาธารณะระหว่างการปฏิบัติงาน",
+      "group": "General"
+    },
+    {
+      "code": "GPL103",
+      "title": "บุคลากรเสียชีวิตหรือบาดเจ็บจากการปฏิบัติหน้าที่ระหว่างการส่งต่อผู้ป่วยด้วย รถพยาบาล",
+      "group": "General"
+    },
+    {
+      "code": "GPL104",
+      "title": "เกิดอุบัติเหตุของรถพยาบาลระหว่างปฏิบัติหน้าที่",
+      "group": "General"
+    },
+    {
+      "code": "GPL105",
+      "title": "พนักงานขับรถมีสภาพไม่พร้อมสมบูรณ์สำหรับการขับรถพยาบาล เช่น พักผ่อน น้อย อายุมาก ดื่มสุรา",
+      "group": "General"
+    },
+    {
+      "code": "GPL106",
+      "title": "พนักงานขับรถไม่ปฏิบัติตามแนวทางความปลอดภัยของรถบริการการแพทย์ ฉุกเฉิน และรถพยาบาล เช่น ขับรถเร็วเกินกว่ากำหนด",
+      "group": "General"
+    },
+    {
+      "code": "GPL201",
+      "title": "บุคลากรไม่ปฏิบัติตามแนวทางการให้ข้อมูลด้านสุขภาพแก่ผู้รับบริการ",
+      "group": "General"
+    },
+    {
+      "code": "GPL202",
+      "title": "บุคลากรให้ข้อมูลไม่ครบถ้วนแก่ผู้ป่วยและญาติ",
+      "group": "General"
+    },
+    {
+      "code": "GPL203",
+      "title": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง",
+      "group": "General"
+    },
+    {
+      "code": "GPL204",
+      "title": "บุคลากรแก้ไขข้อมูลในเวชระเบียนโดยไม่ถูกต้องตามแนวทางและข้อกำหนดตาม กฎหมาย",
+      "group": "General"
+    },
+    {
+      "code": "GPL205",
+      "title": "เกิดปัญหาด้านการบริหารจัดการ/การเก็บรักษาเวชระเบียน เช่น เวชระเบียนสูญ หาย ผู้ป่วยคนเดียวมีเวชระเบียนสองฉบับ เป็นต้น จำนวน 14 เรื่อง ได้แก่",
+      "group": "General"
+    },
+    {
+      "code": "GPE101",
+      "title": "อันตรายจากโครงสร้างอาคารสถานที่และสิ่งแวดล้อมเชิงกายภาพ เช่น แสง เสียง ฝุ่นละออง มีเชื้อรา เป็นต้น",
+      "group": "General"
+    },
+    {
+      "code": "GPE102",
+      "title": "ห้องแยกโรค/Isolation room มีการระบายอากาศไม่เหมาะสม และ/หรือ ไม่ เป็นไปตามเกณฑ์มาตรฐาน",
+      "group": "General"
+    },
+    {
+      "code": "GPE201",
+      "title": "บุคลากรได้รับผลกระทบ Psychosocial factors จากผู้บังคับบัญชา หรือเพื่อน ร่วมงาน",
+      "group": "General"
+    },
+    {
+      "code": "GPE202",
+      "title": "บุคลากรไม่มี work-life balance",
+      "group": "General"
+    },
+    {
+      "code": "GPE203",
+      "title": "บรรยากาศในการทำงานและสภาวะแวดล้อมไม่เหมาะสม",
+      "group": "General"
+    },
+    {
+      "code": "GPE204",
+      "title": "บุคคลากรได้ทำงานในตำแหน่งที่ไม่มีความชำนาญ และไม่มีการเตรียมความพร้อม",
+      "group": "General"
+    },
+    {
+      "code": "GPE205",
+      "title": "เกิดปัญหาด้านการจัดการสภาพแวดล้อมในการให้บริการ เช่น ไม่มีป้ายให้ คำแนะนำ/บอกทาง, ไม่มีทางหนีไฟหรือมีแต่ไม่พร้อมใช้/มีสิ่งกีดขวาง, ลิฟต์ ขัดข้อง มีคนติดในลิฟต์ หรือ ลิฟต์ไม่พร้อมใช้งาน/ชำรุด/ติดค้าง เป็นต้น",
+      "group": "General"
+    },
+    {
+      "code": "GPE206",
+      "title": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค- บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/ กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน",
+      "group": "General"
+    },
+    {
+      "code": "GPE207",
+      "title": "เกิดปัญหาความไม่ปลอดภัย/ขาดการปฏิบัติหรือไม่ปฏิบัติตามนโยบายความ ปลอดภัย เช่น ทรัพย์สินสูญหาย/ถูกลักขโมย เป็นต้น",
+      "group": "General"
+    },
+    {
+      "code": "GPE301",
+      "title": "บุคลากรได้รับภัยคุกคามหรือถูกทำร้ายทางวาจาจากบุคคลภายใน",
+      "group": "General"
+    },
+    {
+      "code": "GPE302",
+      "title": "บุคลากรได้รับภัยคุกคามหรือถูกทำร้ายทางกายจากบุคคลภายใน",
+      "group": "General"
+    },
+    {
+      "code": "GPE303",
+      "title": "บุคลากรได้รับภัยคุกคามหรือถูกทำร้ายทางวาจาจากผู้ป่วยและญาติหรือ บุคคลภายนอก",
+      "group": "General"
+    },
+    {
+      "code": "GPE304",
+      "title": "บุคลากรได้รับภัยคุกคามหรือถูกทำร้ายทางกายจากผู้ป่วยและญาติหรือ บุคคลภายนอก",
+      "group": "General"
+    },
+    {
+      "code": "GPE305",
+      "title": "เกิดกรณีความไม่สงบในสถานพยาบาล เช่น เมาสุราอาละวาด หมวดอุบัติการณ์ความเสี่ยง Organization Safety Goals: O",
+      "group": "General"
+    },
+    {
+      "code": "GOS101",
+      "title": "เกิดปัญหาด้านการควบคุมการวางแผน เช่น ไม่มีแผนปฏิบัติการ-แผนไม่ ครอบคลุม/การสื่อสารแผน/การมอบหมายผู้รับผิดชอบ/ไม่กำหนด วัตถุประสงค์",
+      "group": "General"
+    },
+    {
+      "code": "GOS102",
+      "title": "เกิดปัญหาด้านการควบคุมกระบวนการปฏิบัติงาน เช่น ไม่กำหนด กระบวนการปฏิบัติงานที่สำคัญ/ขาดการประเมินประสิทธิภาพ/ขาดการ ติดตามผล/ไม่มีการปรับปรุงแก้ไขข้อเสนอแนะ",
+      "group": "General"
+    },
+    {
+      "code": "GOS103",
+      "title": "เกิดปัญหาด้านการติดตามประเมินผล เช่น ไม่มีการประเมินความคืบหน้า/ ไม่เปรียบเทียบผลการใช้จ่ายเงิน/ไม่แจ้งผลการประเมินให้ทราบ/ไม่ได้ ทบทวนวัตถุประสงค์-แผนและกระบวนการดำเนินงาน",
+      "group": "General"
+    },
+    {
+      "code": "GOS201",
+      "title": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ",
+      "group": "General"
+    },
+    {
+      "code": "GOS202",
+      "title": "ห้องน้ำหรือห้องสุขาไม่พร้อมใช้ (เช่น ชำรุด/กดชักโครกไม่ลง/ส้วมเต็ม/ไม่ พอใช้) หรือไม่สะดวกต่อผู้พิการ",
+      "group": "General"
+    },
+    {
+      "code": "GOS301",
+      "title": "อันตรายจากภัยธรรมชาติ อุทกภัย อัคคีภัย วาตภัย control & Inventory มี 2 ประเภทย่อย จำนวน 15 เรื่อง ได้แก่",
+      "group": "General"
+    },
+    {
+      "code": "GOI101",
+      "title": "เกิดปัญหาด้าน Hardware/อุปกรณ์คอมพิวเตอร์ เช่น ไม่มีแผนบริหารจัดการ/ ไม่เพียงพอ/ไม่พร้อมใช้/ใช้ไม่ตรงวัตถุประสงค์/ใช้ผิดวิธี- เทคนิค",
+      "group": "General"
+    },
+    {
+      "code": "GOI102",
+      "title": "เกิดปัญหาด้าน Network & Security เช่น ไม่พร้อมใช้/ระบบล่ม/มีการเข้าถึง โดยผู้ไม่มีสิทธิ์",
+      "group": "General"
+    },
+    {
+      "code": "GOI103",
+      "title": "เกิดปัญหาด้าน Software เช่น ไม่เข้ากับ hardware/ไม่พร้อมใช้/ไม่ตอบสนอง ความต้องการ/ใช้ผิดวิธี-เทคนิค",
+      "group": "General"
+    },
+    {
+      "code": "GOI104",
+      "title": "เกิดปัญหาด้าน User & IT Team เช่น ไม่มอบหมายผู้รับผิดชอบ/ไม่พร้อม/ไม่ ครอบคลุมบทบาทหน้าที่/ขาดความรู้และทักษะ",
+      "group": "General"
+    },
+    {
+      "code": "GOI105",
+      "title": "เกิดปัญหาด้านข้อมูล สารสนเทศ เช่น ไม่ถูกต้อง/ไม่ครบถ้วน/ไม่น่าเชื่อถือ/ไม่ เป็นปัจจุบัน",
+      "group": "General"
+    },
+    {
+      "code": "GOI106",
+      "title": "เกิดปัญหาด้านระบบ/กระบวนการสื่อสาร เช่น ไม่มีแผน/วิธีการหรือช่องทางการ สื่อสาร, ไม่สื่อสารหรือสื่อสารไม่ต่อเนื่อง/ไม่ครบถ้วน, ขาดการติดตาม ประเมินผลการสื่อสาร",
+      "group": "General"
+    },
+    {
+      "code": "GOI107",
+      "title": "โปรแกรม/ระบบสารสนเทศทางการแพทย์ เช่น HIS, LIS, โปรแกรมระบบยา ล่ม/ไม่สามารถใช้งานได้ นานเกินกว่าระยะเวลาที่ประกันเวลาไว้",
+      "group": "General"
+    },
+    {
+      "code": "GOI108",
+      "title": "โปรแกรม/ระบบสารสนเทศการบริการอื่นๆ ที่ไม่ใช่บริการทางการแพทย์ ล่ม/ไม่ สามารถใช้งานได้ นานเกินกว่าระยะเวลาที่ประกันเวลาไว้",
+      "group": "General"
+    },
+    {
+      "code": "GOI201",
+      "title": "เกิดปัญหาด้านการควบคุมทรัพย์สิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มี ทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน",
+      "group": "General"
+    },
+    {
+      "code": "GOI202",
+      "title": "เกิดปัญหาด้านระบบบริหารการพัสดุ เช่น ไม่กำหนดระเบียบ/แผนความต้องการ และการจัดหา, ไม่มีทะเบียนคุม/การตรวจรับ/การบำรุงรักษา, ขาดการควบคุม การแจกจ่าย/การจำหน่าย",
+      "group": "General"
+    },
+    {
+      "code": "GOI203",
+      "title": "เกิดปัญหาด้านการควบคุมการใช้ทรัพยากร เช่น จัดสรรไม่เหมาะสม/ใช้ไม่คุ้ม-ไม่ ถูกตามมาตรฐาน/บุคลากรไม่ปฏิบัติตามข้อกำหนด-ขาดทักษะการใช้",
+      "group": "General"
+    },
+    {
+      "code": "GOI204",
+      "title": "เกิดปัญหาด้านอุปกรณ์เทคโนโลยีทางการแพทย์/เครื่องมือ-อุปกรณ์การแพทย์ที่ ไม่ใช่เครื่องมือ-อุปกรณ์ผ่าตัด (Error of Medical device) เช่น ไม่มีแผนบริหาร จัดการ/ไม่เพียงพอ/ไม่พร้อมใช้/ใช้ไม่ตรงวัตถุประสงค์/ใช้ผิดวิธี- เทคนิค",
+      "group": "General"
+    },
+    {
+      "code": "GOI205",
+      "title": "เกิดปัญหาด้านเครื่องมือ อุปกรณ์สำนักงาน หรือ เครื่องมือ อุปกรณ์อื่นๆ ที่ไม่ใช่ เทคโนโลยีหรือเครื่องมือ-อุปกรณ์การแพทย์ เช่น ไม่มีแผนบริหารจัดการ/ไม่ เพียงพอ/ไม่พร้อมใช้/ใช้ไม่ตรงวัตถุประสงค์/ใช้ผิดวิธี- เทคนิค",
+      "group": "General"
+    },
+    {
+      "code": "GOI206",
+      "title": "เกิดปัญหาด้านเวชภัณฑ์ทางการแพทย์/เวชภัณฑ์ที่ไม่ใช่ยา เช่น ไม่มีแผนบริหาร จัดการ/ไม่มีคุณภาพ/ไม่เพียงพอ/หมดอายุหรืออยู่ในสภาพไม่พร้อมใช้งาน",
+      "group": "General"
+    },
+    {
+      "code": "GOI207",
+      "title": "เกิดปัญหาด้านเวชภัณฑ์ยา เช่น ไม่มีแผนบริหารจัดการ/ไม่มีคุณภาพ/ไม่ เพียงพอ/หมดอายุหรืออยู่ในสภาพไม่พร้อมใช้งาน ได้แก่",
+      "group": "General"
+    },
+    {
+      "code": "GOM101",
+      "title": "เกิดปัญหาด้านการรับสมัคร บรรจุ แต่งตั้งบุคลากร เช่น ไม่มีการกำหนดกระบวนการ คัดเลือก/ทักษะและความสามารถที่จำเป็นกับตำแหน่ง, ไม่มีการเผยแพร่ข้อมูลการรับ สมัคร/การสอบคัดเลือก, ไม่มีคำสั่งเป็นลายลักษณ์อักษรโดยผูบ้ ริหารสูงสุด",
+      "group": "General"
+    },
+    {
+      "code": "GOM102",
+      "title": "เกิดปัญหาด้านการบริหารจัดการเกี่ยวกับบุคลากร เช่น ไม่กำหนดหน้าที่ความ รับผิดชอบ/การเปลี่ยนแปลงที่สำคัญเกี่ยวกับการมอบหมายงานเป็นลายลักษณ์ อักษร, ไม่มีการจัดทำแนวทางการปฏิบัติเรื่องค่าตอบแทน, การเลื่อนขั้น เงินเดือนไม่มีการพิจารณาอนุมัติและจัดทำเป็นลายลักษณ์อักษร",
+      "group": "General"
+    },
+    {
+      "code": "GOM103",
+      "title": "เกิดปัญหาด้านการพัฒนาบุคลากร เช่น ไม่มีการจัดสรรงบประมาณ/ทรัพยากร/ เครื่องมือ และการจัดฝึกอบรม, ไม่มีการพิจารณาความต้องการฝึกอบรมของ บุคลากรเพื่อพัฒนาทักษะ",
+      "group": "General"
+    },
+    {
+      "code": "GOM201",
+      "title": "เกิดปัญหาด้านการควบคุมสภาพแวดล้อมของการดำเนินงาน เช่น เอกสาร กระบวนการดำเนินงานไม่เป็นปัจจุบัน/ไม่มีกฎ ระเบียบ ความรับผิดชอบที่ ชัดเจน/ขาดการติดตามผลและวางแผนป้องกัน จำนวน 2 เรื่อง ได้แก่",
+      "group": "General"
+    },
+    {
+      "code": "GOP101",
+      "title": "เกิดปัญหาด้านการควบคุมภารกิจ เช่น ไม่กำหนดวัตถุประสงค์-เป้าหมายการ ดำเนินงาน/ภารกิจไม่ชัดเจนเป็นลายลักษณ์อักษร/ขาดการประกาศสื่อสาร ภารกิจ",
+      "group": "General"
+    },
+    {
+      "code": "GOP201",
+      "title": "เกิดปัญหาด้านกระบวนการบริการ เช่น ไม่มีการกำหนดมาตรฐานขั้นตอน กระบวนการบริการ, ให้บริการไม่ครอบคลุม/ไม่พร้อม/ไม่ตรงตามช่วงระยะเวลา จำนวน 2 เรื่อง ได้แก่",
+      "group": "General"
+    },
+    {
+      "code": "GOL101",
+      "title": "เกิดปัญหาด้านการควบคุม กำกับดูแลด้านวิชาชีพ เช่น บุคลากรมีคุณสมบัติไม่ เหมาะสมตามมาตรฐานวิชาชีพ, ละเลยการปฏิบัติหน้าที่ หรือปฏิบัติหน้าที่โดยไม่ ใช้ความรู้ตามหลักวิชาการ, ประพฤติตนและประกอบกิจแห่งวิชาชีพโดยไม่ ถูกต้องตามกฎหมาย",
+      "group": "General"
+    },
+    {
+      "code": "GOL102",
+      "title": "เกิดเหตุการณ์การทุจริตในหน้าที่ หรือปฏิบัติโดยมีอคติ และ/หรือใช้อำนาจ หน้าที่เพื่อผลประโยชน์ส่วนตน",
+      "group": "General"
+    },
+    {
+      "code": "GOE101",
+      "title": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มี เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น",
+      "group": "General"
+    },
+    {
+      "code": "GOE201",
+      "title": "เกิดปัญหาด้านการควบคุมงบประมาณ เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่ มีทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น",
+      "group": "General"
+    }
+  ],
+  "aliases": [
+    {
+      "term": "Phlebitis",
+      "code": "CPI204",
+      "mainTitle": "การไม่ปฏิบัติตามแนวทางป้องกันการแพร่กระจายเชื้อก่อโรคในสถานพยาบาล Standard Precautions (ยกเว้นการล้างมือ)"
+    },
+    {
+      "term": "การ-เข้าถึงข้อมูลสารสนเทศ/ข้อมูลผู้ป่วยที่สำคัญโดยผู้ที่ไม่ได้รับอนุญาต",
+      "code": "GOI102",
+      "mainTitle": "เกิดปัญหาด้าน Network & Security เช่น ไม่พร้อมใช้/ระบบล่ม/มีการเข้าถึงโดยผู้ไม่มีสิทธิ์"
+    },
+    {
+      "term": "การจัดพื้นที่ให้บริการกลุ่มผู้ป่วยไม่เหมาะสม",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "การจ่ายกะแสไฟฟาเข้าจุดบริการบกพร่อง",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "การยืมเงินและส่งใช้เงินยืมไม่เป็นไปตามกำหนด",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "ขณะไปส่งต่อ รถยนต์ที่ขับตามรถรพ.ขับจี้รถรพ.",
+      "code": "GPL102",
+      "mainTitle": "บุคคลากรที่เกิดอุบัติเหตุจากการคมนาคมหรือการเดินทางโดยระบบขนส่งสาธารณะระหว่างการปฏิบัติงาน"
+    },
+    {
+      "term": "คัดลอกยาผิดขนาด",
+      "code": "CPM202",
+      "mainTitle": "Medication error : Transcribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการคัดลอกยา)"
+    },
+    {
+      "term": "คัดลอกยาผิดคน",
+      "code": "CPM202",
+      "mainTitle": "Medication error : Transcribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการคัดลอกยา)"
+    },
+    {
+      "term": "คัดลอกยาผิดชนิดยา",
+      "code": "CPM202",
+      "mainTitle": "Medication error : Transcribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการคัดลอกยา)"
+    },
+    {
+      "term": "คัดลอกยาไม่ครบ",
+      "code": "CPM202",
+      "mainTitle": "Medication error : Transcribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการคัดลอกยา)"
+    },
+    {
+      "term": "จัดทำรายงานทางการเงินไม่ทันตามกำหนด",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "จัดยาผิดความแรง/ขนาด",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "จัดยาผิดจำนวน",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "จัดยาผิดชนิด",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "จัดยาผิดรูปแบบ",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "จุดที่ให้บริการน้ำดื่มสำหรับผู้ป่วยแต่ไม่มีการเตรียมน้ำให้ดื่ม",
+      "code": "GPM204",
+      "mainTitle": "เกิดเรื่องร้องเรียนทั่วไป ซึ่งไม่เกี่ยวกับการบริการทางการแพทย์"
+    },
+    {
+      "term": "จ่ายยาผิดขนาด",
+      "code": "CPM204",
+      "mainTitle": "Medication error : Dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจ่ายยา)"
+    },
+    {
+      "term": "จ่ายยาผิดคน",
+      "code": "CPM204",
+      "mainTitle": "Medication error : Dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจ่ายยา)"
+    },
+    {
+      "term": "จ่ายยาผิดชนิดยา",
+      "code": "CPM204",
+      "mainTitle": "Medication error : Dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจ่ายยา)"
+    },
+    {
+      "term": "จ่ายยาไม่ครบ",
+      "code": "CPM204",
+      "mainTitle": "Medication error : Dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจ่ายยา)"
+    },
+    {
+      "term": "จ่ายยาไม่ครบจำนวน",
+      "code": "CPM204",
+      "mainTitle": "Medication error : Dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจ่ายยา)"
+    },
+    {
+      "term": "ชื่อ-นามสกุลผิด",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ดามข้อมือไม่ถูกต้อง/ไม่เหมาะสม",
+      "code": "CPP303",
+      "mainTitle": "(Patient Assessment) ผู้ป่วยไม่ได้รับการประเมิน/ประเมินผิด/ประเมินไม่ครบถ้วน ตามเกณฑ์ อาการหรือการดำเนินโรค"
+    },
+    {
+      "term": "ดูใบนัดผิดพลาด ทำให้ผู้ป่วยถูกเจาะเลือดซ้ำ",
+      "code": "CPP203",
+      "mainTitle": "การสื่อสารเพื่อการส่งตรวจทางห้องปฏิบัติการผิดพลาด/ไม่ครบถ้วน"
+    },
+    {
+      "term": "ตรวจสอบสิทธิ์ผิด",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ตั้งค่าเครื่องฟอกไตไม่ตรงกับแผนการรักษา",
+      "code": "CPP302",
+      "mainTitle": "(Access & Entry) ผู้ป่วยเข้าถึงหรือได้รับบริการ ผิด/ล่าช้าไปจากเกณฑ์ หรือโรคที่เป็น"
+    },
+    {
+      "term": "ติดฉลากยาผิด/ สลับกัน",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "ติดต่อจนท.แผนกเภสัชกรรมไม่ได้เมื่อต้องการใช้ยา พิเศษ",
+      "code": "CPP204",
+      "mainTitle": "การสื่อสารหรือส่งต่อข้อมูลการรักษาพยาบาลผู้ป่วยผิดพลาด เช่น ไม่สื่อสาร/สื่อสารผิด/สื่อสารไม่ครบถ้วน/สื่อสารล่าช้า"
+    },
+    {
+      "term": "ถนนเป็นหลุม เป็นบ่อ อาจเกิดอันตรายจากการสัญจรไปมา",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "ถอนเข็มฝังเข็มจากตัวผู้ป่วยไม่หมด",
+      "code": "CPI204",
+      "mainTitle": "การไม่ปฏิบัติตามแนวทางป้องกันการแพร่กระจายเชื้อก่อโรคในสถานพยาบาล Standard Precautions (ยกเว้นการล้างมือ)"
+    },
+    {
+      "term": "ทางหนีไฟไม่พร้อมใช้งาน",
+      "code": "GPE205",
+      "mainTitle": "เกิดปัญหาด้านการจัดการสภาพแวดล้อมในการให้บริการ เช่น ไม่มีป้ายให้คำแนะนำ/บอกทาง, ไม่มีทางหนีไฟหรือมีแต่ไม่พร้อมใช้/มีสิ่งกีดขวาง, ลิฟต์ขัดข้อง มีคนติดในลิฟต์ หรือ ลิฟต์ไม่พร้อมใช้งาน/ชำรุด/ติดค้าง"
+    },
+    {
+      "term": "ทิ้งขยะผิดประเภท",
+      "code": "CPI204",
+      "mainTitle": "การไม่ปฏิบัติตามแนวทางป้องกันการแพร่กระจายเชื้อก่อโรคในสถานพยาบาล Standard Precautions (ยกเว้นการล้างมือ)"
+    },
+    {
+      "term": "ทิ้งขยะไม่ถูกที่/ไม่ลงถัง",
+      "code": "CPI204",
+      "mainTitle": "การไม่ปฏิบัติตามแนวทางป้องกันการแพร่กระจายเชื้อก่อโรคในสถานพยาบาล Standard Precautions (ยกเว้นการล้างมือ)"
+    },
+    {
+      "term": "นำขยะอันตรายไปทิ้งรวมกับขยะอื่น",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐา"
+    },
+    {
+      "term": "น้ำซึมออกจากโถปัสสาวะ",
+      "code": "GOS202",
+      "mainTitle": "ห้องน้ำหรือห้องสุขาไม่พร้อมใช้ (เช่น ชำรุด/กดชักโครกไม่ลง/ส้วมเต็ม/ไม่พอใช้) หรือไม่สะดวกต่อผู้พิการ"
+    },
+    {
+      "term": "บันทึกข้อมูลวันกำหนดคลอดไม่ถูกต้อง ไม่ครบถ้วน",
+      "code": "CPP310",
+      "mainTitle": "(Information and Empowerment) ข้อมูลการวินิจฉัย/การดูแลรักษาของผู้ป่วยไม่ได้รับการบันทึกหรือได้รับการบันทึกไม่ครบถ้วน ไม่ชัดเจน ไม่เชื่อมโยงต่อเนื่อง"
+    },
+    {
+      "term": "บันทึกคำนำหน้าชื่อผู้ป่วยไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "บันทึกค่ารักษาพยาบาลไม่ถูกต้อง ไม่ครบถ้วน",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "บันทึกชื่อ - นามสกุล ผู้ป่วยไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "บันทึกที่อยู่ผู้ป่วยไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "บันทึกวัน เดือน ปี เกิดผู้ป่วยไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "บันทึกสิทธิ์การรักษาผู้ป่วยไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "บันทึกอายุ ผู้ป่วยไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "บันทึกเลขประจำตัวผู้ป่วยนอก(HN)ไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "บันทึกเลขประจำตัวผู้ป่วยใน(AN)ไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ประวัติการมารับบริการของผู้รับบริการถูกลบไปจากระบบHos xp",
+      "code": "GOI105",
+      "mainTitle": "เกิดปัญหาด้านข้อมูล สารสนเทศ เช่น ไม่ถูกต้อง/ไม่ครบถ้วน/ไม่น่าเชื่อถือ/ไม่เป็นปัจจุบัน"
+    },
+    {
+      "term": "ประเมินอายุครรภ์ผิด",
+      "code": "CPP303",
+      "mainTitle": "(Patient Assessment) ผู้ป่วยไม่ได้รับการประเมิน/ประเมินผิด/ประเมินไม่ครบถ้วน ตามเกณฑ์ อาการหรือการดำเนินโรค"
+    },
+    {
+      "term": "ปัญหาระบบคิว",
+      "code": "GOI106",
+      "mainTitle": "เกิดปัญหาด้านระบบ/กระบวนการสื่อสาร เช่น ไม่มีแผน/วิธีการหรือช่องทางการสื่อสาร, ไม่สื่อสารหรือสื่อสารไม่ต่อเนื่อง/ไม่ครบถ้วน, ขาดการติดตามประเมินผลการสื่อสาร"
+    },
+    {
+      "term": "ป้ายชื่อที่เตียงผู้ป่วยไม่ชัดเจน",
+      "code": "CPP101",
+      "mainTitle": "Patient Identification"
+    },
+    {
+      "term": "ป้ายลำดับที่เตียงไม่ชัดเจน",
+      "code": "CPP101",
+      "mainTitle": "Patient Identification"
+    },
+    {
+      "term": "ผู้ป่วย/ญาติ ทะเลาะวิวาท ประทุษร้ายกัน",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "ผู้ป่วย/ญาติ เดินสะดุดรอยต่อทางต่างระดับล้ม/ได้รับบาดเจ็บ",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "ผู้ป่วย/ญาติถูกทำร้ายร่างกายในบริเวณโรงพยาบาล",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "ผู้ป่วย/ญาติถูกโจรกรรม/การลักขโมย/ทรัพย์สินถูกทำลาย/สูญหาย",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "ผู้ป่วย/ญาติสูบบุหรี่ ดื่มสุรา เสพสิ่งเสพติดในเขตโรงพยาบาล",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "ผู้ป่วยมาผิดนัด",
+      "code": "GOI106",
+      "mainTitle": "เกิดปัญหาด้านระบบ/กระบวนการสื่อสาร เช่น ไม่มีแผน/วิธีการหรือช่องทางการสื่อสาร, ไม่สื่อสารหรือสื่อสารไม่ต่อเนื่อง/ไม่ครบถ้วน, ขาดการติดตามประเมินผลการสื่อสาร"
+    },
+    {
+      "term": "ผู้ป่วยเป็นลมขณะรอรับบริการ",
+      "code": "CPP401",
+      "mainTitle": "ผู้ป่วยเกิดภาวะแทรกซ้อนจากกระบวนการดูแลรักษาพยาบาลซึ่งป้องกันได้ (ยกเว้น เกิดแผลกดทับ, ตกเตียง/fall)"
+    },
+    {
+      "term": "ผู้ป่วยไม่ยื่นบัตรประชาชน/บัตรนัด",
+      "code": "GOI106",
+      "mainTitle": "เกิดปัญหาด้านระบบ/กระบวนการสื่อสาร เช่น ไม่มีแผน/วิธีการหรือช่องทางการสื่อสาร, ไม่สื่อสารหรือสื่อสารไม่ต่อเนื่อง/ไม่ครบถ้วน, ขาดการติดตามประเมินผลการสื่อสาร"
+    },
+    {
+      "term": "พบของsterile หมดอายุ",
+      "code": "GOI203",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการใช้ทรัพยากร เช่น จัดสรรไม่เหมาะสม/ใช้ไม่คุ้ม-ไม่ถูกตามมาตรฐาน/บุคลากรไม่ปฏิบัติตามข้อกำหนด-ขาดทักษะการใช้"
+    },
+    {
+      "term": "พบคราบเลือดที่เครื่อง ultrasound",
+      "code": "CPI204",
+      "mainTitle": "การไม่ปฏิบัติตามแนวทางป้องกันการแพร่กระจายเชื้อก่อโรคในสถานพยาบาล Standard Precautions (ยกเว้นการล้างมือ)"
+    },
+    {
+      "term": "พบบุคคลแปลกปลอมในพื้นที่โรงพยาบาล",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "พบรถยนต์ จอดกีดขวางเส้นทางจราจร",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "พบสัตว์ที่เป็นพาหะนำโรค เช่น หนู แมลงสาบ แมลงวัน ในบริเวณที่สะอาด",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "พบสัตว์หรือสัตว์เลี้ยงในโรงพยาบาล",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "พบหลังคารั่ว ฝนสาด ฝนซึม",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "พบเข็มที่ใช้แล้วบนพื้น บนโต๊ะข้างเตียง",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "พบเข็มฝังเข็มตกอยู่ที่พื้น",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "พบเส้นผมในset sterile",
+      "code": "GOI203",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการใช้ทรัพยากร เช่น จัดสรรไม่เหมาะสม/ใช้ไม่คุ้ม-ไม่ถูกตามมาตรฐาน/บุคลากรไม่ปฏิบัติตามข้อกำหนด-ขาดทักษะการใช้"
+    },
+    {
+      "term": "มารดาฝากครรภ์ ไม่ได้รับการส่งตรวจหมู่เลือดตั้งแต่คลินิกฝากครรภ์",
+      "code": "CPP303",
+      "mainTitle": "(Patient Assessment) ผู้ป่วยไม่ได้รับการประเมิน/ประเมินผิด/ประเมินไม่ครบถ้วน ตามเกณฑ์ อาการหรือการดำเนินโรค"
+    },
+    {
+      "term": "มารดาหลังคลอด 2ชม. แรก พร่องการเฝ้าระวังจนเกิด PPH wihout Shock",
+      "code": "CPP304",
+      "mainTitle": "(Planning of Care) ผู้ป่วยไม่ได้รับการวางแผนดูแล/วางแผนไม่ครอบคลุม หรือวางแผนผิดไปจากพยาธิสภาพ/สภาวะของโรค"
+    },
+    {
+      "term": "มารดาหลังคลอดพร่องการเฝ้าระวังจนเกิด PPH wihout Shock",
+      "code": "CPP303",
+      "mainTitle": "(Patient Assessment) ผู้ป่วยไม่ได้รับการประเมิน/ประเมินผิด/ประเมินไม่ครบถ้วน ตามเกณฑ์ อาการหรือการดำเนินโรค"
+    },
+    {
+      "term": "มารดาหลังคลอดไม่ได้บันทึกเยี่ยมครั้งที่1 หลังคลอด",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "มีกลิ่นไม่พึงประสงค์ในจุดให้บริการผู้ป่วย",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "มีคนติดอยู่ในลิฟต์",
+      "code": "GPE205",
+      "mainTitle": "เกิดปัญหาด้านการจัดการสภาพแวดล้อมในการให้บริการ เช่น ไม่มีป้ายให้คำแนะนำ/บอกทาง, ไม่มีทางหนีไฟหรือมีแต่ไม่พร้อมใช้/มีสิ่งกีดขวาง, ลิฟต์ขัดข้อง มีคนติดในลิฟต์ หรือ ลิฟต์ไม่พร้อมใช้งาน/ชำรุด/ติดค้าง"
+    },
+    {
+      "term": "มีสิ่งกีดขวางบริเวณทางหนีไฟ",
+      "code": "GPE205",
+      "mainTitle": "เกิดปัญหาด้านการจัดการสภาพแวดล้อมในการให้บริการ เช่น ไม่มีป้ายให้คำแนะนำ/บอกทาง, ไม่มีทางหนีไฟหรือมีแต่ไม่พร้อมใช้/มีสิ่งกีดขวาง, ลิฟต์ขัดข้อง มีคนติดในลิฟต์ หรือ ลิฟต์ไม่พร้อมใช้งาน/ชำรุด/ติดค้าง"
+    },
+    {
+      "term": "ยอดเงินไม่ตรงกับเอกสาร",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "ระบบน้ำมีปัญหา",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "ระบบบำบัดน้ำเสียมีปัญหา",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "ระบบอินเตอร์เน็ตเข้าใช้งานไม่ได้ /ช้า/ไม่ตอบสนอง",
+      "code": "GOI102",
+      "mainTitle": "เกิดปัญหาด้าน Network & Security เช่น ไม่พร้อมใช้/ระบบล่ม/มีการเข้าถึงโดยผู้ไม่มีสิทธิ์"
+    },
+    {
+      "term": "ระบบเสียงตามสาย/ประชาสัมพันธ์ในโรงพยาบาลชำรุด/ไม่ได้ยิน",
+      "code": "GOI106",
+      "mainTitle": "เกิดปัญหาด้านระบบ/กระบวนการสื่อสาร เช่น ไม่มีแผน/วิธีการหรือช่องทางการสื่อสาร, ไม่สื่อสารหรือสื่อสารไม่ต่อเนื่อง/ไม่ครบถ้วน, ขาดการติดตามประเมินผลการสื่อสาร"
+    },
+    {
+      "term": "ระบบไฟฟ้ามีปัญหา",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "รับคำสั่งแพทย์ทางโทรศัพท์แต่ไม่ได้ลงบันทึกในเวชระเบียน",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "รายการยาในใบสั่งยาไม่ตรงกับใน hos-xp",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "ลบน้ำหนักผู้ป่วยผิด",
+      "code": "CPP302",
+      "mainTitle": "(Access & Entry) ผู้ป่วยเข้าถึงหรือได้รับบริการ ผิด/ล่าช้าไปจากเกณฑ์ หรือโรคที่เป็น"
+    },
+    {
+      "term": "ลิฟต์ไม่พร้อมใช้งาน",
+      "code": "GPE205",
+      "mainTitle": "เกิดปัญหาด้านการจัดการสภาพแวดล้อมในการให้บริการ เช่น ไม่มีป้ายให้คำแนะนำ/บอกทาง, ไม่มีทางหนีไฟหรือมีแต่ไม่พร้อมใช้/มีสิ่งกีดขวาง, ลิฟต์ขัดข้อง มีคนติดในลิฟต์ หรือ ลิฟต์ไม่พร้อมใช้งาน/ชำรุด/ติดค้าง"
+    },
+    {
+      "term": "ล้มลงขณะทำกายภาพบำบัด/กิจกรรมบำบัด/ขาเทียม",
+      "code": "CPP405",
+      "mainTitle": "ตกเตียง/fall"
+    },
+    {
+      "term": "วิธีใช้ยาไม่ถูกต้อง /ไม่สมบูรณ์",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "วิเคราะห์บัญชีไม่ถูกต้อง",
+      "code": "GOE201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมงบประมาณ เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "สภาพพื้นที่ล่อแหลม มืด มุมอับเสี่ยงต่อการเกิดอาชญากรรม",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "สั่งยาซ้ำซ้อน",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งยาที่มีประวัติแพ้/มีข้อห้ามใช้",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งยาผิดความแรง",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งยาผิดจำนวน",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งยาผิดชนิด",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งยาผิดรูปแบบ",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งสารน้ำผิดชนิด",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งเอกซเรย์ผิดตำแหน่ง",
+      "code": "CPP202",
+      "mainTitle": "การสื่อสารเพื่อการส่งตรวจหรือการรักษาทางรังสีวิทยาผิดพลาด/ไม่ครบถ้วน"
+    },
+    {
+      "term": "สั่งเอ็กซเรย์ผิดอวัยวะ",
+      "code": "CPP202",
+      "mainTitle": "การสื่อสารเพื่อการส่งตรวจหรือการรักษาทางรังสีวิทยาผิดพลาด/ไม่ครบถ้วน"
+    },
+    {
+      "term": "สั่งแลปแล้วไม่ลงบันทึกคำสั่งcและรายงานผล ในHos XP",
+      "code": "CPP201",
+      "mainTitle": "การรายงานอาการ หรือสื่อสารข้อมูลเกี่ยวกับผู้ป่วยไม่เหมาะสม/ไม่ครบถ้วน"
+    },
+    {
+      "term": "สั่งใช้ยาผิดขนาด",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งใช้ยาผิดคน",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งใช้ยาผิดชนิดยา",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สั่งใช้ยาไม่ครบ",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "สายฉีดชำระมีปัญหา",
+      "code": "GOS202",
+      "mainTitle": "ห้องน้ำหรือห้องสุขาไม่พร้อมใช้ (เช่น ชำรุด/กดชักโครกไม่ลง/ส้วมเต็ม/ไม่พอใช้) หรือไม่สะดวกต่อผู้พิการ"
+    },
+    {
+      "term": "สิ่งของ/ลูกสูบยางแดง/แพมเพิส/อุปกรณ์เครื่องมือ/เข็ม/ขยะ ติดมากับผ้าเปื้อน",
+      "code": "GOI203",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการใช้ทรัพยากร เช่น จัดสรรไม่เหมาะสม/ใช้ไม่คุ้ม-ไม่ถูกตามมาตรฐาน/บุคลากรไม่ปฏิบัติตามข้อกำหนด-ขาดทักษะการใช้"
+    },
+    {
+      "term": "ส่งคนตั้งครรภ์มารับบริการxray",
+      "code": "CPE402",
+      "mainTitle": "Under triage"
+    },
+    {
+      "term": "ส่งผู้ป่วยมาผิดอาคาร / ผิดแผนก",
+      "code": "CPP204",
+      "mainTitle": "การสื่อสารหรือส่งต่อข้อมูลการรักษาพยาบาลผู้ป่วยผิดพลาด เช่น ไม่สื่อสาร/สื่อสารผิด/สื่อสารไม่ครบถ้วน/สื่อสารล่าช้า"
+    },
+    {
+      "term": "ส่งรายชื่อเบิกอาหารไม่ครบตามจำนวน",
+      "code": "CPP201",
+      "mainTitle": "การรายงานอาการ หรือสื่อสารข้อมูลเกี่ยวกับผู้ป่วยไม่เหมาะสม/ไม่ครบถ้วน"
+    },
+    {
+      "term": "ส้วมเต็ม",
+      "code": "GOS202",
+      "mainTitle": "ห้องน้ำหรือห้องสุขาไม่พร้อมใช้ (เช่น ชำรุด/กดชักโครกไม่ลง/ส้วมเต็ม/ไม่พอใช้) หรือไม่สะดวกต่อผู้พิการ"
+    },
+    {
+      "term": "ออกใบนัดผิดวันที่/ผิดเวลา",
+      "code": "GPL202",
+      "mainTitle": "บุคลากรให้ข้อมูลไม่ครบถ้วนแก่ผู้ป่วยและญาติ"
+    },
+    {
+      "term": "อากาศร้อนในจุดบริการผู้ป่วย",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "อาคารสถานที่คับแคบ ไม่เพียงพอให้บริการ",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "อาคารสถานที่ชำรุด เสียหาย อาจก่อให้เกิดอันตราย",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "อาคารสถานที่ไม่สะอาด",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "อุปกรณ์สูญหาย",
+      "code": "GPE207",
+      "mainTitle": "เกิดปัญหาความไม่ปลอดภัย/ขาดการปฏิบัติหรือไม่ปฏิบัติตามนโยบายความปลอดภัย เช่น ทรัพย์สินสูญหาย/ถูกลักขโมย เป็นต้น"
+    },
+    {
+      "term": "เกิดอาการเมาเข็มจากการฝังเข็ม",
+      "code": "CPP401",
+      "mainTitle": "ผู้ป่วยเกิดภาวะแทรกซ้อนจากกระบวนการดูแลรักษาพยาบาลซึ่งป้องกันได้ (ยกเว้น เกิดแผลกดทับ, ตกเตียง/fall)"
+    },
+    {
+      "term": "เกิดอุบัติเหตุจราจรในโรงพยาบาล",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "เก็บเงิน/ทอนเงินไม่ถูกต้อง",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "เก็บเงินผู้รับบริการไม่ได้ เนื่องจากมีสาเหตุเรื่องสิทธิการรักษา",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "เขียนชื่อยาฉีด แบบย่อผิดชนิด",
+      "code": "CPP207",
+      "mainTitle": "เกิดความผิดพลาดจากการใช้สื่อในกระบวนการรักษาพยาบาล เช่น ใช้คำย่อ/ชื่อย่อ/สัญลักษณ์ที่ไม่เป็นสากล"
+    },
+    {
+      "term": "เขียนเช็คผิดพลาด",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "เครื่องคอมพิวเตอร์หรืออุปกรณ์ (Hardware) ต่างๆ ด้านงานสารสนเทศ ใช้งานไม่ได้",
+      "code": "GOI101",
+      "mainTitle": "เกิดปัญหาด้าน Hardware เช่น ไม่มีแผนบริหารจัดการ/ไม่เพียงพอ/ไม่พร้อมใช้/ใช้ไม่ตรงวัตถุประสงค์/ใช้ผิดวิธี- เทคนิค"
+    },
+    {
+      "term": "เครื่องคอมพิวเตอร์และอุปกรณ์ (Hardware) ต่างๆ ด้านงานสารสนเทศ ไม่เพียงพอ",
+      "code": "GOI101",
+      "mainTitle": "เกิดปัญหาด้าน Hardware เช่น ไม่มีแผนบริหารจัดการ/ไม่เพียงพอ/ไม่พร้อมใช้/ใช้ไม่ตรงวัตถุประสงค์/ใช้ผิดวิธี- เทคนิค"
+    },
+    {
+      "term": "เครื่องพิมพ์ชำรุด / ขัดข้อง / ไม่พร้อมใช้ / ไม่เพียงพอ",
+      "code": "GOI101",
+      "mainTitle": "เกิดปัญหาด้าน Hardware เช่น ไม่มีแผนบริหารจัดการ/ไม่เพียงพอ/ไม่พร้อมใช้/ใช้ไม่ตรงวัตถุประสงค์/ใช้ผิดวิธี- เทคนิค"
+    },
+    {
+      "term": "เครื่องมือตกใส่/ทิ่มตำผู้ป่วย",
+      "code": "GOS201",
+      "mainTitle": "อาคารสถานที่/พื้นที่ให้บริการ ไม่เหมาะสม/ไม่ปลอดภัย/ไม่ถูกสุขลักษณะ"
+    },
+    {
+      "term": "เครื่องวัดความดันโลหิตไม่พร้อมใช้/อ่านค่าผิดปกติ",
+      "code": "CPP302",
+      "mainTitle": "(Access & Entry) ผู้ป่วยเข้าถึงหรือได้รับบริการ ผิด/ล่าช้าไปจากเกณฑ์ หรือโรคที่เป็น"
+    },
+    {
+      "term": "เงินสูญหายระหว่างการนำเงินไปฝากธนาคาร",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "เจ้าหน้าที่บันทึกภาพขณะให้การรักษาพยาบาลโดยไม่ขออนุญาต",
+      "code": "GPS106",
+      "mainTitle": "เกิดอุบัติการณ์ความละเมิดความเป็นส่วนตัว (Privacy) ของข้อมูลส่วนบุคคลของผู้ป่วย/ผู้รับบริการ หรือบุคคลภายนอก ที่ไม่ใช่อุบัติการณ์ด้านความมั่นคงปลอดภัยไซเบอร์"
+    },
+    {
+      "term": "เจ้าหน้าที่บันทึกเสียงระหว่างการสนทนาระหว่างผู้ป่วยและญาติ",
+      "code": "GPS106",
+      "mainTitle": "เกิดอุบัติการณ์ความละเมิดความเป็นส่วนตัว (Privacy) ของข้อมูลส่วนบุคคลของผู้ป่วย/ผู้รับบริการ หรือบุคคลภายนอก ที่ไม่ใช่อุบัติการณ์ด้านความมั่นคงปลอดภัยไซเบอร์"
+    },
+    {
+      "term": "เจ้าหน้าที่มาปฏิบัติงานช้า/ มาสาย",
+      "code": "GOL101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุม กำกับดูแลด้านวิชาชีพ เช่น บุคลากรมีคุณสมบัติไม่เหมาะสมตามมาตรฐานวิชาชีพ, ละเลยการปฏิบัติหน้าที่ หรือปฏิบัติหน้าที่โดยไม่ใช้ความรู้ตามหลักวิชาการ, ประพฤติตนและประกอบกิจแห่งวิชาชีพโดยไม่ถูกต้องตามกฎหมาย"
+    },
+    {
+      "term": "เตรียมยาผิด",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "เตรียมยาผิดขนาด",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "เตรียมยาผิดคน",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "เตรียมยาไม่ครบ",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "เลขบัตรประจำตัวประชาชนไม่ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "เลือกบรรจุภัณฑ์ไม่เหมาะสม",
+      "code": "CPM203",
+      "mainTitle": "Medication error : Pre-dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจัดเตรียมจ่ายยา)"
+    },
+    {
+      "term": "เวชระเบียนสูญหายจากระบบการจัดเก็บ/การยืมคืน",
+      "code": "GOI201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมทรัพย์สิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน"
+    },
+    {
+      "term": "เอกสาร/หนังสือราชการถึงผู้รับ สูญหาย",
+      "code": "GOM201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสภาพแวดล้อมของการดำเนินงาน เช่น เอกสารกระบวนการดำเนินงานไม่เป็นปัจจุบัน/ไม่มีกฎ ระเบียบ ความรับผิดชอบที่ชัดเจน/ขาดการติดตามผลและวางแผนป้องกัน"
+    },
+    {
+      "term": "เอกสาร/หนังสือราชการถึงผู้รับล่าช้า",
+      "code": "GOM201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสภาพแวดล้อมของการดำเนินงาน เช่น เอกสารกระบวนการดำเนินงานไม่เป็นปัจจุบัน/ไม่มีกฎ ระเบียบ ความรับผิดชอบที่ชัดเจน/ขาดการติดตามผลและวางแผนป้องกัน"
+    },
+    {
+      "term": "เอกสาร/หนังสือราชการทำลายไม่ถูกต้อง",
+      "code": "GOM201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสภาพแวดล้อมของการดำเนินงาน เช่น เอกสารกระบวนการดำเนินงานไม่เป็นปัจจุบัน/ไม่มีกฎ ระเบียบ ความรับผิดชอบที่ชัดเจน/ขาดการติดตามผลและวางแผนป้องกัน"
+    },
+    {
+      "term": "เอกสาร/หนังสือราชการที่เก็บรักษาสูญหาย",
+      "code": "GOM201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสภาพแวดล้อมของการดำเนินงาน เช่น เอกสารกระบวนการดำเนินงานไม่เป็นปัจจุบัน/ไม่มีกฎ ระเบียบ ความรับผิดชอบที่ชัดเจน/ขาดการติดตามผลและวางแผนป้องกัน"
+    },
+    {
+      "term": "เอกสาร/หนังสือราชการส่งผิดงาน",
+      "code": "GOM201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสภาพแวดล้อมของการดำเนินงาน เช่น เอกสารกระบวนการดำเนินงานไม่เป็นปัจจุบัน/ไม่มีกฎ ระเบียบ ความรับผิดชอบที่ชัดเจน/ขาดการติดตามผลและวางแผนป้องกัน"
+    },
+    {
+      "term": "เอกสารการลงบัญชีไม่ครบ",
+      "code": "GOE201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมงบประมาณ เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "เอกสารประกอบการจ่ายเงินไม่ถูกต้อง ไม่ครบถ้วน",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "เอกสารประกอบการจ่ายเงินไม่สมบูรณ์",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "แนวทางการส่งหลักฐานทางการเงินไม่ชัดเจน",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "แผลฝีเย็บแยก",
+      "code": "CPP401",
+      "mainTitle": "ผู้ป่วยเกิดภาวะแทรกซ้อนจากกระบวนการดูแลรักษาพยาบาลซึ่งป้องกันได้ (ยกเว้น เกิดแผลกดทับ, ตกเตียง/fall)"
+    },
+    {
+      "term": "แยกขยะผิดประเภท / ไม่แยกประเภทขยะ",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "แอร์น้ำหยด",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "แอร์เปิดไม่ติด",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "แอร์ไม่เย็น",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "แสงสว่างไม่เพียงพอ",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "โถปัสสาวะกดไม่ลง",
+      "code": "GOS202",
+      "mainTitle": "ห้องน้ำหรือห้องสุขาไม่พร้อมใช้ (เช่น ชำรุด/กดชักโครกไม่ลง/ส้วมเต็ม/ไม่พอใช้) หรือไม่สะดวกต่อผู้พิการ"
+    },
+    {
+      "term": "โถปัสสาวะชายน้ำไม่ไหล",
+      "code": "GOS202",
+      "mainTitle": "ห้องน้ำหรือห้องสุขาไม่พร้อมใช้ (เช่น ชำรุด/กดชักโครกไม่ลง/ส้วมเต็ม/ไม่พอใช้) หรือไม่สะดวกต่อผู้พิการ"
+    },
+    {
+      "term": "โปรแกรมHos xp ไม่สามารถใช้งานได้",
+      "code": "GOI103",
+      "mainTitle": "เกิดปัญหาด้าน Software เช่น ไม่เข้ากับ hardware/ไม่พร้อมใช้/ไม่ตอบสนองความต้องการ/ใช้ผิดวิธี-เทคนิค"
+    },
+    {
+      "term": "โปรแกรมที่จำเป็นในงานบริการอื่นๆไม่สามารถใช้งานได้",
+      "code": "GOI103",
+      "mainTitle": "เกิดปัญหาด้าน Software เช่น ไม่เข้ากับ hardware/ไม่พร้อมใช้/ไม่ตอบสนองความต้องการ/ใช้ผิดวิธี-เทคนิค"
+    },
+    {
+      "term": "โอน/หักเงินผิดบัญชี",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "โอนเงินเวรไม่ครบตามจำนาวน/ผิดพลาด/ไม่ได้โอน",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "ในสมุดANC ไม่ได้ติดตามประวัติผู้ป่วยจิตเวชหลังจากส่งต่อ นครปฐม /ไม่ได้ส่งต่อข้อมูลให้ห้องคลอด",
+      "code": "CPP201",
+      "mainTitle": "การรายงานอาการ หรือสื่อสารข้อมูลเกี่ยวกับผู้ป่วยไม่เหมาะสม/ไม่ครบถ้วน"
+    },
+    {
+      "term": "ให้ยาผิดขนาด",
+      "code": "CPM205",
+      "mainTitle": "Medication error : Administration (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการให้ยา)"
+    },
+    {
+      "term": "ให้ยาผิดคน",
+      "code": "CPM205",
+      "mainTitle": "Medication error : Administration (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการให้ยา)"
+    },
+    {
+      "term": "ให้ยาผิดชนิดยา",
+      "code": "CPM205",
+      "mainTitle": "Medication error : Administration (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการให้ยา)"
+    },
+    {
+      "term": "ให้ยาไม่ครบ",
+      "code": "CPM205",
+      "mainTitle": "Medication error : Administration (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการให้ยา)"
+    },
+    {
+      "term": "ได้รับบาดเจ็บจากการทำขาเทียม หรือเกิดแผลจาการเสียดสีกับเบ้าขาเทียม",
+      "code": "CPP401",
+      "mainTitle": "ผู้ป่วยเกิดภาวะแทรกซ้อนจากกระบวนการดูแลรักษาพยาบาลซึ่งป้องกันได้ (ยกเว้น เกิดแผลกดทับ, ตกเตียง/fall)"
+    },
+    {
+      "term": "ไฟฟ้าตก / ช็อต / ดับ / กระพริบ",
+      "code": "GPE206",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมสิ่งแวดล้อมในสถานที่ทำงาน เช่น ระบบน้ำอุปโภค-บริโภคไม่เพียงพอ/ไม่พร้อมใช้, ระบบไฟฟ้าไม่เพียงพอ ไม่พร้อมใช้/ดับ/ช็อต/กระพริบ, การบำบัดน้ำเสีย/กำจัดขยะ ไม่ถูกวิธี/ไม่ได้มาตรฐาน"
+    },
+    {
+      "term": "ไม่ติดฉลากวันเปิด-วันหมดอายุที่ขวดสารน้ำ/ยา",
+      "code": "CPM208",
+      "mainTitle": "ไม่มี/ไม่ปฏิบัติตามมาตรฐาน หรือ Guideline ของการใช้ยา ยกเว้น HAD, Fatal drug, Look-Alike Sound-Alike, Antibiotics"
+    },
+    {
+      "term": "ไม่นำป้ายNPOออก",
+      "code": "CPP204",
+      "mainTitle": "การสื่อสารหรือส่งต่อข้อมูลการรักษาพยาบาลผู้ป่วยผิดพลาด เช่น ไม่สื่อสาร/สื่อสารผิด/สื่อสารไม่ครบถ้วน/สื่อสารล่าช้า"
+    },
+    {
+      "term": "ไม่ปฏิบัติตามข้อกำหนดเรื่องการรักษาความลับของผู้ป่วย",
+      "code": "GOI105",
+      "mainTitle": "เกิดปัญหาด้านข้อมูล สารสนเทศ เช่น ไม่ถูกต้อง/ไม่ครบถ้วน/ไม่น่าเชื่อถือ/ไม่เป็นปัจจุบัน"
+    },
+    {
+      "term": "ไม่ปิดประตูหรือหน้าต่างหน่วยงานหลังใช้งาน/ไม่ปิดแอร์/ไม่ปิดไฟ",
+      "code": "GPE207",
+      "mainTitle": "เกิดปัญหาความไม่ปลอดภัย/ขาดการปฏิบัติหรือไม่ปฏิบัติตามนโยบายความปลอดภัย เช่น ทรัพย์สินสูญหาย/ถูกลักขโมย เป็นต้น"
+    },
+    {
+      "term": "ไม่พิมพ์ยาHM (ยาชุดคลอด)",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ไม่มีการกำหนดระเบียบการยืม-คืน เวชระเบียน",
+      "code": "GOI201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมทรัพย์สิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน"
+    },
+    {
+      "term": "ไม่มีทะเบียนคุมเอกสาร / เครื่องมือ /อุปกรณ์",
+      "code": "GOI201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมทรัพย์สิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน"
+    },
+    {
+      "term": "ไม่มีทางหนีไฟ",
+      "code": "GPE205",
+      "mainTitle": "เกิดปัญหาด้านการจัดการสภาพแวดล้อมในการให้บริการ เช่น ไม่มีป้ายให้คำแนะนำ/บอกทาง, ไม่มีทางหนีไฟหรือมีแต่ไม่พร้อมใช้/มีสิ่งกีดขวาง, ลิฟต์ขัดข้อง มีคนติดในลิฟต์ หรือ ลิฟต์ไม่พร้อมใช้งาน/ชำรุด/ติดค้าง"
+    },
+    {
+      "term": "ไม่มีป้ายบอกทาง",
+      "code": "GPE205",
+      "mainTitle": "เกิดปัญหาด้านการจัดการสภาพแวดล้อมในการให้บริการ เช่น ไม่มีป้ายให้คำแนะนำ/บอกทาง, ไม่มีทางหนีไฟหรือมีแต่ไม่พร้อมใช้/มีสิ่งกีดขวาง, ลิฟต์ขัดข้อง มีคนติดในลิฟต์ หรือ ลิฟต์ไม่พร้อมใช้งาน/ชำรุด/ติดค้าง"
+    },
+    {
+      "term": "ไม่มีป้ายให้คำแนะนำต่างๆ",
+      "code": "GPE205",
+      "mainTitle": "เกิดปัญหาด้านการจัดการสภาพแวดล้อมในการให้บริการ เช่น ไม่มีป้ายให้คำแนะนำ/บอกทาง, ไม่มีทางหนีไฟหรือมีแต่ไม่พร้อมใช้/มีสิ่งกีดขวาง, ลิฟต์ขัดข้อง มีคนติดในลิฟต์ หรือ ลิฟต์ไม่พร้อมใช้งาน/ชำรุด/ติดค้าง"
+    },
+    {
+      "term": "ไม่มีแผนงบประมาณการจ่ายประจำปี",
+      "code": "GOE201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมงบประมาณ เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "ไม่ยื่นใบวัดความดันโลหิต",
+      "code": "GOI106",
+      "mainTitle": "เกิดปัญหาด้านระบบ/กระบวนการสื่อสาร เช่น ไม่มีแผน/วิธีการหรือช่องทางการสื่อสาร, ไม่สื่อสารหรือสื่อสารไม่ต่อเนื่อง/ไม่ครบถ้วน, ขาดการติดตามประเมินผลการสื่อสาร"
+    },
+    {
+      "term": "ไม่รายงาน Early warning sign แก่แพทย์",
+      "code": "CPP201",
+      "mainTitle": "การรายงานอาการ หรือสื่อสารข้อมูลเกี่ยวกับผู้ป่วยไม่เหมาะสม/ไม่ครบถ้วน"
+    },
+    {
+      "term": "ไม่ลงบันทึกข้อมูลในเวปไซด์ เกี่ยวกับผู้ป่วยเสียชีวิต/อุบัติเหตุจราจร",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ไม่ออกใบนัดให้ผู้ป่วย",
+      "code": "CPP204",
+      "mainTitle": "การสื่อสารหรือส่งต่อข้อมูลการรักษาพยาบาลผู้ป่วยผิดพลาด เช่น ไม่สื่อสาร/สื่อสารผิด/สื่อสารไม่ครบถ้วน/สื่อสารล่าช้า"
+    },
+    {
+      "term": "ไม่เซ็นชื่อลงเวลาให้ยา/สารน้ำ",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ไม่แก้ไขสถานะการคลอด ในHos XP ให้ถูกต้อง",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ไม่ใส่จำนวนและเวลาที่ให้ยาPRN",
+      "code": "CPM204",
+      "mainTitle": "Medication error : Dispensing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการจ่ายยา)"
+    },
+    {
+      "term": "ไม่ใส่ใบเฝ้าระวังยาHAD",
+      "code": "CPM102",
+      "mainTitle": "ไม่มี/ไม่ปฏิบัติตาม Guideline ของการใช้ High Alert Drug"
+    },
+    {
+      "term": "ไม่ได้คัดลอกยา/ คัดลอกผิด",
+      "code": "CPM202",
+      "mainTitle": "Medication error : Transcribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการคัดลอกยา)"
+    },
+    {
+      "term": "ไม่ได้ตรวจBlood group ในมารดาฝากครรภ์",
+      "code": "CPP303",
+      "mainTitle": "(Patient Assessment) ผู้ป่วยไม่ได้รับการประเมิน/ประเมินผิด/ประเมินไม่ครบถ้วน ตามเกณฑ์ อาการหรือการดำเนินโรค"
+    },
+    {
+      "term": "ไม่ได้ตรวจDTX ตามแผนการรักษา",
+      "code": "CPP203",
+      "mainTitle": "การสื่อสารเพื่อการส่งตรวจทางห้องปฏิบัติการผิดพลาด/ไม่ครบถ้วน"
+    },
+    {
+      "term": "ไม่ได้ปริ๊นผลการตรวจเลือด ติดในสมุดฝากครรภ์",
+      "code": "GPL202",
+      "mainTitle": "บุคลากรให้ข้อมูลไม่ครบถ้วนแก่ผู้ป่วยและญาติ"
+    },
+    {
+      "term": "ไม่ได้ปริ๊นผลตรวจเลือด ครั้งที่2 ติดในสมุดฝากครรภ์",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ไม่ได้รับสารน้ำตามrate",
+      "code": "CPM205",
+      "mainTitle": "Medication error : Administration (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการให้ยา)"
+    },
+    {
+      "term": "ไม่ได้สั่งยา/ ลืมสั่งยา ให้ผู้ป่วย(กรณีจำเป็นต้องได้รับยา)",
+      "code": "CPM201",
+      "mainTitle": "Medication error : Prescribing (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการสั่งใช้ยา)"
+    },
+    {
+      "term": "ไม่ได้เก็บเงินผู้รับบริการ/ลืม",
+      "code": "GOE101",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมการเงิน เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีเอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "ไม่ได้เซนรับคำสั่งการรักษาของแพทย์",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ไม่ได้ให้ยาตามเวลา",
+      "code": "CPM205",
+      "mainTitle": "Medication error : Administration (เกิดข้อผิดพลาด/อุบัติการณ์ในขั้นตอนการให้ยา)"
+    },
+    {
+      "term": "ผู้ป่วยเป็นลมหรือหมดสติระหว่างรับบริการ",
+      "code": "CPP401",
+      "mainTitle": "ผู้ป่วยเกิดภาวะแทรกซ้อนจากกระบวนการดูแลรักษาพยาบาลซึ่งป้องกันได้ (ยกเว้น เกิดแผลกดทับ, ตกเตียง/fall)"
+    },
+    {
+      "term": "ผ้า/ชุดที่ผ่านการซักแล้วไม่สะอาด",
+      "code": "CPI204",
+      "mainTitle": "การไม่ปฏิบัติตามแนวทางป้องกันการแพร่กระจายเชื้อก่อโรคในสถานพยาบาล Standard Precautions (ยกเว้นการล้างมือ)"
+    },
+    {
+      "term": "ไม่ยื่นใบลาป่วย/ลาพักร้อน/ลากิจ",
+      "code": "GOM102",
+      "mainTitle": "เกิดปัญหาด้านการบริหารจัดการเกี่ยวกับบุคลากร เช่น ไม่กำหนดหน้าที่ความรับผิดชอบ/การเปลี่ยนแปลงที่สำคัญเกี่ยวกับการมอบหมายงานเป็นลายลักษณ์อักษร, ไม่มีการจัดทำแนวทางการปฏิบัติเรื่องค่าตอบแทน, การเลื่อนขั้นเงินเดือนไม่มีการพิจารณาอนุมัติและจัดทำเป็นลายลักษณ์อักษร"
+    },
+    {
+      "term": "ไม่สามารถAuthenผู้ป่วยได้ เนื่องจากบัตรประชาชนผู้ป่วยชำรุด/มีปัญหา",
+      "code": "GPL203",
+      "mainTitle": "บุคลากรบันทึกข้อมูลในเวชระเบียนไม่ครบถ้วน ไม่ถูกต้อง"
+    },
+    {
+      "term": "ขาดการตรวจสอบหรือทานสอบเรื่องการเรียกเก็บค่ารักษาพยาบาล",
+      "code": "GOE201",
+      "mainTitle": "เกิดปัญหาด้านการควบคุมงบประมาณ เช่น ไม่กำหนดระเบียบ/ผู้รับผิดชอบ, ไม่มีทะเบียนคุม/เอกสารหลักฐานกำกับ, ขาดการตรวจสอบหรือสอบทาน เป็นต้น"
+    },
+    {
+      "term": "burn หลังครอบแก้ว",
+      "code": "CPP401",
+      "mainTitle": "ผู้ป่วยเกิดภาวะแทรกซ้อนจากกระบวนการดูแลรักษาพยาบาลซึ่งป้องกันได้ (ยกเว้น เกิดแผลกดทับ, ตกเตียง/fall)"
+    }
+  ]
+}

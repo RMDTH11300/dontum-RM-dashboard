@@ -1,6 +1,6 @@
 const PARENT='../data/';
 const IDX={id:0,risk:1,sub:2,sev:3,reportUnit:4,place:6,summary:12,keyword:13,detail:14,initial:15,suggest:16,mainUnit:17,status:26,date:27};
-const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},essentialStandards:[],selectedEssential:null,rcaManifest:[],allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary'};
+const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},essentialStandards:[],selectedEssential:null,rcaManifest:[],riskCodes:[],riskAliases:[],riskAliasMap:new Map(),riskCodeMap:new Map(),allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary'};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.style.display='none',2400)}
@@ -27,13 +27,13 @@ async function init(){
       state.rcaManifest=Array.isArray(r)?r:(r.items||[])
     }catch(e){state.rcaManifest=[]}
 
-    for (const cfg of ['config/rca-2568-additions.json','config/rca-2569-additions.json']){
+    for(const cfg of ['config/rca-2568-additions.json','config/rca-2569-additions.json']){
       try{
         const extra=await json(cfg);
         const extraItems=Array.isArray(extra)?extra:(extra.items||[]);
         for(const item of extraItems){
           state.rcaManifest=state.rcaManifest.filter(x=>!(String(x.incident)===String(item.incident)&&Number(x.year)===Number(item.year)));
-          state.rcaManifest.push(item);
+          state.rcaManifest.push(item)
         }
       }catch(e){console.warn('ไม่พบไฟล์ RCA เพิ่มเติม',cfg,e)}
     }
@@ -44,6 +44,8 @@ async function init(){
     state.year='all';
     $('#year').value='all';
 
+    await loadRiskCodeMaster();
+    buildRiskCodeSearchUI();
     buildMonths();
     bind();
     await loadAllYears();
@@ -97,7 +99,7 @@ function bind(){
   if(registerTab)registerTab.onclick=()=>showEssentialMode('register');
   if(matrixTab)matrixTab.onclick=()=>showEssentialMode('matrix');
 }
-function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
+function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='riskCodes')renderRiskCodeSearch();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
 
 async function loadAllYears(){
   const years=(state.years||[]).map(Number).filter(Boolean);
@@ -227,7 +229,7 @@ function rowMatchesSelectedUnit(v){
   const units=String(v||'').split(/[\n,;]+/).map(x=>normUnit(x)).filter(Boolean);
   return [...state.selected].some(selected=>units.includes(normUnit(selected)))
 }
-function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||r.some(v=>String(v??'').toLowerCase().includes(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
+function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||rowRiskSearchText(r).includes(normalizeRiskSearch(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
 function renderDashboard(){const a=state.filtered;$('#kTotal').textContent=a.length.toLocaleString();$('#kClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#kNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#kHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));renderSeveritySplit(a);rank('#topRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));rank('#topUnits',a.map(r=>normUnit(r[IDX.mainUnit]))) }
 
 function renderSeveritySplit(rows){
@@ -475,6 +477,200 @@ function exportHaReport(format){
   else download(html,`HA_Report_${state.year}.xls`,'application/vnd.ms-excel')
 }
 
+
+/* V6.23 – ระบบค้นหารหัสความเสี่ยง */
+function normalizeRiskSearch(value){
+  return String(value||'')
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/\u00a0/g,' ')
+    .replace(/[‐‑‒–—―]/g,'-')
+    .replace(/[^\p{L}\p{N}]+/gu,' ')
+    .replace(/\s+/g,' ')
+    .trim()
+}
+
+async function loadRiskCodeMaster(){
+  try{
+    const obj=await json('config/risk-code-search.json');
+    state.riskCodes=Array.isArray(obj.riskCodes)?obj.riskCodes:[];
+    state.riskAliases=Array.isArray(obj.aliases)?obj.aliases:[];
+    state.riskCodeMap=new Map(state.riskCodes.map(item=>[String(item.code||'').toUpperCase(),item]));
+    state.riskAliasMap=new Map();
+    state.riskAliases.forEach(item=>{
+      const term=normalizeRiskSearch(item.term);
+      if(term)state.riskAliasMap.set(term,String(item.code||'').toUpperCase())
+    })
+  }catch(e){
+    console.warn('ไม่พบฐานข้อมูลค้นหารหัสความเสี่ยง',e);
+    state.riskCodes=[];
+    state.riskAliases=[];
+    state.riskCodeMap=new Map();
+    state.riskAliasMap=new Map()
+  }
+}
+
+function explicitRiskCode(row){
+  const text=[row?.[IDX.risk],row?.[IDX.sub],row?.[IDX.keyword]]
+    .map(x=>String(x||'').toUpperCase()).join(' ');
+  const match=text.match(/\b[A-Z]{3}\d{3}\b/);
+  return match?match[0]:''
+}
+
+function mappedRiskCode(row){
+  const explicit=explicitRiskCode(row);
+  if(explicit)return explicit;
+  const candidates=[row?.[IDX.sub],row?.[IDX.keyword],row?.[IDX.summary]]
+    .map(normalizeRiskSearch).filter(Boolean);
+  for(const value of candidates){
+    if(state.riskAliasMap.has(value))return state.riskAliasMap.get(value);
+  }
+  return ''
+}
+
+function rowRiskSearchText(row){
+  const code=mappedRiskCode(row);
+  const master=state.riskCodeMap.get(code)||{};
+  const aliasTerms=code
+    ? state.riskAliases.filter(x=>String(x.code||'').toUpperCase()===code).map(x=>x.term)
+    : [];
+  return normalizeRiskSearch([
+    ...(row||[]),
+    code,
+    master.title,
+    master.group,
+    ...aliasTerms
+  ].join(' '))
+}
+
+function buildRiskCodeSearchUI(){
+  if(document.getElementById('riskCodes'))return;
+  const sidebar=document.querySelector('aside, .sidebar');
+  const main=document.querySelector('main, .main, .content');
+  if(!sidebar||!main)return;
+
+  const nav=document.createElement('button');
+  nav.type='button';
+  nav.className='nav';
+  nav.dataset.view='riskCodes';
+  nav.innerHTML='🔎 ค้นหารหัสความเสี่ยง';
+  const rcaNav=sidebar.querySelector('.nav[data-view="rca"]');
+  if(rcaNav)rcaNav.insertAdjacentElement('beforebegin',nav);
+  else sidebar.appendChild(nav);
+
+  const section=document.createElement('section');
+  section.id='riskCodes';
+  section.className='view';
+  section.innerHTML=`
+    <div class="risk-code-page">
+      <div class="risk-code-hero">
+        <div>
+          <h1>ค้นหารหัสอุบัติการณ์ความเสี่ยง</h1>
+          <p>ค้นหาจากรหัส ชื่อความเสี่ยง หรืออุบัติการณ์ความเสี่ยงย่อยของโรงพยาบาลดอนตูม</p>
+        </div>
+        <span class="risk-code-total">${state.riskCodes.length.toLocaleString()} รหัส</span>
+      </div>
+      <div class="risk-code-searchbox">
+        <span>🔍</span>
+        <input id="riskCodeQuery" type="search" autocomplete="off"
+          placeholder="ตัวอย่าง: CPM202, คัดลอกยาผิดคน, Phlebitis, ระบบไฟฟ้า">
+        <button id="clearRiskCodeQuery" type="button">ล้าง</button>
+      </div>
+      <div class="risk-code-help">
+        พิมพ์ชื่ออุบัติการณ์ย่อย เช่น <b>คัดลอกยาผิดคน</b> ระบบจะแสดงรหัสหลัก <b>CPM202</b>
+      </div>
+      <div id="riskCodeResultCount" class="risk-code-result-count"></div>
+      <div id="riskCodeResults" class="risk-code-results"></div>
+    </div>`;
+  main.appendChild(section);
+
+  const style=document.createElement('style');
+  style.textContent=`
+    .risk-code-page{max-width:1200px;margin:0 auto}
+    .risk-code-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
+    .risk-code-hero h1{margin:0;color:#0b2f63;font-size:30px}
+    .risk-code-hero p{margin:6px 0 0;color:#64748b}
+    .risk-code-total{background:#e8f2ff;color:#1456a0;border:1px solid #bfd7f2;border-radius:999px;padding:8px 13px;font-weight:800;white-space:nowrap}
+    .risk-code-searchbox{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;background:#fff;border:2px solid #b8cee9;border-radius:14px;padding:8px 10px;box-shadow:0 5px 18px rgba(15,51,94,.08)}
+    .risk-code-searchbox input{border:0;outline:0;width:100%;min-height:44px;font-size:16px;background:transparent}
+    .risk-code-searchbox button{border:1px solid #c7d7e8;background:#f8fbff;border-radius:9px;padding:7px 13px;color:#17365d;font-weight:700}
+    .risk-code-help{margin:10px 2px 16px;color:#52677d;font-size:13px}
+    .risk-code-result-count{margin-bottom:10px;color:#52677d;font-weight:700}
+    .risk-code-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .risk-code-card{background:#fff;border:1px solid #d5e1ef;border-left:5px solid #2878d7;border-radius:12px;padding:15px;box-shadow:0 3px 12px rgba(15,51,94,.06)}
+    .risk-code-card.general{border-left-color:#7c3aed}
+    .risk-code-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .risk-code-badge{font-size:18px;color:#0b2f63;font-weight:900}
+    .risk-code-group{font-size:11px;border-radius:999px;padding:4px 8px;background:#eef5ff;color:#1456a0;font-weight:800}
+    .risk-code-card.general .risk-code-group{background:#f3edff;color:#6d28d9}
+    .risk-code-title{margin:8px 0 0;line-height:1.5;color:#23384f}
+    .risk-code-aliases{margin-top:10px;padding-top:9px;border-top:1px dashed #d4dfeb;color:#53697f;font-size:12px}
+    .risk-code-aliases b{color:#17365d}
+    .risk-code-empty{grid-column:1/-1;text-align:center;background:#fff;border:1px dashed #c8d5e4;border-radius:12px;padding:36px;color:#718096}
+    @media(max-width:760px){
+      .risk-code-hero{flex-direction:column}
+      .risk-code-hero h1{font-size:23px}
+      .risk-code-results{grid-template-columns:1fr}
+      .risk-code-searchbox{position:sticky;top:68px;z-index:20}
+    }`;
+  document.head.appendChild(style);
+
+  document.getElementById('riskCodeQuery').addEventListener('input',renderRiskCodeSearch);
+  document.getElementById('clearRiskCodeQuery').addEventListener('click',()=>{
+    document.getElementById('riskCodeQuery').value='';
+    renderRiskCodeSearch();
+    document.getElementById('riskCodeQuery').focus()
+  });
+  renderRiskCodeSearch()
+}
+
+function renderRiskCodeSearch(){
+  const box=document.getElementById('riskCodeResults');
+  const count=document.getElementById('riskCodeResultCount');
+  const input=document.getElementById('riskCodeQuery');
+  if(!box||!count)return;
+  const q=normalizeRiskSearch(input?.value||'');
+
+  const aliasesByCode=new Map();
+  state.riskAliases.forEach(item=>{
+    const code=String(item.code||'').toUpperCase();
+    if(!aliasesByCode.has(code))aliasesByCode.set(code,[]);
+    aliasesByCode.get(code).push(item.term)
+  });
+
+  let results=state.riskCodes.map(item=>{
+    const aliases=aliasesByCode.get(String(item.code||'').toUpperCase())||[];
+    const hay=normalizeRiskSearch([item.code,item.title,item.group,...aliases].join(' '));
+    return {...item,aliases,match:!q||hay.includes(q)}
+  }).filter(item=>item.match);
+
+  results.sort((a,b)=>{
+    if(q){
+      const ac=normalizeRiskSearch(a.code)===q?0:normalizeRiskSearch(a.code).startsWith(q)?1:2;
+      const bc=normalizeRiskSearch(b.code)===q?0:normalizeRiskSearch(b.code).startsWith(q)?1:2;
+      if(ac!==bc)return ac-bc
+    }
+    return String(a.code).localeCompare(String(b.code),'en')
+  });
+
+  const shown=results.slice(0,120);
+  count.textContent=q
+    ? `พบ ${results.length.toLocaleString()} รหัส${results.length>shown.length?` • แสดง ${shown.length.toLocaleString()} รายการแรก`:''}`
+    : `รหัสมาตรฐานทั้งหมด ${results.length.toLocaleString()} รายการ`;
+
+  box.innerHTML=shown.map(item=>{
+    const aliases=item.aliases.slice(0,6);
+    return `<article class="risk-code-card ${item.group==='General'?'general':''}">
+      <div class="risk-code-card-head">
+        <span class="risk-code-badge">${esc(item.code)}</span>
+        <span class="risk-code-group">${item.group==='Clinical'?'Clinical Risk':'General Risk'}</span>
+      </div>
+      <p class="risk-code-title">${esc(item.title)}</p>
+      ${aliases.length?`<div class="risk-code-aliases"><b>อุบัติการณ์ย่อย:</b> ${aliases.map(esc).join(' • ')}${item.aliases.length>aliases.length?' • …':''}</div>`:''}
+    </article>`
+  }).join('')||'<div class="risk-code-empty">ไม่พบรหัสหรืออุบัติการณ์ที่ค้นหา</div>'
+}
+
 function publicRcaSeverity(v){return ['E','F','G','H','I','3','4','5'].includes(String(v??'').trim().toUpperCase())}
 function publicIncidentId(r,index){
   const id=String(r[IDX.id]??'').trim();
@@ -502,9 +698,7 @@ function renderPublicRca(){
 
 
 function getIncidentCode(row){
-  const text=[row[IDX.risk],row[IDX.sub],row[IDX.keyword]].map(x=>String(x||'').toUpperCase()).join(' ');
-  const match=text.match(/\b[A-Z]{3}\d{3}\b/);
-  return match?match[0]:''
+  return mappedRiskCode(row)
 }
 function essentialCodeList(standard){return (standard?.codes||[]).map(x=>typeof x==='string'?x:x.code)}
 function essentialRowsByStandard(standard){
@@ -765,27 +959,4 @@ if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded',initMobileNavigation);
 }else{
   initMobileNavigation();
-}
-
-
-async function loadRca2569Additions(){
-  try{
-    const obj=await json('config/rca-2569-additions.json');
-    const items=Array.isArray(obj)?obj:(obj.items||[]);
-    state.rcaManifest=state.rcaManifest||[];
-    const existing=new Map(state.rcaManifest.map((x,i)=>[`${x.year}|${x.incident}`,i]));
-    items.forEach(item=>{
-      const key=`${item.year}|${item.incident}`;
-      if(existing.has(key))state.rcaManifest[existing.get(key)]={...state.rcaManifest[existing.get(key)],...item};
-      else state.rcaManifest.push(item)
-    })
-  }catch(e){
-    console.warn('ไม่พบข้อมูล RCA ปี 2569 เพิ่มเติม',e)
-  }
-}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',()=>loadRca2569Additions().then(()=>{try{renderRca&&renderRca()}catch(e){}}));
-}else{
-  loadRca2569Additions().then(()=>{try{renderRca&&renderRca()}catch(e){}})
 }

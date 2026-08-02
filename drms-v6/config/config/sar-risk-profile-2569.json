@@ -1,0 +1,12 @@
+[
+  {
+    "riskId": "CL-01",
+    "category": "Clinical",
+    "title": "STEMI ล่าช้า",
+    "description": "ผู้ป่วย STEMI เข้าถึงการวินิจฉัย การให้ยา และการส่งต่อไม่ทันเวลามาตรฐาน",
+    "likelihood": 4,
+    "consequence": 5,
+    "score": 20,
+    "level": "สูงมาก"
+  }
+]

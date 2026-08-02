@@ -1,0 +1,9 @@
+[
+  {
+    "riskId": "CL-01",
+    "qiPlan": "โครงการลดระยะเวลาวินิจฉัยและส่งต่อผู้ป่วย STEMI",
+    "riskOwner": "ทีม PCT / ER",
+    "reviewFrequency": "รายเดือน",
+    "status": "Active"
+  }
+]

@@ -5,6 +5,43 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS Admin Data Center</title>
   <link rel="stylesheet" href="assets/style.css?v=6.6-rca-complete">
+
+<style>
+/* V6.27 Admin merge import */
+.admin-merge-option{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-top:12px;
+  padding:12px 14px;
+  border:1px solid #bfdbfe;
+  border-radius:10px;
+  background:#eff6ff;
+}
+.admin-merge-option input{
+  width:18px;
+  height:18px;
+  margin-top:2px;
+}
+.admin-merge-option span{
+  line-height:1.45;
+  color:#1e3a5f;
+}
+.admin-merge-option small{color:#64748b}
+.admin-merge-status{
+  margin-top:9px;
+  padding:9px 11px;
+  border-radius:8px;
+  background:#f1f5f9;
+  color:#475569;
+  font-size:13px;
+  font-weight:700;
+}
+.admin-merge-status.working{background:#fff7ed;color:#9a3412}
+.admin-merge-status.success{background:#ecfdf3;color:#166534}
+.admin-merge-status.error{background:#fef2f2;color:#b91c1c}
+</style>
+
 </head>
 <body class="dc-body">
 <header class="topbar">
@@ -60,6 +97,16 @@
           <button id="loadCurrent">โหลดข้อมูลปัจจุบัน</button>
           <button id="chooseExcel" class="primary">เลือกไฟล์ Excel</button>
           <input id="excelFile" type="file" accept=".xlsx,.xls" hidden>
+          <label class="setting-check admin-merge-option">
+            <input id="mergeWithCurrent" type="checkbox" checked>
+            <span>
+              <b>รวมกับข้อมูลปัจจุบันของปีที่เลือก</b><br>
+              <small>ระบบจะโหลด incidents_ปี.json เดิม แล้วเพิ่มข้อมูลจาก Excel โดยตัดเลขอุบัติการณ์ซ้ำ</small>
+            </span>
+          </label>
+          <div id="mergeImportStatus" class="admin-merge-status">
+            พร้อมนำเข้าแบบรวมข้อมูล
+          </div>
         </div>
       </div>
 
@@ -327,7 +374,7 @@
       <section class="panel">
         <div class="panel-title"><h3>ข้อมูลระบบ</h3></div>
         <div class="dataset-summary">
-          <div><span>เวอร์ชัน</span><b>DRMS V6.6</b></div>
+          <div><span>เวอร์ชัน</span><b>DRMS V6.27</b></div>
           <div><span>รูปแบบข้อมูล</span><b>Excel → JSON</b></div>
           <div><span>ที่จัดเก็บร่าง</span><b>Browser Local Storage</b></div>
           <div><span>การเผยแพร่</span><b>GitHub Pages</b></div>
@@ -339,6 +386,6 @@
 
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="assets/admin.js?v=6.6-rca-complete"></script>
+<script src="assets/admin.js?v=6.27-admin-merge-import"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ const REQUIRED_HEADER='รหัส: เรื่องอุบัติกา�
 const DEFAULT_SETTINGS={hospital:'โรงพยาบาลดอนตูม',system:'Don Tum Risk Management System',defaultYear:'2569',previewLimit:50,blockErrors:false};
 
 let dataset={fiscalYear:2569,sourceFile:'',sheetName:'',headers:[],rows:[],loadedAt:'',quality:null};
+let currentYearDataset=null;
 let rcaState={rows:[],manifest:[],selectedIncident:null,prepared:[]};
 let settings=loadSettings();
 
@@ -101,21 +102,168 @@ function bind(){
   on('#rcaFileInput','change',e=>{if(e.target.files[0])uploadSelectedRca(e.target.files[0]);e.target.value=''});
 }
 
+
+function setMergeStatus(text,kind=''){
+  const el=$('#mergeImportStatus');
+  if(!el)return;
+  el.textContent=text;
+  el.className=`admin-merge-status ${kind}`.trim()
+}
+
+function rowIncidentKey(row,index=0){
+  const id=norm(row?.[IDX.id]);
+  if(id)return `ID:${id}`;
+  return [
+    isoDate(row?.[IDX.date]),
+    riskCode(row||[]),
+    norm(row?.[IDX.reportUnit]),
+    norm(row?.[IDX.mainUnit]),
+    norm(row?.[IDX.detail]).slice(0,160),
+    index
+  ].join('|')
+}
+
+function mergeIncidentRows(existingRows,newRows){
+  const map=new Map();
+  const order=[];
+
+  (existingRows||[]).forEach((row,index)=>{
+    const key=rowIncidentKey(row,index);
+    if(!map.has(key))order.push(key);
+    map.set(key,row)
+  });
+
+  let added=0,updated=0;
+  (newRows||[]).forEach((row,index)=>{
+    const key=rowIncidentKey(row,index);
+    if(map.has(key))updated++;
+    else{
+      added++;
+      order.push(key)
+    }
+    // New Excel values replace an existing incident with the same report ID.
+    map.set(key,row)
+  });
+
+  return {
+    rows:order.map(key=>map.get(key)),
+    added,
+    updated,
+    original:(existingRows||[]).length,
+    imported:(newRows||[]).length
+  }
+}
+
+async function fetchCurrentYearDataset(year){
+  const res=await fetch(`${DATA_PATH}incidents_${year}.json?v=${Date.now()}`,{cache:'no-store'});
+  if(!res.ok)throw new Error(`โหลดข้อมูลปัจจุบันไม่สำเร็จ HTTP ${res.status}`);
+  const obj=await res.json();
+  return {
+    fiscalYear:year,
+    sourceFile:obj.sourceFile||`incidents_${year}.json`,
+    headers:Array.isArray(obj.headers)?obj.headers:[],
+    rows:Array.isArray(obj.rows)?obj.rows:[]
+  }
+}
+
 async function readExcel(file){
-  if(typeof XLSX==='undefined'){toast('โหลดตัวอ่าน Excel ไม่สำเร็จ กรุณาเชื่อมต่ออินเทอร์เน็ตแล้วรีเฟรช');return}
+  if(typeof XLSX==='undefined'){
+    toast('โหลดตัวอ่าน Excel ไม่สำเร็จ กรุณาเชื่อมต่ออินเทอร์เน็ตแล้วรีเฟรช');
+    return
+  }
+
+  const year=+$('#fiscalYear').value;
+  const mergeMode=$('#mergeWithCurrent')?.checked!==false;
+
   try{
+    setMergeStatus('กำลังอ่านไฟล์ Excel...','working');
+
     const buffer=await file.arrayBuffer();
     const wb=XLSX.read(buffer,{type:'array',cellDates:true,raw:false});
-    const preferred=wb.SheetNames[0],ws=wb.Sheets[preferred];
+    const preferred=wb.SheetNames[0];
+    const ws=wb.Sheets[preferred];
     const matrix=XLSX.utils.sheet_to_json(ws,{header:1,defval:null,raw:false});
     const headerIndex=findHeaderRow(matrix);
+
     if(headerIndex<0)throw new Error(`ไม่พบหัวคอลัมน์ "${REQUIRED_HEADER}"`);
-    const headers=matrix[headerIndex].map((v,i)=>norm(v)||`คอลัมน์_${i+1}`);
-    const rows=matrix.slice(headerIndex+1).map(row=>normalizeRow(row,headers)).filter(row=>row.some(v=>v!==null&&v!==''));
-    dataset={fiscalYear:+$('#fiscalYear').value,sourceFile:file.name,sheetName:preferred,headers,rows,loadedAt:new Date().toISOString(),quality:null};
-    $('#fileName').textContent=file.name;$('#fileSize').textContent=bytes(file.size);$('#sheetName').textContent=preferred;$('#headerRow').textContent=headerIndex+1;
-    validateAndRender();addLog('Import Excel',rows.length,file.name);toast(`อ่านข้อมูล ${rows.length.toLocaleString()} รายการแล้ว`)
-  }catch(e){console.error(e);toast(`อ่าน Excel ไม่สำเร็จ: ${e.message}`)}
+
+    const importedHeaders=matrix[headerIndex].map((v,i)=>norm(v)||`คอลัมน์_${i+1}`);
+    const importedRows=matrix
+      .slice(headerIndex+1)
+      .map(row=>normalizeRow(row,importedHeaders))
+      .filter(row=>row.some(v=>v!==null&&v!==''));
+
+    let finalRows=importedRows;
+    let finalHeaders=importedHeaders;
+    let sourceFile=file.name;
+    let mergeSummary=null;
+
+    if(mergeMode){
+      setMergeStatus(`กำลังโหลดข้อมูลปัจจุบันปี ${year} จาก GitHub...`,'working');
+
+      try{
+        currentYearDataset=await fetchCurrentYearDataset(year);
+        mergeSummary=mergeIncidentRows(currentYearDataset.rows,importedRows);
+        finalRows=mergeSummary.rows;
+        finalHeaders=currentYearDataset.headers.length
+          ? currentYearDataset.headers
+          : importedHeaders;
+        sourceFile=`${currentYearDataset.sourceFile} + ${file.name}`;
+      }catch(fetchError){
+        console.warn(fetchError);
+        const useOnlyImport=confirm(
+          `โหลดข้อมูลปัจจุบันปี ${year} ไม่สำเร็จ\n\n`+
+          `ต้องการนำเข้าเฉพาะ Excel ${importedRows.length.toLocaleString()} รายการหรือไม่?`
+        );
+        if(!useOnlyImport)throw fetchError
+      }
+    }
+
+    dataset={
+      fiscalYear:year,
+      sourceFile,
+      sheetName:preferred,
+      headers:finalHeaders,
+      rows:finalRows,
+      loadedAt:new Date().toISOString(),
+      quality:null
+    };
+
+    $('#fileName').textContent=file.name;
+    $('#fileSize').textContent=bytes(file.size);
+    $('#sheetName').textContent=preferred;
+    $('#headerRow').textContent=headerIndex+1;
+
+    validateAndRender();
+
+    if(mergeSummary){
+      setMergeStatus(
+        `รวมสำเร็จ: เดิม ${mergeSummary.original.toLocaleString()} + `+
+        `นำเข้า ${mergeSummary.imported.toLocaleString()} = `+
+        `${mergeSummary.rows.length.toLocaleString()} รายการ `+
+        `(เพิ่มใหม่ ${mergeSummary.added.toLocaleString()}, `+
+        `แทนที่รายการซ้ำ ${mergeSummary.updated.toLocaleString()})`,
+        'success'
+      );
+      addLog(
+        'Merge Excel with current',
+        mergeSummary.rows.length,
+        `${file.name} | เพิ่ม ${mergeSummary.added} | ซ้ำ ${mergeSummary.updated}`
+      );
+      toast(`รวมข้อมูลแล้ว ${mergeSummary.rows.length.toLocaleString()} รายการ`)
+    }else{
+      setMergeStatus(
+        `นำเข้าเฉพาะ Excel สำเร็จ ${importedRows.length.toLocaleString()} รายการ`,
+        'success'
+      );
+      addLog('Import Excel',importedRows.length,file.name);
+      toast(`อ่านข้อมูล ${importedRows.length.toLocaleString()} รายการแล้ว`)
+    }
+  }catch(e){
+    console.error(e);
+    setMergeStatus(`นำเข้าไม่สำเร็จ: ${e.message}`,'error');
+    toast(`อ่าน Excel ไม่สำเร็จ: ${e.message}`)
+  }
 }
 function findHeaderRow(matrix){
   return matrix.slice(0,20).findIndex(row=>row.some(v=>norm(v).includes(REQUIRED_HEADER)))
@@ -148,6 +296,13 @@ async function loadCurrent(){
       loadedAt:new Date().toISOString(),
       quality:null
     };
+    currentYearDataset={
+      fiscalYear:year,
+      sourceFile:dataset.sourceFile,
+      headers:dataset.headers,
+      rows:dataset.rows
+    };
+    setMergeStatus(`โหลดข้อมูลปัจจุบันปี ${year} แล้ว ${dataset.rows.length.toLocaleString()} รายการ`,'success');
     $('#fileName').textContent=dataset.sourceFile;$('#fileSize').textContent='–';$('#sheetName').textContent='JSON ปัจจุบัน';$('#headerRow').textContent='–';
     validateAndRender();addLog('Load current',dataset.rows.length,dataset.sourceFile);toast(`โหลดข้อมูลปัจจุบัน ${dataset.rows.length.toLocaleString()} รายการ`)
   }catch(e){console.error(e);toast('โหลดข้อมูลปัจจุบันไม่สำเร็จ')}
@@ -315,6 +470,10 @@ function exportJson(){
   const obj=exportObject();
   download(JSON.stringify(obj),`incidents_${dataset.fiscalYear}.json`,'application/json');
   addLog('Export JSON',obj.rows.length,`incidents_${dataset.fiscalYear}.json`);
+  setMergeStatus(
+    `ส่งออก incidents_${dataset.fiscalYear}.json แล้ว ${obj.rows.length.toLocaleString()} รายการ • นำไฟล์นี้ไปอัปโหลดที่ Repository root/data`,
+    'success'
+  );
   toast(`ส่งออก JSON ${obj.rows.length.toLocaleString()} รายการแล้ว`)
 }
 function exportIssues(){

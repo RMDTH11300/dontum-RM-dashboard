@@ -1,4 +1,5 @@
-const DATA_PATH='../data/';
+const DATA_PATH='data/';
+const FALLBACK_DATA_PATH='../data/';
 const IDX={id:0,risk:1,sub:2,sev:3,reportUnit:4,place:6,summary:12,keyword:13,detail:14,initial:15,suggest:16,mainUnit:17,jointUnit:18,date:27};
 const REQUIRED_HEADER='รหัส: เรื่องอุบัติการณ์';
 const DEFAULT_SETTINGS={hospital:'โรงพยาบาลดอนตูม',system:'Don Tum Risk Management System',defaultYear:'2569',previewLimit:50,blockErrors:false};
@@ -154,15 +155,32 @@ function mergeIncidentRows(existingRows,newRows){
   }
 }
 
+async function fetchDataJson(filename){
+  const paths=[`${DATA_PATH}${filename}`,`${FALLBACK_DATA_PATH}${filename}`];
+  let lastError=null;
+  for(const path of [...new Set(paths)]){
+    try{
+      const res=await fetch(`${path}?v=${Date.now()}`,{cache:'no-store'});
+      if(!res.ok)throw new Error(`HTTP ${res.status} ${path}`);
+      const obj=await res.json();
+      obj.__sourcePath=path;
+      return obj
+    }catch(e){
+      lastError=e;
+      console.warn('โหลดข้อมูลไม่สำเร็จจาก',path,e)
+    }
+  }
+  throw lastError||new Error(`โหลด ${filename} ไม่สำเร็จ`)
+}
+
 async function fetchCurrentYearDataset(year){
-  const res=await fetch(`${DATA_PATH}incidents_${year}.json?v=${Date.now()}`,{cache:'no-store'});
-  if(!res.ok)throw new Error(`โหลดข้อมูลปัจจุบันไม่สำเร็จ HTTP ${res.status}`);
-  const obj=await res.json();
+  const obj=await fetchDataJson(`incidents_${year}.json`);
   return {
     fiscalYear:year,
     sourceFile:obj.sourceFile||`incidents_${year}.json`,
     headers:Array.isArray(obj.headers)?obj.headers:[],
-    rows:Array.isArray(obj.rows)?obj.rows:[]
+    rows:Array.isArray(obj.rows)?obj.rows:[],
+    sourcePath:obj.__sourcePath
   }
 }
 
@@ -284,9 +302,7 @@ function normalizeRow(row,headers){
 async function loadCurrent(){
   const year=+$('#fiscalYear').value;
   try{
-    const res=await fetch(`${DATA_PATH}incidents_${year}.json?v=${Date.now()}`);
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const obj=await res.json();
+    const obj=await fetchDataJson(`incidents_${year}.json`);
     dataset={
       fiscalYear:year,
       sourceFile:obj.sourceFile||`incidents_${year}.json`,

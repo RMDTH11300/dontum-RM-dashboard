@@ -1,10 +1,26 @@
-const PARENT='../data/';
+const PARENT='data/';
+const FALLBACK_PARENT='../data/';
 const IDX={id:0,risk:1,sub:2,sev:3,reportUnit:4,place:6,summary:12,keyword:13,detail:14,initial:15,suggest:16,mainUnit:17,status:26,date:27};
 const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},essentialStandards:[],selectedEssential:null,rcaManifest:[],riskCodes:[],riskAliases:[],riskAliasMap:new Map(),riskCodeMap:new Map(),allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary'};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.style.display='none',2400)}
-async function json(url){const r=await fetch(url+'?v='+Date.now());if(!r.ok)throw Error(`${r.status} ${url}`);return r.json()}
+async function json(url){
+  const candidates=[url];
+  if(url.startsWith(PARENT))candidates.push(FALLBACK_PARENT+url.slice(PARENT.length));
+  let lastError=null;
+  for(const candidate of [...new Set(candidates)]){
+    try{
+      const r=await fetch(candidate+'?v='+Date.now(),{cache:'no-store'});
+      if(!r.ok)throw Error(`${r.status} ${candidate}`);
+      return await r.json()
+    }catch(e){
+      lastError=e;
+      console.warn('โหลดข้อมูลไม่สำเร็จจาก',candidate,e)
+    }
+  }
+  throw lastError||Error(`โหลดข้อมูลไม่สำเร็จ ${url}`)
+}
 async function init(){
   try{
     const meta=await json(PARENT+'meta.json');

@@ -1,0 +1,371 @@
+{
+  "meta": {
+    "hospital": "โรงพยาบาลดอนตูม",
+    "fiscalYear": 2569,
+    "version": "6.31",
+    "profileSource": "docs/sar/Risk_Profile_โรงพยาบาลดอนตูม_2569.pdf",
+    "registerSource": "docs/sar/Risk_Register_โรงพยาบาลดอนตูม_2569.pdf",
+    "principle": "ข้อมูล SAR เป็นข้อมูลรับรองแยกจากข้อมูลที่ระบบสร้างอัตโนมัติจาก Incident",
+    "clinicalCount": 11,
+    "nonClinicalCount": 10
+  },
+  "items": [
+    {
+      "riskId": "CL-01",
+      "category": "Clinical",
+      "title": "STEMI ล่าช้า",
+      "description": "ผู้ป่วย STEMI เข้าถึงการวินิจฉัย การให้ยา และการส่งต่อไม่ทันเวลามาตรฐาน ส่งผลให้เกิดภาวะแทรกซ้อนรุนแรง",
+      "likelihood": 4,
+      "consequence": 5,
+      "score": 20,
+      "level": "สูงมาก",
+      "controls": [
+        "ใช้ STEMI Fast Track และ Standing Order สำหรับผู้ป่วย Chest Pain",
+        "ตรวจ ECG และ Trop T ตั้งแต่จุดคัดแยก พร้อมบันทึกเวลาในทุกขั้นตอน",
+        "ใช้ Teleconsult ประสานเครือข่ายส่งต่อ และ EMS pre-notification",
+        "ทบทวนผู้ป่วยทุกรายที่ล่าช้าหรือเกิด cardiogenic shock"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-02",
+      "category": "Clinical",
+      "title": "Stroke/rTPA ล่าช้า",
+      "description": "ผู้ป่วย Stroke เข้าถึงโรงพยาบาล ส่งต่อ และได้รับ rTPA ไม่ทันตามมาตรฐาน",
+      "likelihood": 4,
+      "consequence": 5,
+      "score": 20,
+      "level": "สูงมาก",
+      "controls": [
+        "ใช้ Stroke Fast Track และ Stroke Protocol พร้อมประเมิน FAST",
+        "ใช้ EMS pre-notification, TeleStroke และประสานเครือข่ายส่งต่อ",
+        "ติดตามเวลา Onset-to-hospital, Door-to-refer และ Door-to-rTPA",
+        "ทบทวนกรณีล่าช้าและปรับ pathway ร่วมกับโรงพยาบาลแม่ข่าย"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-03",
+      "category": "Clinical",
+      "title": "Sepsis / Severe Sepsis",
+      "description": "ผู้ป่วยติดเชื้อหรือสงสัย Sepsis ได้รับการคัดกรอง วินิจฉัย และเริ่ม Sepsis Bundle ล่าช้า เสี่ยงต่อ Septic shock อวัยวะล้มเหลว และเสียชีวิต",
+      "likelihood": 4,
+      "consequence": 5,
+      "score": 20,
+      "level": "สูงมาก",
+      "controls": [
+        "Sepsis Screening/EWS และ Sepsis Fast Track",
+        "ใช้ Sepsis Bundle, Blood culture/Lactate และ Antibiotic ภายใน 1 ชั่วโมง",
+        "ใช้ Sepsis Bundle Checklist และ Standard Order",
+        "Audit เวลา screening-to-antibiotic และ RCA ทุกรายเสียชีวิตหรือรักษาล่าช้า"
+      ],
+      "sourceDocument": "Risk Register PDF (SAR IV)"
+    },
+    {
+      "riskId": "CL-04",
+      "category": "Clinical",
+      "title": "PPH / Maternal Safety",
+      "description": "หญิงคลอดเกิด PPH และหญิงตั้งครรภ์ความดันสูงรุนแรงเพิ่มขึ้น เสี่ยงต่อการส่งต่อล่าช้าและการเสียชีวิตมารดา",
+      "likelihood": 4,
+      "consequence": 5,
+      "score": 20,
+      "level": "สูงมาก",
+      "controls": [
+        "คัดกรองความเสี่ยง PPH/ANC และจัดทำแผนส่งต่อรายบุคคล",
+        "ใช้ PPH Bundle เฝ้าระวัง 2 ชั่วโมง ตรวจรกโดยเจ้าหน้าที่ 2 คน และเตรียมยา/เลือด",
+        "กำหนดเกณฑ์ส่งต่อ severe hypertension",
+        "ซ้อม Massive PPH และทำ RCA ทุกกรณีที่มีความรุนแรง"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-05",
+      "category": "Clinical",
+      "title": "Undertriage / ประเมินแรกไม่ครบ",
+      "description": "ผู้ป่วยฉุกเฉินได้รับการคัดแยกต่ำกว่าความรุนแรงจริงหรือการประเมินแรกไม่ครบถ้วน ทำให้การรักษาและเปิด Fast Track ล่าช้า",
+      "likelihood": 4,
+      "consequence": 4,
+      "score": 16,
+      "level": "สูงมาก",
+      "controls": [
+        "ใช้เกณฑ์ MOPH ED Triage/ESI และ Early Warning Score",
+        "ทบทวนสมรรถนะผู้คัดแยกและตรวจประเมินการปฏิบัติงานแต่ละเวร",
+        "ใช้ Trigger Tool และ Standing Order สำหรับโรคสำคัญ",
+        "ทำ RCA เหตุการณ์ระดับ E ขึ้นไปครบถ้วนร้อยละ 100"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-06",
+      "category": "Clinical",
+      "title": "กลับมานอนซ้ำ",
+      "description": "ผู้ป่วยโดยเฉพาะผู้สูงอายุและโรคเรื้อรังกลับมานอนโรงพยาบาลซ้ำ จากการวางแผนจำหน่ายและติดตามต่อเนื่องไม่เพียงพอ",
+      "likelihood": 4,
+      "consequence": 4,
+      "score": 16,
+      "level": "สูงมาก",
+      "controls": [
+        "จัดทำ Discharge Planning และ Medication Reconciliation",
+        "ประเมินความเสี่ยงก่อนจำหน่ายและใช้ Teach-back",
+        "โทรติดตามภายใน 48–72 ชั่วโมง และเชื่อม HHC/LTC",
+        "มอบหมาย Care Coordinator และทำ Case Conference ในผู้ป่วยกลับมานอนซ้ำ"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-07",
+      "category": "Clinical",
+      "title": "COPD กำเริบ / นอนซ้ำ",
+      "description": "ผู้ป่วย COPD เกิดภาวะกำเริบเฉียบพลันสูงกว่าเป้าหมาย ส่งผลให้เข้ารับบริการฉุกเฉินหรือนอนโรงพยาบาลซ้ำ",
+      "likelihood": 4,
+      "consequence": 4,
+      "score": 16,
+      "level": "สูงมาก",
+      "controls": [
+        "จัดบริการ COPD Clinic และตรวจ Spirometry ตามข้อบ่งชี้",
+        "ประเมินและสอนเทคนิคการใช้ยาพ่นทุกครั้ง",
+        "จัดกลุ่มผู้ป่วยเสี่ยงสูง ส่งเสริมวัคซีนและการเลิกบุหรี่",
+        "ดำเนินการ Pulmonary Rehabilitation และโทรติดตามหลังจำหน่าย"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-08",
+      "category": "Clinical",
+      "title": "ฝากครรภ์ล่าช้า / ANC ไม่ครบ",
+      "description": "หญิงตั้งครรภ์ฝากครรภ์ล่าช้าและรับบริการ ANC ไม่ครบ ทำให้ค้นหาความเสี่ยงและป้องกันภาวะแทรกซ้อนไม่ทัน",
+      "likelihood": 4,
+      "consequence": 4,
+      "score": 16,
+      "level": "สูงมาก",
+      "controls": [
+        "จัดทำทะเบียนหญิงตั้งครรภ์และค้นหาการตั้งครรภ์ระยะแรกผ่าน รพ.สต./อสม.",
+        "ใช้ระบบแจ้งเตือนนัดและติดตามหญิงตั้งครรภ์ที่ขาดนัด",
+        "มอบหมาย Case Manager และติดตามภาวะซีด",
+        "ประเมินความเสี่ยงและส่งต่อครรภ์เสี่ยงสูงตามเกณฑ์"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-09",
+      "category": "Clinical",
+      "title": "ความคลาดเคลื่อนทางยา",
+      "description": "เกิดความคลาดเคลื่อนทางยาในขั้นตอนสั่งใช้ คัดลอก จัดเตรียม จ่าย หรือให้ยา โดยเฉพาะผู้ป่วยกลุ่มเสี่ยง",
+      "likelihood": 5,
+      "consequence": 3,
+      "score": 15,
+      "level": "สูง",
+      "controls": [
+        "ปฏิบัติตามหลัก 5R/8R และ Medication Reconciliation",
+        "ใช้ Double Check ในยา HAD, LASA และผู้ป่วยกลุ่มเสี่ยง",
+        "ใช้ Standard Order Set และให้เภสัชกรทบทวนใบสั่งยา",
+        "วิเคราะห์ความคลาดเคลื่อนรายขั้นตอน คืนข้อมูลรายเดือน และติดตามใน PTC"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-10",
+      "category": "Clinical",
+      "title": "DM/HT ควบคุมไม่ได้",
+      "description": "ผู้ป่วยเบาหวานและความดันโลหิตสูงควบคุมโรคได้ต่ำกว่าเป้าหมาย เสี่ยงต่อภาวะแทรกซ้อนและการนอนโรงพยาบาล",
+      "likelihood": 5,
+      "consequence": 3,
+      "score": 15,
+      "level": "สูง",
+      "controls": [
+        "ดำเนินงาน NCD Clinic ตาม CPG และจัดทำทะเบียนผู้ป่วยเสี่ยงสูง",
+        "ใช้ Case Management และเชื่อมข้อมูลกับ รพ.สต./อสม.",
+        "จัดทำแผน Self-management และติดตามการใช้ยา/ปรับพฤติกรรม",
+        "ใช้ Telemedicine หรือติดตามเชิงรุกในผู้ป่วยควบคุมไม่ได้"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "CL-11",
+      "category": "Clinical",
+      "title": "Head Injury ประเมิน/ส่งต่อไม่ครบ",
+      "description": "ผู้ป่วยบาดเจ็บศีรษะระดับเล็กน้อยถึงปานกลางได้รับการประเมินหรือส่งต่อไม่ครบตามเกณฑ์",
+      "likelihood": 3,
+      "consequence": 5,
+      "score": 15,
+      "level": "สูง",
+      "controls": [
+        "ใช้ Head Injury Guideline และประเมิน GCS/Red Flags อย่างครบถ้วน",
+        "ประเมินซ้ำตามระยะเวลาและบันทึกการเปลี่ยนแปลงของอาการ",
+        "ใช้ Teleconsult และประสานส่งต่อแบบ Real-time เมื่อเข้าเกณฑ์",
+        "ทบทวนเวชระเบียนและวิเคราะห์กรณีที่ไม่ได้ส่งต่อตามเกณฑ์"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-01",
+      "category": "Non-clinical",
+      "title": "กำลังคนพยาบาล/ภาระงาน OPD",
+      "description": "กำลังคนพยาบาลและภาระงาน OPD ไม่สมดุลกับความต้องการบริการ เสี่ยงต่อความเหนื่อยล้าและความผิดพลาด",
+      "likelihood": 5,
+      "consequence": 4,
+      "score": 20,
+      "level": "สูงมาก",
+      "controls": [
+        "จัดอัตรากำลัง เวร และ OT ให้สัมพันธ์กับปริมาณและความซับซ้อนของงาน",
+        "จัดทำ Workload Dashboard และแผน Staffing Contingency",
+        "ปรับกระบวนการบริการ OPD, Cross Training และ Fatigue Management",
+        "ติดตาม Turnover, Engagement และเหตุการณ์ที่สัมพันธ์กับภาระงาน"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-02",
+      "category": "Non-clinical",
+      "title": "ระบบน้ำหรือไฟฟ้าไม่พร้อมใช้",
+      "description": "ระบบน้ำหรือไฟฟ้าไม่พร้อมใช้ กระทบความต่อเนื่องและความปลอดภัยของบริการ",
+      "likelihood": 4,
+      "consequence": 4,
+      "score": 16,
+      "level": "สูงมาก",
+      "controls": [
+        "บำรุงรักษาเชิงป้องกันระบบน้ำ ไฟฟ้า และเครื่องกำเนิดไฟฟ้าตามแผน",
+        "ประเมินกำลังสำรองและจัดให้มีน้ำ/ไฟฟ้าสำรองเพียงพอ",
+        "จัดทำและซ้อมแผน Downtime พร้อมกำหนด SLA ผู้รับจ้าง",
+        "ติดตามเหตุไม่พร้อมใช้ ระยะเวลาหยุดชะงัก และผล PM"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-03",
+      "category": "Non-clinical",
+      "title": "อาคาร/พื้นที่บริการไม่ปลอดภัย",
+      "description": "อาคาร พื้นที่บริการ ทางเดิน และห้องน้ำไม่ปลอดภัย/ไม่พร้อมใช้ หรือไม่รองรับผู้พิการ",
+      "likelihood": 5,
+      "consequence": 3,
+      "score": 15,
+      "level": "สูง",
+      "controls": [
+        "ดำเนินการ Safety Walkround และใช้ระบบแจ้งซ่อมที่ติดตามสถานะได้",
+        "จัดทำ Critical Repair List และกำหนด SLA งานซ่อมเร่งด่วน",
+        "ประเมินการเข้าถึงของผู้พิการและจัดทำแผนที่จุดเสี่ยงซ้ำ",
+        "รายงานจุดเสี่ยงซ้ำและอุบัติเหตุจากสิ่งแวดล้อมต่อผู้บริหาร"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-04",
+      "category": "Non-clinical",
+      "title": "ระบบสารสนเทศ/ข้อมูลส่วนบุคคล",
+      "description": "ระบบสารสนเทศอาจหยุดชะงัก ถูกเข้าถึงโดยไม่มีสิทธิ์ หรือเกิดการรั่วไหลของข้อมูลส่วนบุคคล",
+      "likelihood": 3,
+      "consequence": 5,
+      "score": 15,
+      "level": "สูง",
+      "controls": [
+        "ใช้ Access Control ตามบทบาท, Firewall, Antivirus และ Audit Log",
+        "ใช้ MFA สำรองข้อมูล และทดสอบการกู้คืนข้อมูล",
+        "ดำเนินการตาม PDPA/Privacy Notice และแผน CISO/CSIRT",
+        "ซ้อม Phishing, Downtime และ Table-top พร้อมติดตาม Uptime/Privacy Breach"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-05",
+      "category": "Non-clinical",
+      "title": "ข้อมูลเวชระเบียนไม่ครบ/ไม่ถูกต้อง",
+      "description": "ข้อมูลเวชระเบียนบางรายการไม่ครบหรือไม่ถูกต้อง ส่งผลต่อความต่อเนื่องการดูแล คุณภาพข้อมูล และการเบิกจ่าย",
+      "likelihood": 4,
+      "consequence": 3,
+      "score": 12,
+      "level": "สูง",
+      "controls": [
+        "ทบทวนเวชระเบียนและดำเนินการ CDI/Coding Review",
+        "จัดทำ Data Quality Dashboard และ Mandatory Check",
+        "คืนข้อมูลให้หน่วยงานและทำ RCA ในความผิดพลาดซ้ำ",
+        "ติดตาม Completeness, Critical Data Error, Accuracy และ Timeliness"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-06",
+      "category": "Non-clinical",
+      "title": "เวชภัณฑ์/วัสดุ/ยาคงคลัง",
+      "description": "เวชภัณฑ์ วัสดุ หรือยาบางรายการหมดอายุ คงคลังคลาดเคลื่อน หรือเสี่ยงขาดแคลนรายการสำคัญ",
+      "likelihood": 4,
+      "consequence": 3,
+      "score": 12,
+      "level": "สูง",
+      "controls": [
+        "ใช้ระบบทะเบียนคุม หลัก FEFO และกำหนดระดับ Min-Max",
+        "จัดทำ Critical Item List และระบบแจ้งเตือนใกล้หมดอายุ",
+        "ตรวจนับแบบ Cycle Count และทบทวนสาเหตุเมื่อยอดคลาดเคลื่อน",
+        "จัดหาแหล่งสำรองหรือผู้ขายทดแทนสำหรับรายการสำคัญ"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-07",
+      "category": "Non-clinical",
+      "title": "Self Report ต่ำกว่าเป้าหมาย",
+      "description": "บุคลากรรายงานความเสี่ยงด้วยตนเองต่ำกว่าเป้าหมาย ทำให้องค์กรอาจค้นพบปัญหาและเรียนรู้จากเหตุการณ์ได้ไม่ครบถ้วน",
+      "likelihood": 4,
+      "consequence": 3,
+      "score": 12,
+      "level": "สูง",
+      "controls": [
+        "ส่งเสริมวัฒนธรรม No Blame No Shame และ HRMS on Cloud",
+        "จัด Safety Huddle, RM Round, Trigger Tool และ Chart Review",
+        "คืนข้อมูลผลการทบทวนและความคืบหน้ามาตรการ",
+        "ติดตาม Self Report การปิด Action และเหตุการณ์ซ้ำ"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-08",
+      "category": "Non-clinical",
+      "title": "เครื่องมือ/คอมพิวเตอร์/เครือข่ายไม่พร้อม",
+      "description": "เครื่องมือแพทย์ อุปกรณ์คอมพิวเตอร์ หรือระบบเครือข่ายไม่พร้อมใช้ ทำให้บริการหยุดชะงักหรือล่าช้า",
+      "likelihood": 4,
+      "consequence": 3,
+      "score": 12,
+      "level": "สูง",
+      "controls": [
+        "จัดทำทะเบียน Critical Equipment/Hardware พร้อมผู้รับผิดชอบ",
+        "ดำเนินการ PM/Calibration ให้ครบถ้วนตามแผน",
+        "จัดอุปกรณ์สำรอง กำหนด SLA ผู้ขาย และใช้ขั้นตอน Downtime",
+        "ซ้อมแผนหยุดชะงักและติดตาม Network Uptime/ระยะเวลาการแก้ไข"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-09",
+      "category": "Non-clinical",
+      "title": "อัคคีภัย/ภัยพิบัติ/ลิฟต์ขัดข้อง",
+      "description": "อัคคีภัย ภัยพิบัติ หรือลิฟต์ขัดข้องอาจทำให้ผู้ป่วยและบุคลากรไม่สามารถอพยพหรือรับการช่วยเหลือได้ทันเวลา",
+      "likelihood": 5,
+      "consequence": 2,
+      "score": 10,
+      "level": "สูง",
+      "controls": [
+        "ทบทวน Emergency Codes และแผนบัญชาการเหตุการณ์",
+        "ตรวจสอบระบบแจ้งเหตุ อุปกรณ์ดับเพลิง เส้นทางหนีไฟ และจุดรวมพล",
+        "ซ้อม Code Red, Code Green และ Code Brown ครบทุกหน่วยงาน",
+        "สรุป After Action Review และติดตามการปิดประเด็น"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    },
+    {
+      "riskId": "NC-10",
+      "category": "Non-clinical",
+      "title": "ยุทธศาสตร์/พันธกิจต่ำกว่าเป้าหมาย",
+      "description": "การดำเนินงานตามยุทธศาสตร์และพันธกิจบางด้านต่ำกว่าเป้าหมาย ส่งผลต่อผลลัพธ์องค์กรและความสำเร็จของแผนพัฒนา",
+      "likelihood": 3,
+      "consequence": 3,
+      "score": 9,
+      "level": "ปานกลาง",
+      "controls": [
+        "ทบทวน Strategic Risk และ KPI ที่ต่ำกว่าเป้าหมายในทีมนำ",
+        "ถ่ายทอด KPI สู่หน่วยงานและกำหนดเจ้าภาพ/แผนปรับปรุง",
+        "จัดทำ Monthly Dashboard และระบบ Escalation",
+        "ดำเนินโครงการ High Impact และติดตามผลลัพธ์รายไตรมาส"
+      ],
+      "sourceDocument": "Risk Profile PDF"
+    }
+  ]
+}

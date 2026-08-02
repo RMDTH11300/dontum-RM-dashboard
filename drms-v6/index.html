@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.30-risk-intelligence">
+  <link rel="stylesheet" href="assets/style.css?v=6.31-sar-full">
 </head>
 <body>
 <header class="topbar"><button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
@@ -17,7 +17,7 @@
     <b>DON TUM RISK MANAGEMENT SYSTEM</b>
     <small>ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม</small>
   </div>
-  <div class="official-version">V6.30</div>
+  <div class="official-version">V6.31</div>
 </div>
   <div class="top-actions"><a href="../" class="ghost">Dashboard V1</a><span class="tag">DRMS 1.0</span></div>
 </header>
@@ -92,7 +92,8 @@
 </section>
 <section id="profile" class="view">
   <div class="page-title"><div><h1>บัญชีรายการความเสี่ยง (Risk Profile)</h1><p>สร้างร่างอัตโนมัติจาก Incident ตามกลุ่ม/หน่วยงานหลักที่แก้ไข และใช้แบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions">
-<button id="profileSummaryMode" class="mode-btn active">มุมมองสรุป</button>
+<button id="profileSummaryMode" class="mode-btn active">วิเคราะห์จาก Incident</button>
+<button id="profileSarMode" class="mode-btn sar-mode-btn">ฉบับองค์กร/SAR</button>
 <button id="profileHaMode" class="mode-btn">แบบฟอร์ม HA</button>
 <button id="saveProfileDraft">บันทึกร่าง HA</button>
 <button id="exportProfileWord">Word</button>
@@ -119,6 +120,24 @@
     </section>
     <p class="profile-warning">หมายเหตุ: ค่า Impact และมาตรการเป็นร่างตั้งต้นจาก Risk Profile ของโรงพยาบาล หากเป็นรายหน่วยงานควรให้หน่วยงานเจ้าภาพทบทวนรับรองก่อนใช้เป็นหลักฐาน HA</p>
   </section>
+
+  <section id="profileSarPane" class="sar-pane hidden">
+    <div class="sar-hero">
+      <div>
+        <span class="sar-eyebrow">OFFICIAL SAR DATA LAYER</span>
+        <h2>Risk Profile ฉบับองค์กร ประจำปี 2569</h2>
+        <p>ข้อมูลที่โรงพยาบาลปรับให้สอดคล้องกับ SAR แยกจากรายการที่ระบบคำนวณอัตโนมัติ</p>
+      </div>
+      <div class="sar-source-actions">
+        <a href="docs/sar/Risk_Profile_โรงพยาบาลดอนตูม_2569.pdf" target="_blank">เปิดเอกสารต้นฉบับ</a>
+        <button id="exportSarProfileCsv">ส่งออก CSV</button>
+        <button id="printSarProfile">พิมพ์ / PDF</button>
+      </div>
+    </div>
+    <div id="sarProfileKpis" class="sar-kpis"></div>
+    <div id="sarProfileCards" class="sar-card-grid"></div>
+  </section>
+
   <section id="profileHaPane" class="ha-form-pane hidden">
     <div class="ha-form-header">
       <div>
@@ -146,7 +165,8 @@
 </section>
 <section id="register" class="view">
   <div class="page-title"><div><h1>Risk Register</h1><p>สร้างร่างทะเบียนความเสี่ยงอัตโนมัติจาก Incident และ Risk Profile ตามแบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions">
-<button id="registerSummaryMode" class="mode-btn active">มุมมองสรุป</button>
+<button id="registerSummaryMode" class="mode-btn active">สร้างจาก Incident</button>
+<button id="registerSarMode" class="mode-btn sar-mode-btn">ฉบับองค์กร/SAR</button>
 <button id="registerHaMode" class="mode-btn">แบบฟอร์ม HA</button>
 <button id="saveRegisterDraft">บันทึกร่าง HA</button>
 <button id="exportRegisterWord">Word</button>
@@ -160,6 +180,33 @@
   <section class="panel table-wrap register-table"><table><thead><tr><th>ลำดับ/รหัส</th><th>ชื่อความเสี่ยง</th><th>รายละเอียดและหลักฐาน</th><th>ช่วงเวลาติดตาม</th><th>L</th><th>I</th><th>ระดับ</th><th>การป้องกัน/ควบคุม</th><th>ตัวชี้วัดและการติดตาม</th><th>การลดผลกระทบ</th><th>ผู้รับผิดชอบ</th></tr></thead><tbody id="registerRows"></tbody></table></section>
   <p class="profile-warning">หมายเหตุ: เป็นร่างอัตโนมัติสำหรับให้หน่วยงานเจ้าภาพทบทวน ปรับมาตรการ ตัวชี้วัด ผู้รับผิดชอบ และกำหนดเวลาติดตามก่อนใช้เป็นหลักฐาน HA</p>
   </div>
+
+  <section id="registerSarPane" class="sar-pane hidden">
+    <div class="sar-hero">
+      <div>
+        <span class="sar-eyebrow">OFFICIAL SAR RISK REGISTER</span>
+        <h2>Risk Register ฉบับองค์กร ประจำปี 2569</h2>
+        <p>แสดง Risk Owner, QI Plan, ผลทบทวน, Residual Risk และ Incident ที่เชื่อมโยง</p>
+      </div>
+      <div class="sar-source-actions">
+        <a href="docs/sar/Risk_Register_โรงพยาบาลดอนตูม_2569.pdf" target="_blank">เปิดเอกสารต้นฉบับ</a>
+        <button id="exportSarRegisterCsv">ส่งออก CSV</button>
+        <button id="printSarRegister">พิมพ์ / PDF</button>
+      </div>
+    </div>
+    <div id="sarRegisterKpis" class="sar-kpis"></div>
+    <div class="panel table-wrap sar-register-table-wrap">
+      <table class="sar-register-table">
+        <thead><tr>
+          <th>Risk ID</th><th>Risk Title / Description</th><th>L×C</th>
+          <th>Prevention / Control / Mitigation</th><th>QI Plan / Owner</th>
+          <th>ผลทบทวน / Residual Risk</th><th>Incident เชื่อมโยง</th>
+        </tr></thead>
+        <tbody id="sarRegisterRows"></tbody>
+      </table>
+    </div>
+  </section>
+
   <section id="registerHaPane" class="ha-form-pane hidden">
     <div class="ha-form-header">
       <div>
@@ -611,9 +658,22 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.30-risk-intelligence"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.31-sar-full"></script>
 <div id="mobileOverlay" class="mobile-overlay"></div>
 
+
+
+<div id="sarRiskModal" class="sar-risk-modal" aria-hidden="true">
+  <div class="sar-risk-backdrop" data-close-sar-risk></div>
+  <section class="sar-risk-card" role="dialog" aria-modal="true">
+    <header class="sar-risk-header">
+      <div><span>OFFICIAL SAR RISK</span><h2 id="sarRiskModalTitle">รายละเอียดความเสี่ยง</h2></div>
+      <button type="button" data-close-sar-risk>✕</button>
+    </header>
+    <div id="sarRiskModalBody" class="sar-risk-body"></div>
+    <footer class="sar-risk-footer"><button type="button" data-close-sar-risk>ปิด</button></footer>
+  </section>
+</div>
 
 <div id="riskDrilldownModal" class="risk-drill-modal" aria-hidden="true">
   <div class="risk-drill-backdrop" data-close-risk-drill></div>

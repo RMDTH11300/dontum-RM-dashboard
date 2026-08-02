@@ -1,0 +1,299 @@
+{
+  "meta": {
+    "hospital": "โรงพยาบาลดอนตูม",
+    "fiscalYear": 2569,
+    "version": "6.31",
+    "profileSource": "docs/sar/Risk_Profile_โรงพยาบาลดอนตูม_2569.pdf",
+    "registerSource": "docs/sar/Risk_Register_โรงพยาบาลดอนตูม_2569.pdf",
+    "principle": "ข้อมูล SAR เป็นข้อมูลรับรองแยกจากข้อมูลที่ระบบสร้างอัตโนมัติจาก Incident",
+    "clinicalCount": 11,
+    "nonClinicalCount": 10
+  },
+  "mappings": {
+    "CL-01": {
+      "title": "STEMI ล่าช้า",
+      "incidentCodes": [
+        "CPE202",
+        "CPE203"
+      ],
+      "keywords": [
+        "STEMI",
+        "acute coronary",
+        "golden period",
+        "door-to-ecg"
+      ]
+    },
+    "CL-02": {
+      "title": "Stroke/rTPA ล่าช้า",
+      "incidentCodes": [
+        "CPE201",
+        "CPE202"
+      ],
+      "keywords": [
+        "Stroke",
+        "rTPA",
+        "FAST Track",
+        "door-to-refer"
+      ]
+    },
+    "CL-03": {
+      "title": "Sepsis / Severe Sepsis",
+      "incidentCodes": [
+        "CPE205",
+        "CPE206"
+      ],
+      "keywords": [
+        "Sepsis",
+        "Septic shock",
+        "severe sepsis",
+        "antibiotic"
+      ]
+    },
+    "CL-04": {
+      "title": "PPH / Maternal Safety",
+      "incidentCodes": [
+        "CPP401",
+        "CPP402",
+        "CPE207"
+      ],
+      "keywords": [
+        "PPH",
+        "postpartum hemorrhage",
+        "severe hypertension",
+        "maternal"
+      ]
+    },
+    "CL-05": {
+      "title": "Undertriage / ประเมินแรกไม่ครบ",
+      "incidentCodes": [
+        "CPP301",
+        "CPP302",
+        "CPP303"
+      ],
+      "keywords": [
+        "undertriage",
+        "triage",
+        "คัดแยก",
+        "ประเมินแรก"
+      ]
+    },
+    "CL-06": {
+      "title": "กลับมานอนซ้ำ",
+      "incidentCodes": [
+        "CPP309",
+        "CPP310"
+      ],
+      "keywords": [
+        "readmission",
+        "กลับมานอนซ้ำ",
+        "discharge planning"
+      ]
+    },
+    "CL-07": {
+      "title": "COPD กำเริบ / นอนซ้ำ",
+      "incidentCodes": [
+        "CPP309",
+        "CPP310"
+      ],
+      "keywords": [
+        "COPD",
+        "exacerbation",
+        "ยาพ่น",
+        "spirometry"
+      ]
+    },
+    "CL-08": {
+      "title": "ฝากครรภ์ล่าช้า / ANC ไม่ครบ",
+      "incidentCodes": [
+        "CPP401",
+        "CPP402"
+      ],
+      "keywords": [
+        "ANC",
+        "ฝากครรภ์",
+        "ครรภ์เสี่ยง",
+        "ขาดนัด"
+      ]
+    },
+    "CL-09": {
+      "title": "ความคลาดเคลื่อนทางยา",
+      "incidentCodes": [
+        "CPM201",
+        "CPM202",
+        "CPM203",
+        "CPM204",
+        "CPM205"
+      ],
+      "keywords": [
+        "Medication error",
+        "ยา",
+        "HAD",
+        "LASA"
+      ]
+    },
+    "CL-10": {
+      "title": "DM/HT ควบคุมไม่ได้",
+      "incidentCodes": [
+        "CPP309",
+        "CPP310"
+      ],
+      "keywords": [
+        "DM",
+        "HT",
+        "HbA1c",
+        "ความดัน",
+        "NCD"
+      ]
+    },
+    "CL-11": {
+      "title": "Head Injury ประเมิน/ส่งต่อไม่ครบ",
+      "incidentCodes": [
+        "CPE204",
+        "CPP303"
+      ],
+      "keywords": [
+        "Head Injury",
+        "GCS",
+        "Red Flags",
+        "บาดเจ็บศีรษะ"
+      ]
+    },
+    "NC-01": {
+      "title": "กำลังคนพยาบาล/ภาระงาน OPD",
+      "incidentCodes": [
+        "GPP101",
+        "GOM102"
+      ],
+      "keywords": [
+        "workload",
+        "ภาระงาน",
+        "อัตรากำลัง",
+        "OT"
+      ]
+    },
+    "NC-02": {
+      "title": "ระบบน้ำหรือไฟฟ้าไม่พร้อมใช้",
+      "incidentCodes": [
+        "GOS203",
+        "GOS204",
+        "GOS205"
+      ],
+      "keywords": [
+        "ไฟฟ้า",
+        "ระบบน้ำ",
+        "generator",
+        "downtime",
+        "สาธารณูปโภค"
+      ]
+    },
+    "NC-03": {
+      "title": "อาคาร/พื้นที่บริการไม่ปลอดภัย",
+      "incidentCodes": [
+        "GOS201",
+        "GOS202"
+      ],
+      "keywords": [
+        "อาคาร",
+        "พื้นที่",
+        "ห้องน้ำ",
+        "ทางเดิน",
+        "ไม่ปลอดภัย"
+      ]
+    },
+    "NC-04": {
+      "title": "ระบบสารสนเทศ/ข้อมูลส่วนบุคคล",
+      "incidentCodes": [
+        "GOI101",
+        "GOI105",
+        "GOI106"
+      ],
+      "keywords": [
+        "HosXP",
+        "สารสนเทศ",
+        "ข้อมูลส่วนบุคคล",
+        "PDPA",
+        "cyber",
+        "network"
+      ]
+    },
+    "NC-05": {
+      "title": "ข้อมูลเวชระเบียนไม่ครบ/ไม่ถูกต้อง",
+      "incidentCodes": [
+        "GPL203",
+        "GOI105"
+      ],
+      "keywords": [
+        "เวชระเบียน",
+        "บันทึกข้อมูล",
+        "ไม่ครบ",
+        "ไม่ถูกต้อง",
+        "coding"
+      ]
+    },
+    "NC-06": {
+      "title": "เวชภัณฑ์/วัสดุ/ยาคงคลัง",
+      "incidentCodes": [
+        "GOI202",
+        "GOP201"
+      ],
+      "keywords": [
+        "พัสดุ",
+        "คงคลัง",
+        "หมดอายุ",
+        "stock",
+        "FEFO"
+      ]
+    },
+    "NC-07": {
+      "title": "Self Report ต่ำกว่าเป้าหมาย",
+      "incidentCodes": [],
+      "keywords": [
+        "Self Report",
+        "HRMS",
+        "Risk Round",
+        "No Blame",
+        "รายงานความเสี่ยง"
+      ]
+    },
+    "NC-08": {
+      "title": "เครื่องมือ/คอมพิวเตอร์/เครือข่ายไม่พร้อม",
+      "incidentCodes": [
+        "GOI201",
+        "GOI203",
+        "GPE205"
+      ],
+      "keywords": [
+        "เครื่องมือ",
+        "คอมพิวเตอร์",
+        "เครือข่าย",
+        "PM",
+        "Calibration"
+      ]
+    },
+    "NC-09": {
+      "title": "อัคคีภัย/ภัยพิบัติ/ลิฟต์ขัดข้อง",
+      "incidentCodes": [
+        "GPE205",
+        "GPE206"
+      ],
+      "keywords": [
+        "อัคคีภัย",
+        "ภัยพิบัติ",
+        "ลิฟต์",
+        "Code Red",
+        "Code Green",
+        "Code Brown"
+      ]
+    },
+    "NC-10": {
+      "title": "ยุทธศาสตร์/พันธกิจต่ำกว่าเป้าหมาย",
+      "incidentCodes": [],
+      "keywords": [
+        "ยุทธศาสตร์",
+        "พันธกิจ",
+        "KPI",
+        "Strategic"
+      ]
+    }
+  }
+}

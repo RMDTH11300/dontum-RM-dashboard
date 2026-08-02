@@ -847,3 +847,51 @@ body.risk-drill-open{overflow:hidden}
   body.print-risk-drill .risk-intelligence,
   body.print-risk-drill .risk-drill-kpis article{break-inside:avoid}
 }
+
+
+/* V6.31 – SAR Official Data Layer */
+.sar-mode-btn{border-color:#9b7a17!important;color:#775600!important;background:#fff9dc!important}
+.sar-pane{padding-top:4px}
+.sar-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:20px 22px;margin-bottom:14px;border-radius:14px;background:linear-gradient(135deg,#fff8d9,#f5fbff);border:1px solid #eadb99}
+.sar-eyebrow{font-size:11px;font-weight:900;letter-spacing:.13em;color:#946b00}
+.sar-hero h2{margin:4px 0;color:#17365d}.sar-hero p{margin:0;color:#64748b}
+.sar-source-actions{display:flex;gap:8px;flex-wrap:wrap}.sar-source-actions a,.sar-source-actions button{padding:9px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#17365d;text-decoration:none;font-weight:700;cursor:pointer}
+.sar-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.sar-kpis article{padding:14px 16px;background:#fff;border:1px solid #dbe7f5;border-radius:12px;border-left:5px solid #2f80ed}
+.sar-kpis article.red{border-left-color:#e24b4b}.sar-kpis article.green{border-left-color:#22a06b}.sar-kpis article.purple{border-left-color:#7c5bd6}
+.sar-kpis span,.sar-kpis b,.sar-kpis small{display:block}.sar-kpis b{font-size:27px;color:#17365d;margin-top:4px}.sar-kpis span,.sar-kpis small{color:#64748b}
+.sar-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.sar-profile-card{background:#fff;border:1px solid #dbe7f5;border-top:5px solid #2f80ed;border-radius:13px;padding:15px;display:flex;flex-direction:column}
+.sar-profile-card.level-vhigh{border-top-color:#e11d48}.sar-profile-card.level-high{border-top-color:#f59e0b}.sar-profile-card.level-medium{border-top-color:#eab308}.sar-profile-card.level-low{border-top-color:#22a06b}
+.sar-profile-card header{display:flex;justify-content:space-between;align-items:center}.sar-profile-card header span{font-size:19px;font-weight:900;color:#17365d}.sar-profile-card header b{font-size:11px;padding:4px 8px;border-radius:999px;background:#eef5ff;color:#1769d2}
+.sar-profile-card h3{margin:10px 0 5px;color:#17365d}.sar-profile-card>p{margin:0 0 10px;color:#475569;line-height:1.55}
+.sar-score{display:flex;align-items:center;gap:8px;margin:5px 0 12px}.sar-score span{padding:6px 9px;border-radius:8px;background:#f1f5f9}.sar-score strong{margin-left:auto;min-width:65px;text-align:center;padding:7px;border-radius:9px;background:#17365d;color:#fff;font-size:20px}.sar-score strong small{display:block;font-size:10px}
+.sar-controls{display:grid;gap:6px;margin-bottom:12px}.sar-controls>div{display:grid;grid-template-columns:24px 1fr;gap:7px;color:#475569;font-size:13px}.sar-controls>div>b{width:22px;height:22px;border-radius:50%;background:#eaf2ff;color:#1769d2;display:grid;place-items:center}
+.sar-profile-card footer{margin-top:auto;border-top:1px solid #edf2f7;padding-top:10px;display:grid;grid-template-columns:auto auto 1fr;gap:12px;align-items:center}.sar-profile-card footer div b,.sar-profile-card footer div small{display:block}.sar-profile-card footer button{justify-self:end}
+.sar-register-table{min-width:1500px}.sar-register-table th,.sar-register-table td{vertical-align:top}.sar-register-table p{margin:5px 0;line-height:1.45}.sar-register-table td:nth-child(4){min-width:330px}.sar-register-table td:nth-child(5){min-width:250px}
+.sar-status{display:inline-block;padding:3px 7px;border-radius:999px;background:#e9f8ef;color:#137044;font-size:11px}
+.sar-risk-score{display:inline-flex;flex-direction:column;min-width:64px;padding:7px;border-radius:9px;color:#fff;font-size:22px}.sar-risk-score small{font-size:10px}.sar-risk-score.level-vhigh{background:#dc2626}.sar-risk-score.level-high{background:#f59e0b}.sar-risk-score.level-medium{background:#eab308;color:#3f3100}.sar-risk-score.level-low{background:#22a06b}.sar-linked-count{font-size:22px;color:#1769d2}.sar-register-table td:last-child small{display:block}
+.sar-risk-modal{display:none;position:fixed;inset:0;z-index:3700}.sar-risk-modal.open{display:block}.sar-risk-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(3px)}
+.sar-risk-card{position:relative;width:min(1160px,calc(100vw - 30px));height:calc(100vh - 30px);margin:15px auto;background:#f8fafc;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.sar-risk-header{padding:16px 20px;background:linear-gradient(135deg,#fff8d9,#fff);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eadb99}.sar-risk-header span{font-size:10px;font-weight:900;letter-spacing:.13em;color:#946b00}.sar-risk-header h2{margin:4px 0 0}.sar-risk-header button{width:40px;height:40px;border:0;border-radius:9px;background:#fff;cursor:pointer}
+.sar-risk-body{padding:16px 20px;overflow:auto}.sar-risk-footer{padding:10px 20px;background:#fff;border-top:1px solid #e2e8f0;text-align:right}
+.sar-modal-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:12px}.sar-modal-kpis article{padding:12px;background:#fff;border:1px solid #dbe7f5;border-radius:10px}.sar-modal-kpis span,.sar-modal-kpis b,.sar-modal-kpis small{display:block}.sar-modal-kpis b{font-size:25px;color:#17365d}
+.sar-modal-section,.sar-modal-grid>div{padding:14px;background:#fff;border:1px solid #dbe7f5;border-radius:11px;margin-bottom:11px}.sar-modal-section h3,.sar-modal-grid h3{margin:0 0 8px;color:#17365d}.sar-modal-section p,.sar-modal-grid p{line-height:1.6;color:#475569}
+.sar-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sar-modal-actions{margin-top:10px}
+body.sar-modal-open{overflow:hidden}
+
+@media(max-width:850px){
+  .sar-hero{align-items:flex-start;flex-direction:column}.sar-kpis{grid-template-columns:1fr 1fr}.sar-card-grid{grid-template-columns:1fr}.sar-modal-kpis{grid-template-columns:1fr 1fr}.sar-modal-grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .sar-kpis,.sar-modal-kpis{grid-template-columns:1fr 1fr}.sar-profile-card footer{grid-template-columns:1fr 1fr}.sar-profile-card footer button{grid-column:1/-1;width:100%}
+}
+@media print{
+  body:has(#profileSarPane:not(.hidden)) .sidebar,
+  body:has(#profileSarPane:not(.hidden)) .topbar,
+  body:has(#profileSarPane:not(.hidden)) .page-title,
+  body:has(#registerSarPane:not(.hidden)) .sidebar,
+  body:has(#registerSarPane:not(.hidden)) .topbar,
+  body:has(#registerSarPane:not(.hidden)) .page-title{display:none!important}
+  .sar-source-actions{display:none!important}.sar-pane{display:block!important}
+}

@@ -1,7 +1,7 @@
 const PARENT='data/';
 const FALLBACK_PARENT='../data/';
 const IDX={id:0,risk:1,sub:2,sev:3,reportUnit:4,place:6,summary:12,keyword:13,detail:14,initial:15,suggest:16,mainUnit:17,status:26,date:27};
-const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},essentialStandards:[],selectedEssential:null,rcaManifest:[],riskCodes:[],riskAliases:[],riskAliasMap:new Map(),riskCodeMap:new Map(),allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary',favorites:new Set()};
+const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},essentialStandards:[],selectedEssential:null,rcaManifest:[],riskCodes:[],riskAliases:[],riskAliasMap:new Map(),riskCodeMap:new Map(),allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary',favorites:new Set(),sarProfile:[],sarRegister:[],sarMappings:{},sarFilterCodes:new Set()};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.style.display='none',2400)}
@@ -36,6 +36,18 @@ async function init(){
     }catch(e){
       console.warn('ไม่พบ essential-standards.json',e);
       state.essentialStandards=[]
+    }
+
+    try{
+      const p=await json('config/sar-risk-profile-2569.json');
+      const rr=await json('config/sar-risk-register-2569.json');
+      const m=await json('config/sar-risk-mapping-2569.json');
+      state.sarProfile=Array.isArray(p)?p:(p.items||[]);
+      state.sarRegister=Array.isArray(rr)?rr:(rr.items||[]);
+      state.sarMappings=m.mappings||m||{}
+    }catch(e){
+      console.warn('ไม่พบข้อมูล SAR',e);
+      state.sarProfile=[];state.sarRegister=[];state.sarMappings={}
     }
 
     try{
@@ -106,17 +118,22 @@ function bind(){
     toast(`โหลดข้อมูลล่าสุดแล้ว ${state.rows.length.toLocaleString()} รายการ`)
   };
   ['#q','#sev','#type','#month'].forEach(s=>$(s).addEventListener(s==='#q'?'input':'change',()=>{state.page=1;apply()}));
-  $('#reset').onclick=()=>{$('#q').value='';$('#sev').value='';$('#type').value='';$('#month').value='';state.selected.clear();state.page=1;renderUnits();apply()};
+  $('#reset').onclick=()=>{$('#q').value='';$('#sev').value='';$('#type').value='';$('#month').value='';state.selected.clear();state.sarFilterCodes.clear();state.page=1;renderUnits();apply()};
   $('#csv').onclick=exportCsv;
   $('#printProfile').onclick=()=>window.print();$('#printRegister').onclick=()=>window.print();$('#printAnalytics').onclick=()=>window.print();$('#printHa').onclick=()=>window.print();
   $('#exportHaCsv').onclick=exportHaCsv;$('#refreshHaReport').onclick=()=>{renderHaReport(true);toast('สร้างสรุปรายงานใหม่แล้ว')};$('#saveHaDraft').onclick=saveHaReportDraft;$('#exportHaWord').onclick=()=>exportHaReport('word');$('#exportHaExcel').onclick=()=>exportHaReport('excel');$('#exportProfileCsv').onclick=exportProfileCsv;$('#exportRegisterCsv').onclick=exportRegisterCsv;
-  $('#profileSummaryMode').onclick=()=>setProfileMode('summary');$('#profileHaMode').onclick=()=>setProfileMode('ha');
-  $('#registerSummaryMode').onclick=()=>setRegisterMode('summary');$('#registerHaMode').onclick=()=>setRegisterMode('ha');
+  $('#profileSummaryMode').onclick=()=>setProfileMode('summary');if($('#profileSarMode'))$('#profileSarMode').onclick=()=>setProfileMode('sar');$('#profileHaMode').onclick=()=>setProfileMode('ha');
+  $('#registerSummaryMode').onclick=()=>setRegisterMode('summary');if($('#registerSarMode'))$('#registerSarMode').onclick=()=>setRegisterMode('sar');$('#registerHaMode').onclick=()=>setRegisterMode('ha');
   $('#saveProfileDraft').onclick=()=>saveHaDrafts('profile');$('#saveRegisterDraft').onclick=()=>saveHaDrafts('register');
   $('#exportProfileWord').onclick=()=>exportTableDocument('profile','word');
   $('#exportProfileExcel').onclick=()=>exportTableDocument('profile','excel');
   $('#exportRegisterWord').onclick=()=>exportTableDocument('register','word');
   $('#exportRegisterExcel').onclick=()=>exportTableDocument('register','excel');
+
+  if($('#exportSarProfileCsv'))$('#exportSarProfileCsv').onclick=exportSarProfileCsv;
+  if($('#exportSarRegisterCsv'))$('#exportSarRegisterCsv').onclick=exportSarRegisterCsv;
+  if($('#printSarProfile'))$('#printSarProfile').onclick=()=>window.print();
+  if($('#printSarRegister'))$('#printSarRegister').onclick=()=>window.print();
   $('#exportEssentialCsv').onclick=exportEssentialCsv;
   $('#exportEssentialExcel').onclick=exportEssentialExcel;
   $('#printEssential').onclick=()=>window.print();
@@ -284,7 +301,7 @@ function rowMatchesSelectedUnit(v){
   const units=String(v||'').split(/[\n,;]+/).map(x=>normUnit(x)).filter(Boolean);
   return [...state.selected].some(selected=>units.includes(normUnit(selected)))
 }
-function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||rowRiskSearchText(r).includes(normalizeRiskSearch(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='heatmap')renderHeatmap();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
+function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!state.sarFilterCodes.size||state.sarFilterCodes.has(codeOf(r[IDX.risk])))&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||rowRiskSearchText(r).includes(normalizeRiskSearch(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa();if(state.profileMode==='sar')renderSarProfile()}if(state.view==='register'){renderRegister();renderRegisterHa();if(state.registerMode==='sar')renderSarRegister()}if(state.view==='analytics')renderAnalytics();if(state.view==='heatmap')renderHeatmap();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
 function renderDashboard(){
   const a=state.filtered;
   $('#kTotal').textContent=a.length.toLocaleString();
@@ -849,6 +866,126 @@ function generatedProfileRows(){
  return {clinical:rows.filter(x=>x.type==='Clinical').sort(sort).slice(0,10),non:rows.filter(x=>x.type==='Non-clinical').sort(sort).slice(0,10)}
 }
 function profileRowHtml(x,i){return `<tr><td class="center">${i+1}</td><td><b>${esc(x.code)}:</b> ${esc(x.title)}<br><small>(พบ ${x.count.toLocaleString()} ครั้ง)</small></td><td class="center score-cell">${x.likelihood}</td><td class="center score-cell">${x.impact}</td><td class="center score-cell"><b>${x.score}</b></td><td class="center"><span class="risk-level level-${x.level}">${esc(x.level)}</span></td><td class="control-cell">${esc(x.control).replaceAll('\n','<br>')}</td></tr>`}
+
+function sarMappingFor(id){return state.sarMappings?.[id]||{incidentCodes:[],keywords:[]}}
+function sarLinkedRows(item){
+  const map=sarMappingFor(item.riskId),codes=new Set(map.incidentCodes||[]),keywords=(map.keywords||[]).map(x=>normalizeRiskSearch(x));
+  return state.filtered.filter(r=>{
+    const code=codeOf(r[IDX.risk]);
+    if(codes.has(code))return true;
+    const text=rowRiskSearchText(r);
+    return keywords.some(k=>k&&text.includes(k))
+  })
+}
+function sarIncidentSummary(item){
+  const rows=sarLinkedRows(item),high=rows.filter(r=>isHigh(r[IDX.sev])).length;
+  return {rows,count:rows.length,high,rca:rows.filter((r,i)=>{
+    const id=publicIncidentId(r,i),year=Number(r.__fiscalYear||state.year)||state.year;
+    return state.rcaManifest.some(x=>String(x.incident)===String(id)&&Number(x.year)===Number(year))
+  }).length}
+}
+function sarLevelClass(level){return String(level||'').includes('สูงมาก')?'vhigh':String(level||'').includes('สูง')?'high':String(level||'').includes('ปานกลาง')?'medium':'low'}
+function controlsHtml(items){return (items||[]).map((x,i)=>`<div><b>${i+1}</b><span>${esc(x)}</span></div>`).join('')}
+function sarKpisHtml(items){
+  const linked=items.reduce((s,x)=>s+sarIncidentSummary(x).count,0);
+  const active=items.filter(x=>x.status==='Active'||!x.status).length;
+  return `<article><span>ความเสี่ยงตาม SAR</span><b>${items.length}</b><small>รายการ</small></article>
+    <article class="red"><span>ระดับสูงมาก</span><b>${items.filter(x=>String(x.level).includes('สูงมาก')).length}</b><small>รายการ</small></article>
+    <article class="green"><span>Incident เชื่อมโยง</span><b>${linked.toLocaleString()}</b><small>ตามตัวกรองปัจจุบัน</small></article>
+    <article class="purple"><span>สถานะ Active</span><b>${active}</b><small>รายการ</small></article>`
+}
+function renderSarProfile(){
+  const box=$('#sarProfileCards'),kpis=$('#sarProfileKpis');if(!box||!kpis)return;
+  const items=(state.sarProfile||[]).filter(x=>Number(state.year)===2569||state.year==='all');
+  kpis.innerHTML=sarKpisHtml(items);
+  box.innerHTML=items.map(item=>{
+    const s=sarIncidentSummary(item);
+    return `<article class="sar-profile-card level-${sarLevelClass(item.level)}">
+      <header><span>${esc(item.riskId)}</span><b>${esc(item.category)}</b></header>
+      <h3>${esc(item.title)}</h3>
+      <p>${esc(item.description)}</p>
+      <div class="sar-score"><span>L <b>${item.likelihood}</b></span><span>I <b>${item.consequence}</b></span><strong>${item.score}<small>${esc(item.level)}</small></strong></div>
+      <div class="sar-controls">${controlsHtml(item.controls)}</div>
+      <footer>
+        <div><b>${s.count.toLocaleString()}</b><small>Incident เชื่อมโยง</small></div>
+        <div><b>${s.high.toLocaleString()}</b><small>High Risk</small></div>
+        <button data-sar-profile-id="${esc(item.riskId)}">ดูรายละเอียด</button>
+      </footer>
+    </article>`
+  }).join('')||'<p class="empty">ไม่พบข้อมูล SAR สำหรับปีที่เลือก</p>';
+  $$('[data-sar-profile-id]').forEach(b=>b.onclick=()=>openSarRisk(b.dataset.sarProfileId))
+}
+function renderSarRegister(){
+  const body=$('#sarRegisterRows'),kpis=$('#sarRegisterKpis');if(!body||!kpis)return;
+  const items=(state.sarRegister||[]).filter(x=>Number(state.year)===2569||state.year==='all');
+  kpis.innerHTML=sarKpisHtml(items);
+  body.innerHTML=items.map(item=>{
+    const s=sarIncidentSummary(item);
+    return `<tr>
+      <td><b>${esc(item.riskId)}</b><br><span class="sar-status">${esc(item.status||'Active')}</span></td>
+      <td><b>${esc(item.title)}</b><p>${esc(item.description)}</p><small>Source: ${esc(item.source)} • ${esc(item.quarter)}</small></td>
+      <td class="center"><span class="sar-risk-score level-${sarLevelClass(item.level)}">${item.score}<small>${esc(item.level)}</small></span><br><small>L${item.likelihood} × I${item.consequence}</small></td>
+      <td><b>Prevention</b><p>${esc(item.prevention)}</p><b>Monitor</b><p>${esc(item.monitor)}</p><b>Mitigation</b><p>${esc(item.mitigation)}</p></td>
+      <td><b>${esc(item.qiPlan)}</b><p>${esc(item.owner)}</p><small>${esc(item.reviewFrequency)}</small></td>
+      <td><p>${esc(item.reviewResult)}</p><b>Residual: ${esc(item.residualRisk)}</b><br><small>${esc(item.lastReview)}</small></td>
+      <td class="center"><b class="sar-linked-count">${s.count.toLocaleString()}</b><small>Incident</small><br><b>${s.rca}</b><small>มี RCA</small><button data-sar-register-id="${esc(item.riskId)}">เปิด</button></td>
+    </tr>`
+  }).join('')||'<tr><td colspan="7" class="empty">ไม่พบข้อมูล SAR</td></tr>';
+  $$('[data-sar-register-id]').forEach(b=>b.onclick=()=>openSarRisk(b.dataset.sarRegisterId))
+}
+function openSarRisk(id){
+  const item=state.sarRegister.find(x=>x.riskId===id)||state.sarProfile.find(x=>x.riskId===id);
+  if(!item)return;
+  const s=sarIncidentSummary(item),map=sarMappingFor(id),modal=$('#sarRiskModal'),body=$('#sarRiskModalBody');
+  $('#sarRiskModalTitle').textContent=`${item.riskId}: ${item.title}`;
+  body.innerHTML=`<div class="sar-modal-kpis">
+      <article><span>Risk Score</span><b>${item.score}</b><small>${esc(item.level)}</small></article>
+      <article><span>Incident เชื่อมโยง</span><b>${s.count.toLocaleString()}</b><small>ตามตัวกรองปัจจุบัน</small></article>
+      <article><span>High Risk</span><b>${s.high.toLocaleString()}</b><small>รายการ</small></article>
+      <article><span>มี RCA</span><b>${s.rca.toLocaleString()}</b><small>รายการ</small></article>
+    </div>
+    <section class="sar-modal-section"><h3>บริบทตาม SAR</h3><p>${esc(item.description)}</p></section>
+    <section class="sar-modal-grid">
+      <div><h3>มาตรการป้องกัน</h3><p>${esc(item.prevention||(item.controls||[]).join('\n')).replaceAll('\n','<br>')}</p></div>
+      <div><h3>การติดตามและควบคุม</h3><p>${esc(item.monitor||'–')}</p></div>
+      <div><h3>การบรรเทาความเสียหาย</h3><p>${esc(item.mitigation||'–')}</p></div>
+      <div><h3>QI Plan / Risk Owner</h3><p><b>${esc(item.qiPlan||'–')}</b><br>${esc(item.owner||'–')}</p></div>
+    </section>
+    <section class="sar-modal-section"><h3>Mapping กับ Incident</h3>
+      <p><b>รหัส:</b> ${(map.incidentCodes||[]).map(esc).join(', ')||'ใช้ Keyword Mapping'}</p>
+      <p><b>คำค้น:</b> ${(map.keywords||[]).map(esc).join(', ')||'–'}</p>
+      <div class="sar-modal-actions"><button id="openSarIncidents" class="primary">ดู Incident ทั้งหมด ${s.count.toLocaleString()} รายการ</button></div>
+    </section>
+    <section class="sar-modal-section"><h3>Incident ล่าสุด</h3>
+      <div class="table-wrap"><table><thead><tr><th>วันที่</th><th>เลข Incident</th><th>รหัส/เรื่อง</th><th>ระดับ</th><th>หน่วยงาน</th></tr></thead>
+      <tbody>${s.rows.slice(0,10).map((r,i)=>`<tr><td>${esc(fmtDate(r[IDX.date]))}</td><td>${esc(publicIncidentId(r,i))}</td><td>${esc(r[IDX.risk])}</td><td>${esc(r[IDX.sev])}</td><td>${esc(normUnit(r[IDX.mainUnit]))}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">ไม่พบ Incident ที่เชื่อมโยง</td></tr>'}</tbody></table></div>
+    </section>`;
+  $('#openSarIncidents').onclick=()=>openSarLinkedIncidents(id);
+  modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.classList.add('sar-modal-open')
+}
+function closeSarRisk(){
+  const m=$('#sarRiskModal');if(!m)return;m.classList.remove('open');m.setAttribute('aria-hidden','true');document.body.classList.remove('sar-modal-open')
+}
+function openSarLinkedIncidents(id){
+  const map=sarMappingFor(id),codes=new Set(map.incidentCodes||[]);
+  state.sarFilterCodes=codes;
+  closeSarRisk();show('incidents');
+  $('#q').value=codes.size?'':(map.keywords?.[0]||'');
+  state.page=1;apply();
+  toast(`กรอง Incident ที่เชื่อมโยงกับ ${id} แล้ว`)
+}
+document.addEventListener('click',e=>{if(e.target.closest('[data-close-sar-risk]'))closeSarRisk()});
+function exportSarProfileCsv(){
+  const rows=state.sarProfile||[],lines=[['Risk ID','ประเภท','รายการความเสี่ยง','รายละเอียด','L','I','คะแนน','ระดับ','มาตรการ'],
+    ...rows.map(x=>[x.riskId,x.category,x.title,x.description,x.likelihood,x.consequence,x.score,x.level,(x.controls||[]).join('\n')])];
+  download('\ufeff'+lines.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n'),'SAR_Risk_Profile_2569.csv','text/csv')
+}
+function exportSarRegisterCsv(){
+  const rows=state.sarRegister||[],lines=[['Risk ID','ประเภท','Source','Risk Title','Description','Quarter','L','I','Score','Level','Prevention','Monitor','Mitigation','QI Plan','Risk Owner','Review Frequency','Date Last Review','Result of Review','Residual Risk','Status'],
+    ...rows.map(x=>[x.riskId,x.category,x.source,x.title,x.description,x.quarter,x.likelihood,x.consequence,x.score,x.level,x.prevention,x.monitor,x.mitigation,x.qiPlan,x.owner,x.reviewFrequency,x.lastReview,x.reviewResult,x.residualRisk,x.status])];
+  download('\ufeff'+lines.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n'),'SAR_Risk_Register_2569.csv','text/csv')
+}
+
 function renderProfile(){const p=generatedProfileRows(),total=p.clinical.length+p.non.length;$('#profileUnitTitle').textContent=`หน่วยงาน: ${contextText()}`;$('#profilePeriod').textContent=`ประจำปีงบประมาณ ${state.year}`;$('#profileContext').textContent=`ใช้ข้อมูล Incident ที่ผ่านตัวกรองปัจจุบัน ${state.filtered.length.toLocaleString()} รายการ • สร้าง Clinical ${p.clinical.length} และ Non-clinical ${p.non.length} รายการ`;$('#profileClinicalRows').innerHTML=p.clinical.map(profileRowHtml).join('')||'<tr><td colspan="7" class="empty">ไม่พบความเสี่ยงด้านคลินิก</td></tr>';$('#profileNonRows').innerHTML=p.non.map(profileRowHtml).join('')||'<tr><td colspan="7" class="empty">ไม่พบความเสี่ยงด้านทั่วไป</td></tr>'}
 function getProfileRows(){const p=generatedProfileRows();return [...p.clinical,...p.non].map((x,i)=>({rank:i+1,type:x.type,risk:`${x.code}: ${x.title} (พบ ${x.count} ครั้ง)`,likelihood:x.likelihood,impact:x.impact,score:x.score,level:x.level,control:x.control}))}
 
@@ -856,8 +993,28 @@ function contextKey(){return `${state.year}|${[...state.selected].sort().join('|
 function draftStoreKey(kind){return `drms_${kind}_draft_${contextKey()}`}
 function historyStoreKey(kind){return `drms_${kind}_history_${contextKey()}`}
 function readStore(key,fallback={}){try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}catch(e){return fallback}}
-function setProfileMode(mode){state.profileMode=mode;$('#profileSummaryPane').classList.toggle('hidden',mode!=='summary');$('#profileHaPane').classList.toggle('hidden',mode!=='ha');$('#profileSummaryMode').classList.toggle('active',mode==='summary');$('#profileHaMode').classList.toggle('active',mode==='ha');if(mode==='ha')renderProfileHa()}
-function setRegisterMode(mode){state.registerMode=mode;$('#registerSummaryPane').classList.toggle('hidden',mode!=='summary');$('#registerHaPane').classList.toggle('hidden',mode!=='ha');$('#registerSummaryMode').classList.toggle('active',mode==='summary');$('#registerHaMode').classList.toggle('active',mode==='ha');if(mode==='ha')renderRegisterHa()}
+function setProfileMode(mode){
+  state.profileMode=mode;
+  $('#profileSummaryPane').classList.toggle('hidden',mode!=='summary');
+  $('#profileSarPane')?.classList.toggle('hidden',mode!=='sar');
+  $('#profileHaPane').classList.toggle('hidden',mode!=='ha');
+  $('#profileSummaryMode').classList.toggle('active',mode==='summary');
+  $('#profileSarMode')?.classList.toggle('active',mode==='sar');
+  $('#profileHaMode').classList.toggle('active',mode==='ha');
+  if(mode==='sar')renderSarProfile();
+  if(mode==='ha')renderProfileHa()
+}
+function setRegisterMode(mode){
+  state.registerMode=mode;
+  $('#registerSummaryPane').classList.toggle('hidden',mode!=='summary');
+  $('#registerSarPane')?.classList.toggle('hidden',mode!=='sar');
+  $('#registerHaPane').classList.toggle('hidden',mode!=='ha');
+  $('#registerSummaryMode').classList.toggle('active',mode==='summary');
+  $('#registerSarMode')?.classList.toggle('active',mode==='sar');
+  $('#registerHaMode').classList.toggle('active',mode==='ha');
+  if(mode==='sar')renderSarRegister();
+  if(mode==='ha')renderRegisterHa()
+}
 function editableCell(kind,code,field,value){return `<td class="editable-cell" contenteditable="true" data-kind="${kind}" data-code="${esc(code)}" data-field="${field}" spellcheck="false">${esc(value||'')}</td>`}
 function profileDefaults(x){return {objective:`ลดการเกิด ${x.code} และลดผลกระทบต่อผู้รับบริการ/บุคลากร`,indicator:`จำนวนอุบัติการณ์ ${x.code} และร้อยละการดำเนินการตามมาตรการ`,target:'ไม่เกิดเหตุระดับรุนแรง และแนวโน้มลดลงจากรอบก่อน',additional:'ทบทวนสาเหตุ กำหนด strong action และสื่อสารมาตรการในหน่วยงาน',owner:state.selected.size?[...state.selected].join(', '):'หน่วยงานหลักที่แก้ไข',deadline:`ภายในปีงบประมาณ ${state.year}`,followup:'รอติดตามผล'}}
 function renderProfileHa(){if(!$('#profileHaRows'))return;const p=generatedProfileRows(),rows=[...p.clinical,...p.non],drafts=readStore(draftStoreKey('profile'),{});$('#profileHaContext').textContent=`ปีงบประมาณ ${state.year} • ${contextText()} • ${rows.length} ประเด็นความเสี่ยง`;$('#profileHaRows').innerHTML=rows.map((x,i)=>{const d={...profileDefaults(x),...(drafts[x.code]||{})};return `<tr><td class="center">${i+1}</td><td>${esc(x.type)}</td><td><b>${esc(x.code)}:</b> ${esc(x.title)}<br><small>พบ ${x.count.toLocaleString()} ครั้ง</small></td><td class="center">${x.likelihood}</td><td class="center">${x.impact}</td><td class="center"><b>${x.score}</b><br><span class="risk-level level-${x.level}">${esc(x.level)}</span></td>${editableCell('profile',x.code,'objective',d.objective)}${editableCell('profile',x.code,'indicator',d.indicator)}${editableCell('profile',x.code,'target',d.target)}<td>${esc(x.control).replaceAll('\n','<br>')}</td>${editableCell('profile',x.code,'additional',d.additional)}${editableCell('profile',x.code,'owner',d.owner)}${editableCell('profile',x.code,'deadline',d.deadline)}${editableCell('profile',x.code,'followup',d.followup)}</tr>`}).join('')||'<tr><td colspan="14" class="empty">ไม่พบข้อมูล</td></tr>';renderHistory('profile')}

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.28-fix-data-path">
+  <link rel="stylesheet" href="assets/style.css?v=6.29-top10-drilldown">
 </head>
 <body>
 <header class="topbar"><button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
@@ -17,7 +17,7 @@
     <b>DON TUM RISK MANAGEMENT SYSTEM</b>
     <small>ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม</small>
   </div>
-  <div class="official-version">V6.28</div>
+  <div class="official-version">V6.29</div>
 </div>
   <div class="top-actions"><a href="../" class="ghost">Dashboard V1</a><span class="tag">DRMS 1.0</span></div>
 </header>
@@ -602,8 +602,34 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.28-fix-data-path"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.29-top10-drilldown"></script>
 <div id="mobileOverlay" class="mobile-overlay"></div>
+
+
+<div id="riskDrilldownModal" class="risk-drill-modal" aria-hidden="true">
+  <div class="risk-drill-backdrop" data-close-risk-drill></div>
+  <section class="risk-drill-card" role="dialog" aria-modal="true" aria-labelledby="riskDrillTitle">
+    <header class="risk-drill-header">
+      <div>
+        <span class="risk-drill-kicker">RISK DRILL-DOWN</span>
+        <h2 id="riskDrillTitle">รายละเอียดความเสี่ยง</h2>
+        <p id="riskDrillSubtitle"></p>
+      </div>
+      <button type="button" class="risk-drill-close" data-close-risk-drill aria-label="ปิด">✕</button>
+    </header>
+
+    <div class="risk-drill-toolbar">
+      <button id="riskDrillShowAll" class="primary">ดูรายการอุบัติการณ์ทั้งหมด</button>
+      <button id="riskDrillExportCsv">ส่งออก CSV</button>
+    </div>
+
+    <div id="riskDrillBody" class="risk-drill-body"></div>
+
+    <footer class="risk-drill-footer">
+      <button type="button" data-close-risk-drill>ปิด</button>
+    </footer>
+  </section>
+</div>
 
 <div id="incidentDetailModal" class="incident-modal" aria-hidden="true">
   <div class="incident-modal-backdrop" data-close-incident-modal></div>

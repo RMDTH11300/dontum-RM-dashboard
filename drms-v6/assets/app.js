@@ -129,6 +129,22 @@ function bind(){
   const heatmapUnitLimit=$('#heatmapUnitLimit');
   if(heatmapRiskLimit)heatmapRiskLimit.onchange=renderHeatmap;
   if(heatmapUnitLimit)heatmapUnitLimit.onchange=renderHeatmap;
+  const riskDrillExportCsv=$('#riskDrillExportCsv');
+  const riskDrillShowAll=$('#riskDrillShowAll');
+  if(riskDrillExportCsv)riskDrillExportCsv.onclick=exportRiskDrillCsv;
+  if(riskDrillShowAll)riskDrillShowAll.onclick=()=>{
+    const data=window.__riskDrillData;
+    if(!data)return;
+    closeRiskDrilldown();
+    show('incidents');
+    $('#q').value=data.mode==='risk'?data.key:'';
+    if(data.mode==='unit'){
+      state.selected=new Set([normUnit(data.key)]);
+      renderUnits()
+    }
+    state.page=1;
+    apply()
+  };
 }
 function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='heatmap')renderHeatmap();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='riskCodes')renderRiskCodeSearch();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
 
@@ -261,7 +277,259 @@ function rowMatchesSelectedUnit(v){
   return [...state.selected].some(selected=>units.includes(normUnit(selected)))
 }
 function apply(){const q=($('#q')?.value||'').trim().toLowerCase(),sev=$('#sev')?.value||'',type=$('#type')?.value||'',month=+($('#month')?.value||0);state.filtered=state.rows.filter(r=>rowMatchesSelectedUnit(r[IDX.mainUnit])&&(!sev||String(r[IDX.sev]||'')===sev)&&(!type||riskType(r)===type)&&(!month||monthOf(r[IDX.date])===month)&&(!q||rowRiskSearchText(r).includes(normalizeRiskSearch(q))));renderDashboard();renderIncidents();if(state.view==='profile'){renderProfile();renderProfileHa()}if(state.view==='register'){renderRegister();renderRegisterHa()}if(state.view==='analytics')renderAnalytics();if(state.view==='heatmap')renderHeatmap();if(state.view==='essential')renderEssentialStandards();if(state.view==='rca')renderPublicRca();if(state.view==='haReport')renderHaReport()}
-function renderDashboard(){const a=state.filtered;$('#kTotal').textContent=a.length.toLocaleString();$('#kClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();$('#kNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();$('#kHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();const months=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));renderSeveritySplit(a);rank('#topRisks',a.map(r=>String(r[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()));rank('#topUnits',a.map(r=>normUnit(r[IDX.mainUnit]))) }
+function renderDashboard(){
+  const a=state.filtered;
+  $('#kTotal').textContent=a.length.toLocaleString();
+  $('#kClinical').textContent=a.filter(r=>riskType(r)==='Clinical').length.toLocaleString();
+  $('#kNon').textContent=a.filter(r=>riskType(r)==='Non-clinical').length.toLocaleString();
+  $('#kHigh').textContent=a.filter(r=>isHigh(r[IDX.sev])).length.toLocaleString();
+  const months=[10,11,12,1,2,3,4,5,6,7,8,9],
+    names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];
+  barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));
+  renderSeveritySplit(a);
+  renderTopRiskRanking(a);
+  renderTopUnitRanking(a)
+}
+
+
+function riskCodeFromRow(row){
+  return String(row?.[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()
+}
+
+function riskTitleFromRow(row){
+  const raw=String(row?.[IDX.risk]||'ไม่ระบุ').trim();
+  const i=raw.indexOf(':');
+  return i>=0?raw.slice(i+1).trim():raw
+}
+
+function shortRiskTitle(title,max=88){
+  const text=String(title||'').replace(/\s+/g,' ').trim();
+  return text.length>max?text.slice(0,max-1)+'…':text
+}
+
+function renderTopRiskRanking(rows){
+  const groups=new Map();
+  rows.forEach(row=>{
+    const code=riskCodeFromRow(row);
+    if(!groups.has(code))groups.set(code,{code,title:riskTitleFromRow(row),count:0});
+    groups.get(code).count++
+  });
+  const top=[...groups.values()].sort((a,b)=>b.count-a.count||a.code.localeCompare(b.code,'th')).slice(0,10);
+  $('#topRisks').innerHTML=top.map((item,i)=>`
+    <button type="button" class="rank rank-drill risk-rank-item" data-risk-code="${esc(item.code)}" title="กดเพื่อดูรายละเอียด ${esc(item.code)}">
+      <b>${i+1}</b>
+      <span class="rank-main">
+        <strong>${esc(item.code)}</strong>
+        <small>${esc(shortRiskTitle(item.title))}</small>
+      </span>
+      <b>${item.count.toLocaleString()}</b>
+      <i>›</i>
+    </button>
+  `).join('')||'<p class="empty">ไม่พบข้อมูล</p>';
+
+  $$('#topRisks .risk-rank-item').forEach(btn=>{
+    btn.onclick=()=>openRiskDrilldown(btn.dataset.riskCode)
+  })
+}
+
+function renderTopUnitRanking(rows){
+  const counts={};
+  rows.forEach(row=>{
+    const unit=normUnit(row[IDX.mainUnit]);
+    counts[unit]=(counts[unit]||0)+1
+  });
+  const top=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  $('#topUnits').innerHTML=top.map(([unit,count],i)=>`
+    <button type="button" class="rank rank-drill unit-rank-item" data-unit="${esc(unit)}" title="กดเพื่อดู Incident ของ ${esc(unit)}">
+      <b>${i+1}</b>
+      <span class="rank-main"><strong>${esc(unit)}</strong><small>กดเพื่อดูรายการอุบัติการณ์</small></span>
+      <b>${count.toLocaleString()}</b>
+      <i>›</i>
+    </button>
+  `).join('')||'<p class="empty">ไม่พบข้อมูล</p>';
+
+  $$('#topUnits .unit-rank-item').forEach(btn=>{
+    btn.onclick=()=>openUnitDrilldown(btn.dataset.unit)
+  })
+}
+
+function riskDrillRowsByCode(code){
+  return state.filtered.filter(row=>riskCodeFromRow(row)===code)
+}
+
+function riskDrillRowsByUnit(unit){
+  return state.filtered.filter(row=>{
+    const units=String(row[IDX.mainUnit]||'').split(/[\n,;]+/).map(normUnit);
+    return units.includes(normUnit(unit))
+  })
+}
+
+function drillMonthlySummary(rows){
+  const months=[10,11,12,1,2,3,4,5,6,7,8,9];
+  const names=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];
+  return months.map((m,i)=>({label:names[i],count:rows.filter(r=>monthOf(r[IDX.date])===m).length}))
+}
+
+function drillTopList(rows,kind,limit=8){
+  const map={};
+  rows.forEach(row=>{
+    const key=kind==='unit'?normUnit(row[IDX.mainUnit]):String(row[IDX.sub]||'ไม่ระบุ').trim()||'ไม่ระบุ';
+    map[key]=(map[key]||0)+1
+  });
+  return Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,limit)
+}
+
+function drillIncidentRow(row,index){
+  const fiscal=Number(row.__fiscalYear||state.year)||state.year;
+  return `<tr class="risk-drill-incident" data-drill-index="${index}" tabindex="0">
+    <td>${esc(fmtDate(row[IDX.date]))}</td>
+    <td><b>${esc(publicIncidentId(row,index))}</b><small>ปี ${esc(fiscal)}</small></td>
+    <td>${esc(row[IDX.sub]||row[IDX.summary]||'–')}</td>
+    <td><span class="badge ${isHigh(row[IDX.sev])?'high':''}">${esc(row[IDX.sev]||'–')}</span></td>
+    <td>${esc(normUnit(row[IDX.mainUnit]))}</td>
+    <td><button type="button" class="view-incident-btn">ดูรายละเอียด</button></td>
+  </tr>`
+}
+
+function openRiskDrilldown(code){
+  const rows=riskDrillRowsByCode(code);
+  const first=rows[0];
+  const title=first?riskTitleFromRow(first):code;
+  renderRiskDrilldown({
+    mode:'risk',
+    key:code,
+    title:`${code}: ${title}`,
+    subtitle:`รายการอุบัติการณ์ทั้งหมดของรหัส ${code}`,
+    rows
+  })
+}
+
+function openUnitDrilldown(unit){
+  const rows=riskDrillRowsByUnit(unit);
+  renderRiskDrilldown({
+    mode:'unit',
+    key:unit,
+    title:`หน่วยงาน: ${unit}`,
+    subtitle:'รายการอุบัติการณ์ที่หน่วยงานเป็นหน่วยงานหลักที่แก้ไข',
+    rows
+  })
+}
+
+function renderRiskDrilldown(data){
+  const modal=$('#riskDrilldownModal'),body=$('#riskDrillBody');
+  if(!modal||!body)return;
+  window.__riskDrillData=data;
+
+  const rows=data.rows||[];
+  const clinical=rows.filter(r=>riskType(r)==='Clinical').length;
+  const non=rows.filter(r=>riskType(r)==='Non-clinical').length;
+  const high=rows.filter(r=>isHigh(r[IDX.sev])).length;
+  const recent=[...rows].sort((a,b)=>String(b[IDX.date]||'').localeCompare(String(a[IDX.date]||''))).slice(0,50);
+  const topUnits=drillTopList(rows,'unit',8);
+  const topSubs=drillTopList(rows,'sub',8);
+  const monthly=drillMonthlySummary(rows);
+  const maxMonth=Math.max(1,...monthly.map(x=>x.count));
+
+  $('#riskDrillTitle').textContent=data.title;
+  $('#riskDrillSubtitle').textContent=`ปีงบประมาณ ${state.year} • ${data.subtitle}`;
+
+  body.innerHTML=`
+    <section class="risk-drill-kpis">
+      <article><span>Incident ทั้งหมด</span><b>${rows.length.toLocaleString()}</b></article>
+      <article class="green"><span>Clinical</span><b>${clinical.toLocaleString()}</b></article>
+      <article class="purple"><span>Non-clinical</span><b>${non.toLocaleString()}</b></article>
+      <article class="red"><span>High Risk</span><b>${high.toLocaleString()}</b></article>
+    </section>
+
+    <section class="risk-drill-grid">
+      <div class="risk-drill-panel">
+        <h3>แนวโน้มรายเดือน</h3>
+        <div class="risk-drill-bars">
+          ${monthly.map(x=>`<div><span>${x.label}</span><i><em style="width:${x.count/maxMonth*100}%"></em></i><b>${x.count}</b></div>`).join('')}
+        </div>
+      </div>
+      <div class="risk-drill-panel">
+        <h3>${data.mode==='risk'?'หน่วยงานที่พบมาก':'รหัสความเสี่ยงที่พบมาก'}</h3>
+        <div class="risk-drill-list">
+          ${(data.mode==='risk'?topUnits:drillTopList(rows.map(r=>r),'sub',8)).map(([name,count],i)=>`
+            <div><b>${i+1}</b><span>${esc(name)}</span><strong>${count.toLocaleString()}</strong></div>
+          `).join('')||'<p class="empty">ไม่พบข้อมูล</p>'}
+        </div>
+      </div>
+    </section>
+
+    <section class="risk-drill-panel">
+      <h3>เรื่องย่อยที่พบมาก</h3>
+      <div class="risk-drill-chips">
+        ${topSubs.map(([name,count])=>`<span>${esc(name)} <b>${count.toLocaleString()}</b></span>`).join('')||'<span>ไม่พบข้อมูลเรื่องย่อย</span>'}
+      </div>
+    </section>
+
+    <section class="risk-drill-panel">
+      <div class="risk-drill-table-head">
+        <div><h3>รายการอุบัติการณ์</h3><p>แสดงล่าสุดไม่เกิน 50 รายการ กดแถวเพื่อเปิดรายละเอียดเต็ม</p></div>
+        <b>${rows.length.toLocaleString()} รายการ</b>
+      </div>
+      <div class="table-wrap">
+        <table class="risk-drill-table">
+          <thead><tr><th>วันที่</th><th>Incident</th><th>เรื่องย่อย</th><th>ระดับ</th><th>หน่วยงานหลัก</th><th></th></tr></thead>
+          <tbody>${recent.map((r,i)=>drillIncidentRow(r,i)).join('')||'<tr><td colspan="6" class="empty">ไม่พบข้อมูล</td></tr>'}</tbody>
+        </table>
+      </div>
+    </section>
+  `;
+
+  window.__riskDrillRecent=recent;
+  $$('.risk-drill-incident').forEach(tr=>{
+    const open=()=>{
+      const row=window.__riskDrillRecent[Number(tr.dataset.drillIndex)];
+      if(!row)return;
+      const idx=state.filtered.indexOf(row);
+      closeRiskDrilldown();
+      openIncidentDetail(idx>=0?idx:0)
+    };
+    tr.onclick=e=>{if(!e.target.closest('a'))open()};
+    tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}
+  });
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.classList.add('risk-drill-open')
+}
+
+function closeRiskDrilldown(){
+  const modal=$('#riskDrilldownModal');
+  if(!modal)return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.classList.remove('risk-drill-open')
+}
+
+function exportRiskDrillCsv(){
+  const data=window.__riskDrillData;
+  if(!data||!data.rows?.length){toast('ไม่พบข้อมูลสำหรับส่งออก');return}
+  const headers=['ปีงบประมาณ','วันที่เกิด','เลข Incident','รหัส/เรื่อง','เรื่องย่อย','ระดับ','หน่วยงานรายงาน','หน่วยงานหลักที่แก้ไข','รายละเอียด'];
+  const body=data.rows.map((r,i)=>[
+    Number(r.__fiscalYear||state.year)||state.year,
+    r[IDX.date],
+    publicIncidentId(r,i),
+    r[IDX.risk],
+    r[IDX.sub],
+    r[IDX.sev],
+    r[IDX.reportUnit],
+    normUnit(r[IDX.mainUnit]),
+    r[IDX.detail]
+  ]);
+  const csv='\ufeff'+[headers,...body].map(row=>row.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n');
+  download(csv,`DRMS_${String(data.key).replace(/[^\wก-๙-]+/g,'_')}_${state.year}.csv`,'text/csv')
+}
+
+document.addEventListener('click',e=>{
+  if(e.target.closest('[data-close-risk-drill]'))closeRiskDrilldown()
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&$('#riskDrilldownModal')?.classList.contains('open'))closeRiskDrilldown()
+});
 
 function renderSeveritySplit(rows){
   const clinicalLevels=['A','B','C','D','E','F','G','H','I'];

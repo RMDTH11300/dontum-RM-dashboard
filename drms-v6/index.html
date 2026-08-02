@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.31-sar-full">
+  <link rel="stylesheet" href="assets/style.css?v=6.32-sar-sidebar">
 </head>
 <body>
 <header class="topbar"><button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
@@ -17,7 +17,7 @@
     <b>DON TUM RISK MANAGEMENT SYSTEM</b>
     <small>ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม</small>
   </div>
-  <div class="official-version">V6.31</div>
+  <div class="official-version">V6.32</div>
 </div>
   <div class="top-actions"><a href="../" class="ghost">Dashboard V1</a><span class="tag">DRMS 1.0</span></div>
 </header>
@@ -25,8 +25,27 @@
 <aside class="sidebar">
   <button class="nav active" data-view="dashboard">⌂ ภาพรวม</button>
   <button class="nav" data-view="incidents">▦ รายการอุบัติการณ์</button>
-  <button class="nav" data-view="profile">▤ Risk Profile</button>
-  <button class="nav" data-view="register">▥ Risk Register</button>
+  <div class="nav-group" data-nav-group="profile">
+    <button class="nav nav-parent" type="button" data-toggle-nav="profile" aria-expanded="true">
+      <span>▤ Risk Profile</span><i>⌄</i>
+    </button>
+    <div class="nav-children">
+      <button class="nav nav-child" data-view="profile" data-mode="summary">วิเคราะห์จาก Incident</button>
+      <button class="nav nav-child sar-nav-child" data-view="profile" data-mode="sar">ฉบับองค์กร/SAR</button>
+      <button class="nav nav-child" data-view="profile" data-mode="ha">แบบฟอร์ม HA</button>
+    </div>
+  </div>
+
+  <div class="nav-group" data-nav-group="register">
+    <button class="nav nav-parent" type="button" data-toggle-nav="register" aria-expanded="true">
+      <span>▥ Risk Register</span><i>⌄</i>
+    </button>
+    <div class="nav-children">
+      <button class="nav nav-child" data-view="register" data-mode="summary">สร้างจาก Incident</button>
+      <button class="nav nav-child sar-nav-child" data-view="register" data-mode="sar">ฉบับองค์กร/SAR</button>
+      <button class="nav nav-child" data-view="register" data-mode="ha">แบบฟอร์ม HA</button>
+    </div>
+  </div>
   <button class="nav" data-view="essential">✦ มาตรฐานสำคัญจำเป็น 9 ด้าน</button>
   <button class="nav" data-view="analytics">◫ Analytics</button>
   <button class="nav" data-view="documents">📚 เอกสารและแบบฟอร์ม</button>
@@ -91,10 +110,7 @@
   <section class="panel table-wrap"><div class="table-head"><b id="resultCount">0 รายการ</b><button id="csv">ส่งออก CSV</button></div><table><thead><tr><th>ลำดับ</th><th>วันที่เกิด</th><th>รหัส/เรื่อง</th><th>เรื่องย่อย</th><th>ความรุนแรง</th><th>หน่วยงานรายงาน</th><th>หน่วยงานหลักที่แก้ไข</th><th>รายละเอียด</th></tr></thead><tbody id="incidentRows"></tbody></table><div id="pager" class="pager"></div></section>
 </section>
 <section id="profile" class="view">
-  <div class="page-title"><div><h1>บัญชีรายการความเสี่ยง (Risk Profile)</h1><p>สร้างร่างอัตโนมัติจาก Incident ตามกลุ่ม/หน่วยงานหลักที่แก้ไข และใช้แบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions">
-<button id="profileSummaryMode" class="mode-btn active">วิเคราะห์จาก Incident</button>
-<button id="profileSarMode" class="mode-btn sar-mode-btn">ฉบับองค์กร/SAR</button>
-<button id="profileHaMode" class="mode-btn">แบบฟอร์ม HA</button>
+  <div class="page-title"><div><h1>บัญชีรายการความเสี่ยง (Risk Profile)</h1><p id="profileViewSubtitle">วิเคราะห์จาก Incident ตามตัวกรองปัจจุบัน</p></div><div class="actions">
 <button id="saveProfileDraft">บันทึกร่าง HA</button>
 <button id="exportProfileWord">Word</button>
 <button id="exportProfileExcel">Excel</button>
@@ -164,10 +180,7 @@
   </section>
 </section>
 <section id="register" class="view">
-  <div class="page-title"><div><h1>Risk Register</h1><p>สร้างร่างทะเบียนความเสี่ยงอัตโนมัติจาก Incident และ Risk Profile ตามแบบฟอร์มโรงพยาบาลดอนตูม</p></div><div class="actions">
-<button id="registerSummaryMode" class="mode-btn active">สร้างจาก Incident</button>
-<button id="registerSarMode" class="mode-btn sar-mode-btn">ฉบับองค์กร/SAR</button>
-<button id="registerHaMode" class="mode-btn">แบบฟอร์ม HA</button>
+  <div class="page-title"><div><h1>Risk Register</h1><p id="registerViewSubtitle">สร้างจาก Incident และ Risk Profile ตามตัวกรองปัจจุบัน</p></div><div class="actions">
 <button id="saveRegisterDraft">บันทึกร่าง HA</button>
 <button id="exportRegisterWord">Word</button>
 <button id="exportRegisterExcel">Excel</button>
@@ -658,7 +671,7 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.31-sar-full"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.32-sar-sidebar"></script>
 <div id="mobileOverlay" class="mobile-overlay"></div>
 
 

@@ -895,3 +895,70 @@ body.sar-modal-open{overflow:hidden}
   body:has(#registerSarPane:not(.hidden)) .page-title{display:none!important}
   .sar-source-actions{display:none!important}.sar-pane{display:block!important}
 }
+
+
+/* V6.32 – Sidebar navigation for Risk Profile / Risk Register */
+.nav-group{margin:2px 0}
+.nav-parent{
+  width:100%;
+  display:flex!important;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:800!important;
+}
+.nav-parent i{
+  font-style:normal;
+  font-size:16px;
+  transition:transform .18s ease;
+}
+.nav-group.collapsed .nav-parent i{transform:rotate(-90deg)}
+.nav-children{
+  display:grid;
+  gap:2px;
+  padding:2px 0 5px 12px;
+  overflow:hidden;
+}
+.nav-group.collapsed .nav-children{display:none}
+.nav-child{
+  position:relative;
+  min-height:36px!important;
+  padding:8px 10px 8px 26px!important;
+  font-size:13px!important;
+  text-align:left!important;
+  border-left:2px solid #d9e4f2!important;
+  border-radius:0 8px 8px 0!important;
+  background:transparent!important;
+  color:#53657d!important;
+}
+.nav-child::before{
+  content:'';
+  position:absolute;
+  left:10px;
+  top:50%;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#b9c7d8;
+  transform:translateY(-50%);
+}
+.nav-child:hover{background:#edf5ff!important;color:#17365d!important}
+.nav-child.active{
+  background:#e8f2ff!important;
+  color:#1257b5!important;
+  border-left-color:#2f80ed!important;
+  font-weight:800!important;
+}
+.nav-child.active::before{background:#2f80ed;box-shadow:0 0 0 4px rgba(47,128,237,.12)}
+.nav-child.sar-nav-child{color:#7a5a00!important}
+.nav-child.sar-nav-child::before{background:#d7a914}
+.nav-child.sar-nav-child.active{
+  background:#fff7d6!important;
+  color:#775600!important;
+  border-left-color:#d7a914!important;
+}
+.nav-child.sar-nav-child.active::before{background:#d7a914;box-shadow:0 0 0 4px rgba(215,169,20,.15)}
+
+@media(max-width:900px){
+  .nav-children{padding-left:8px}
+  .nav-child{padding-left:24px!important}
+}

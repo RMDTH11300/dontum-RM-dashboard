@@ -85,7 +85,19 @@ async function init(){
 }
 function buildMonths(){const vals=[10,11,12,1,2,3,4,5,6,7,8,9],names=['ตุลาคม','พฤศจิกายน','ธันวาคม','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน'];$('#month').innerHTML='<option value="">ทุกเดือนงบประมาณ</option>'+vals.map((m,i)=>`<option value="${m}">${names[i]}</option>`).join('')}
 function bind(){
-  $$('.nav[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
+  $$('.nav[data-view]').forEach(b=>b.onclick=()=>{
+    const view=b.dataset.view;
+    const mode=b.dataset.mode;
+    show(view);
+    if(view==='profile'&&mode)setProfileMode(mode);
+    if(view==='register'&&mode)setRegisterMode(mode)
+  });
+  $$('[data-toggle-nav]').forEach(btn=>btn.onclick=()=>{
+    const group=btn.closest('.nav-group');
+    const open=!group.classList.contains('collapsed');
+    group.classList.toggle('collapsed',open);
+    btn.setAttribute('aria-expanded',String(!open))
+  });
   $('#year').onchange=async e=>{
     const value=e.target.value;
     state.year=value==='all'?'all':Number(value);
@@ -122,8 +134,10 @@ function bind(){
   $('#csv').onclick=exportCsv;
   $('#printProfile').onclick=()=>window.print();$('#printRegister').onclick=()=>window.print();$('#printAnalytics').onclick=()=>window.print();$('#printHa').onclick=()=>window.print();
   $('#exportHaCsv').onclick=exportHaCsv;$('#refreshHaReport').onclick=()=>{renderHaReport(true);toast('สร้างสรุปรายงานใหม่แล้ว')};$('#saveHaDraft').onclick=saveHaReportDraft;$('#exportHaWord').onclick=()=>exportHaReport('word');$('#exportHaExcel').onclick=()=>exportHaReport('excel');$('#exportProfileCsv').onclick=exportProfileCsv;$('#exportRegisterCsv').onclick=exportRegisterCsv;
-  $('#profileSummaryMode').onclick=()=>setProfileMode('summary');if($('#profileSarMode'))$('#profileSarMode').onclick=()=>setProfileMode('sar');$('#profileHaMode').onclick=()=>setProfileMode('ha');
-  $('#registerSummaryMode').onclick=()=>setRegisterMode('summary');if($('#registerSarMode'))$('#registerSarMode').onclick=()=>setRegisterMode('sar');$('#registerHaMode').onclick=()=>setRegisterMode('ha');
+  
+
+  
+
   $('#saveProfileDraft').onclick=()=>saveHaDrafts('profile');$('#saveRegisterDraft').onclick=()=>saveHaDrafts('register');
   $('#exportProfileWord').onclick=()=>exportTableDocument('profile','word');
   $('#exportProfileExcel').onclick=()=>exportTableDocument('profile','excel');
@@ -171,7 +185,15 @@ function bind(){
     apply()
   };
 }
-function show(v){state.view=v;$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$$('.nav[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='heatmap')renderHeatmap();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='riskCodes')renderRiskCodeSearch();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
+function show(v){
+  state.view=v;
+  $$('.view').forEach(x=>x.classList.toggle('active',x.id===v));
+  $$('.nav[data-view]').forEach(x=>{
+    const same=x.dataset.view===v;
+    if(v==='profile'&&x.dataset.mode)x.classList.toggle('active',same&&x.dataset.mode===state.profileMode);
+    else if(v==='register'&&x.dataset.mode)x.classList.toggle('active',same&&x.dataset.mode===state.registerMode);
+    else x.classList.toggle('active',same)
+  });if(v==='profile'){renderProfile();renderProfileHa()}if(v==='register'){renderRegister();renderRegisterHa()}if(v==='analytics')renderAnalytics();if(v==='heatmap')renderHeatmap();if(v==='essential')renderEssentialStandards();if(v==='rca')renderPublicRca();if(v==='riskCodes')renderRiskCodeSearch();if(v==='haReport')renderHaReport();window.scrollTo({top:0,behavior:'smooth'})}
 
 async function loadAllYears(){
   const years=(state.years||[]).map(Number).filter(Boolean);
@@ -998,9 +1020,13 @@ function setProfileMode(mode){
   $('#profileSummaryPane').classList.toggle('hidden',mode!=='summary');
   $('#profileSarPane')?.classList.toggle('hidden',mode!=='sar');
   $('#profileHaPane').classList.toggle('hidden',mode!=='ha');
-  $('#profileSummaryMode').classList.toggle('active',mode==='summary');
-  $('#profileSarMode')?.classList.toggle('active',mode==='sar');
-  $('#profileHaMode').classList.toggle('active',mode==='ha');
+  $$('[data-view="profile"][data-mode]').forEach(x=>x.classList.toggle('active',x.dataset.mode===mode));
+  const subtitle=$('#profileViewSubtitle');
+  if(subtitle)subtitle.textContent=mode==='sar'
+    ?'ฉบับองค์กรที่ปรับให้สอดคล้องกับ SAR โรงพยาบาล'
+    :mode==='ha'
+      ?'แบบฟอร์ม HA สำหรับทบทวนและบันทึกร่าง'
+      :'วิเคราะห์จาก Incident ตามตัวกรองปัจจุบัน';
   if(mode==='sar')renderSarProfile();
   if(mode==='ha')renderProfileHa()
 }
@@ -1009,9 +1035,13 @@ function setRegisterMode(mode){
   $('#registerSummaryPane').classList.toggle('hidden',mode!=='summary');
   $('#registerSarPane')?.classList.toggle('hidden',mode!=='sar');
   $('#registerHaPane').classList.toggle('hidden',mode!=='ha');
-  $('#registerSummaryMode').classList.toggle('active',mode==='summary');
-  $('#registerSarMode')?.classList.toggle('active',mode==='sar');
-  $('#registerHaMode').classList.toggle('active',mode==='ha');
+  $$('[data-view="register"][data-mode]').forEach(x=>x.classList.toggle('active',x.dataset.mode===mode));
+  const subtitle=$('#registerViewSubtitle');
+  if(subtitle)subtitle.textContent=mode==='sar'
+    ?'ฉบับองค์กรที่เชื่อมโยง SAR, QI Plan, Risk Owner และ Incident'
+    :mode==='ha'
+      ?'แบบฟอร์ม HA สำหรับกำหนดมาตรการและติดตามผล'
+      :'สร้างจาก Incident และ Risk Profile ตามตัวกรองปัจจุบัน';
   if(mode==='sar')renderSarRegister();
   if(mode==='ha')renderRegisterHa()
 }

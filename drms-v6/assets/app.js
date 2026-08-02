@@ -1,7 +1,7 @@
 const PARENT='data/';
 const FALLBACK_PARENT='../data/';
 const IDX={id:0,risk:1,sub:2,sev:3,reportUnit:4,place:6,summary:12,keyword:13,detail:14,initial:15,suggest:16,mainUnit:17,status:26,date:27};
-const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},essentialStandards:[],selectedEssential:null,rcaManifest:[],riskCodes:[],riskAliases:[],riskAliasMap:new Map(),riskCodeMap:new Map(),allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary'};
+const state={year:'all',years:[],rows:[],filtered:[],units:[],selected:new Set(),profiles:{},registers:{},orgTree:{groups:[]},essentialStandards:[],selectedEssential:null,rcaManifest:[],riskCodes:[],riskAliases:[],riskAliasMap:new Map(),riskCodeMap:new Map(),allYearRows:{},page:1,pageSize:25,view:'dashboard',profileMode:'summary',registerMode:'summary',favorites:new Set()};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.style.display='none',2400)}
@@ -60,6 +60,7 @@ async function init(){
     state.year='all';
     $('#year').value='all';
 
+    loadFavoriteRisks();
     await loadRiskCodeMaster();
     buildRiskCodeSearchUI();
     buildMonths();
@@ -131,6 +132,13 @@ function bind(){
   if(heatmapUnitLimit)heatmapUnitLimit.onchange=renderHeatmap;
   const riskDrillExportCsv=$('#riskDrillExportCsv');
   const riskDrillShowAll=$('#riskDrillShowAll');
+  const riskDrillFavorite=$('#riskDrillFavorite');
+  const riskDrillPrint=$('#riskDrillPrint');
+  if(riskDrillFavorite)riskDrillFavorite.onclick=()=>{
+    const data=window.__riskDrillData;
+    if(data?.mode==='risk')toggleFavoriteRisk(data.key)
+  };
+  if(riskDrillPrint)riskDrillPrint.onclick=printRiskDrilldown;
   if(riskDrillExportCsv)riskDrillExportCsv.onclick=exportRiskDrillCsv;
   if(riskDrillShowAll)riskDrillShowAll.onclick=()=>{
     const data=window.__riskDrillData;
@@ -288,9 +296,141 @@ function renderDashboard(){
   barChart('#monthly',months.map((m,i)=>({label:names[i],count:a.filter(r=>monthOf(r[IDX.date])===m).length})));
   renderSeveritySplit(a);
   renderTopRiskRanking(a);
-  renderTopUnitRanking(a)
+  renderTopUnitRanking(a);
+  renderFavoriteRisks()
 }
 
+
+
+function favoriteStorageKey(){return 'drms_favorite_risks_v630'}
+
+function loadFavoriteRisks(){
+  try{
+    const arr=JSON.parse(localStorage.getItem(favoriteStorageKey())||'[]');
+    state.favorites=new Set(Array.isArray(arr)?arr:[])
+  }catch(e){
+    state.favorites=new Set()
+  }
+}
+
+function saveFavoriteRisks(){
+  localStorage.setItem(favoriteStorageKey(),JSON.stringify([...state.favorites]))
+}
+
+function toggleFavoriteRisk(code){
+  if(!code)return;
+  if(state.favorites.has(code))state.favorites.delete(code);
+  else state.favorites.add(code);
+  saveFavoriteRisks();
+  updateRiskFavoriteButton(code);
+  renderFavoriteRisks();
+  toast(state.favorites.has(code)?`เพิ่ม ${code} ในรายการโปรดแล้ว`:`นำ ${code} ออกจากรายการโปรดแล้ว`)
+}
+
+function updateRiskFavoriteButton(code){
+  const btn=$('#riskDrillFavorite');
+  if(!btn)return;
+  const active=state.favorites.has(code);
+  btn.textContent=active?'★ รายการโปรด':'☆ เพิ่มรายการโปรด';
+  btn.classList.toggle('active',active)
+}
+
+function renderFavoriteRisks(){
+  const box=$('#favoriteRisks');
+  if(!box)return;
+  const codes=[...state.favorites];
+  if(!codes.length){
+    box.innerHTML='<p class="empty">ยังไม่มีรายการโปรด กดรหัสใน Top 10 แล้วเลือก “เพิ่มรายการโปรด”</p>';
+    return
+  }
+  const groups=new Map();
+  state.rows.forEach(row=>{
+    const code=riskCodeFromRow(row);
+    if(!codes.includes(code))return;
+    if(!groups.has(code))groups.set(code,{code,title:riskTitleFromRow(row),count:0});
+    groups.get(code).count++
+  });
+  box.innerHTML=codes.map(code=>{
+    const item=groups.get(code)||{code,title:'ไม่พบในข้อมูลที่เลือก',count:0};
+    return `<button type="button" class="favorite-risk-item" data-favorite-code="${esc(code)}">
+      <span><b>★ ${esc(code)}</b><small>${esc(shortRiskTitle(item.title,90))}</small></span>
+      <strong>${item.count.toLocaleString()}</strong>
+    </button>`
+  }).join('');
+  $$('#favoriteRisks [data-favorite-code]').forEach(btn=>{
+    btn.onclick=()=>openRiskDrilldown(btn.dataset.favoriteCode)
+  })
+}
+
+async function riskTrendAcrossYears(code){
+  const years=(state.years||[]).map(Number).filter(Boolean).sort((a,b)=>a-b);
+  const result=[];
+  for(const year of years){
+    const rows=await ensureYearRows(year);
+    result.push({year,count:rows.filter(r=>riskCodeFromRow(r)===code).length})
+  }
+  return result
+}
+
+function riskUnitComparison(rows,limit=10){
+  const map={};
+  rows.forEach(row=>{
+    const units=String(row[IDX.mainUnit]||'ไม่ระบุ').split(/[\n,;]+/).map(normUnit).filter(Boolean);
+    units.forEach(unit=>map[unit]=(map[unit]||0)+1)
+  });
+  return Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,limit)
+}
+
+function riskKeywordSummary(rows,limit=6){
+  const stop=new Set(['และ','หรือ','ที่','ใน','ของ','เป็น','การ','มี','ไม่','ให้','จาก','ผู้ป่วย','หน่วยงาน','เกิด','พบ','ได้','แล้ว','กับ','เพื่อ','โดย','เรื่อง']);
+  const map={};
+  rows.forEach(row=>{
+    const text=[row[IDX.sub],row[IDX.summary],row[IDX.detail],row[IDX.keyword]].join(' ');
+    const words=text.replace(/[^\u0E00-\u0E7Fa-zA-Z0-9]+/g,' ').split(/\s+/).map(x=>x.trim()).filter(x=>x.length>=3&&!stop.has(x));
+    words.forEach(w=>map[w]=(map[w]||0)+1)
+  });
+  return Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,limit)
+}
+
+function trendAlert(trend){
+  if(!trend.length)return{level:'none',text:'ยังไม่มีข้อมูลแนวโน้ม'};
+  const current=trend.at(-1),previous=trend.at(-2);
+  if(!previous||previous.count===0){
+    return{level:'info',text:`ปี ${current.year} พบ ${current.count.toLocaleString()} ครั้ง`}
+  }
+  const diff=current.count-previous.count;
+  const pct=(diff/previous.count)*100;
+  if(pct>=20)return{level:'danger',text:`เพิ่มขึ้น ${pct.toFixed(1)}% จากปี ${previous.year}`};
+  if(pct<=-20)return{level:'good',text:`ลดลง ${Math.abs(pct).toFixed(1)}% จากปี ${previous.year}`};
+  return{level:'stable',text:`เปลี่ยนแปลง ${pct>=0?'+':''}${pct.toFixed(1)}% จากปี ${previous.year}`}
+}
+
+function buildRiskExecutiveSummary(data,trend){
+  const rows=data.rows||[];
+  const units=riskUnitComparison(rows,3);
+  const keywords=riskKeywordSummary(rows,5);
+  const alert=trendAlert(trend);
+  const topUnit=units[0];
+  const high=rows.filter(r=>isHigh(r[IDX.sev])).length;
+  const recent=[...rows].map(r=>r[IDX.date]).filter(Boolean).sort().at(-1);
+  const pieces=[
+    `ปีงบประมาณ ${state.year} พบ ${data.key} จำนวน ${rows.length.toLocaleString()} ครั้ง`,
+    topUnit?`พบมากที่สุดที่ ${topUnit[0]} ${topUnit[1].toLocaleString()} ครั้ง`:'',
+    high?`มีเหตุการณ์ High Risk ${high.toLocaleString()} ครั้ง`:'ไม่พบเหตุการณ์ High Risk ในข้อมูลที่เลือก',
+    keywords.length?`คำที่พบร่วมบ่อย ได้แก่ ${keywords.map(x=>x[0]).join(', ')}`:'',
+    `แนวโน้ม: ${alert.text}`,
+    recent?`เหตุการณ์ล่าสุดวันที่ ${fmtDate(recent)}`:''
+  ].filter(Boolean);
+  return {text:pieces.join(' • '),alert}
+}
+
+function printRiskDrilldown(){
+  const modal=$('#riskDrilldownModal');
+  if(!modal?.classList.contains('open'))return;
+  document.body.classList.add('print-risk-drill');
+  window.print();
+  setTimeout(()=>document.body.classList.remove('print-risk-drill'),500)
+}
 
 function riskCodeFromRow(row){
   return String(row?.[IDX.risk]||'ไม่ระบุ').split(':')[0].trim()
@@ -415,12 +555,14 @@ function openUnitDrilldown(unit){
   })
 }
 
-function renderRiskDrilldown(data){
+async function renderRiskDrilldown(data){
   const modal=$('#riskDrilldownModal'),body=$('#riskDrillBody');
   if(!modal||!body)return;
   window.__riskDrillData=data;
 
   const rows=data.rows||[];
+  const trend=data.mode==='risk'?await riskTrendAcrossYears(data.key):[];
+  const executive=data.mode==='risk'?buildRiskExecutiveSummary(data,trend):null;
   const clinical=rows.filter(r=>riskType(r)==='Clinical').length;
   const non=rows.filter(r=>riskType(r)==='Non-clinical').length;
   const high=rows.filter(r=>isHigh(r[IDX.sev])).length;
@@ -434,6 +576,33 @@ function renderRiskDrilldown(data){
   $('#riskDrillSubtitle').textContent=`ปีงบประมาณ ${state.year} • ${data.subtitle}`;
 
   body.innerHTML=`
+    ${data.mode==='risk'?`
+    <section class="risk-intelligence ${executive.alert.level}">
+      <div class="risk-intelligence-title">
+        <span>✦ RISK INTELLIGENCE SUMMARY</span>
+        <b>${esc(executive.alert.text)}</b>
+      </div>
+      <p>${esc(executive.text)}</p>
+    </section>
+
+    <section class="risk-drill-grid risk-intelligence-grid">
+      <div class="risk-drill-panel">
+        <h3>แนวโน้มย้อนหลัง ${trend.length} ปีงบประมาณ</h3>
+        <div class="year-trend-chart">
+          ${(()=>{
+            const max=Math.max(1,...trend.map(x=>x.count));
+            return trend.map(x=>`<div><b>${x.count.toLocaleString()}</b><i><em style="height:${x.count/max*100}%"></em></i><span>${x.year}</span></div>`).join('')
+          })()}
+        </div>
+      </div>
+      <div class="risk-drill-panel">
+        <h3>เปรียบเทียบหน่วยงาน</h3>
+        <div class="unit-compare-list">
+          ${riskUnitComparison(rows,10).map(([name,count],i)=>`<div><b>${i+1}</b><span>${esc(name)}</span><strong>${count.toLocaleString()}</strong></div>`).join('')||'<p class="empty">ไม่พบข้อมูล</p>'}
+        </div>
+      </div>
+    </section>`:''}
+
     <section class="risk-drill-kpis">
       <article><span>Incident ทั้งหมด</span><b>${rows.length.toLocaleString()}</b></article>
       <article class="green"><span>Clinical</span><b>${clinical.toLocaleString()}</b></article>
@@ -492,6 +661,9 @@ function renderRiskDrilldown(data){
     tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}
   });
 
+  updateRiskFavoriteButton(data.mode==='risk'?data.key:'');
+  const favBtn=$('#riskDrillFavorite');
+  if(favBtn)favBtn.style.display=data.mode==='risk'?'inline-flex':'none';
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
   document.body.classList.add('risk-drill-open')

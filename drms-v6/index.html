@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DRMS | โรงพยาบาลดอนตูม</title>
-  <link rel="stylesheet" href="assets/style.css?v=6.29-top10-drilldown">
+  <link rel="stylesheet" href="assets/style.css?v=6.30-risk-intelligence">
 </head>
 <body>
 <header class="topbar"><button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
@@ -17,7 +17,7 @@
     <b>DON TUM RISK MANAGEMENT SYSTEM</b>
     <small>ระบบบริหารความเสี่ยง โรงพยาบาลดอนตูม</small>
   </div>
-  <div class="official-version">V6.29</div>
+  <div class="official-version">V6.30</div>
 </div>
   <div class="top-actions"><a href="../" class="ghost">Dashboard V1</a><span class="tag">DRMS 1.0</span></div>
 </header>
@@ -74,7 +74,16 @@
     </div>
   </div>
 </section></div>
-  <div class="grid2"><section class="panel"><h3>Top 10 ความเสี่ยง</h3><div id="topRisks"></div></section><section class="panel"><h3>Top 10 หน่วยงานหลักที่แก้ไข</h3><div id="topUnits"></div></section></div>
+  <section class="panel favorite-risk-panel">
+      <div class="panel-title">
+        <div>
+          <h3>⭐ ความเสี่ยงที่ติดตาม</h3>
+          <p>รหัสที่บันทึกเป็นรายการโปรดจากหน้ารายละเอียด</p>
+        </div>
+      </div>
+      <div id="favoriteRisks" class="favorite-risk-list"></div>
+    </section>
+    <div class="grid2"><section class="panel"><h3>Top 10 ความเสี่ยง</h3><div id="topRisks"></div></section><section class="panel"><h3>Top 10 หน่วยงานหลักที่แก้ไข</h3><div id="topUnits"></div></section></div>
 </section>
 <section id="incidents" class="view">
   <div class="page-title"><div><h1>รายการอุบัติการณ์</h1><p>ค้นหาและตรวจสอบข้อมูลจากฐานข้อมูลกลาง</p></div></div>
@@ -602,7 +611,7 @@
 </section>
 
 </main></div>
-<div id="toast"></div><script src="assets/app.js?v=6.29-top10-drilldown"></script>
+<div id="toast"></div><script src="assets/app.js?v=6.30-risk-intelligence"></script>
 <div id="mobileOverlay" class="mobile-overlay"></div>
 
 
@@ -619,8 +628,10 @@
     </header>
 
     <div class="risk-drill-toolbar">
+      <button id="riskDrillFavorite">☆ เพิ่มรายการโปรด</button>
       <button id="riskDrillShowAll" class="primary">ดูรายการอุบัติการณ์ทั้งหมด</button>
       <button id="riskDrillExportCsv">ส่งออก CSV</button>
+      <button id="riskDrillPrint">พิมพ์ / PDF</button>
     </div>
 
     <div id="riskDrillBody" class="risk-drill-body"></div>

@@ -765,3 +765,85 @@ body.risk-drill-open{overflow:hidden}
   .risk-drill-toolbar{display:grid;grid-template-columns:1fr 1fr}
   .rank.rank-drill{grid-template-columns:32px minmax(0,1fr) auto 12px;padding:10px 12px;gap:8px}
 }
+
+
+/* V6.30 – Risk Intelligence */
+.favorite-risk-panel{margin-bottom:16px}
+.favorite-risk-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 16px 16px}
+.favorite-risk-item{
+  border:1px solid #dbe7f5;
+  border-radius:10px;
+  background:#fffdf4;
+  padding:11px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  text-align:left;
+}
+.favorite-risk-item:hover{background:#fff7d6}
+.favorite-risk-item span,.favorite-risk-item b,.favorite-risk-item small{display:block}
+.favorite-risk-item b{color:#8a5b00}
+.favorite-risk-item small{margin-top:3px;color:#64748b;line-height:1.35}
+.favorite-risk-item strong{font-size:20px;color:#17365d}
+#riskDrillFavorite.active{background:#fff4c2;border-color:#f2b928;color:#7a5200}
+
+.risk-intelligence{
+  padding:14px 16px;
+  border-radius:12px;
+  margin-bottom:12px;
+  border:1px solid #bfdbfe;
+  background:linear-gradient(135deg,#eff6ff,#f8fbff);
+}
+.risk-intelligence.danger{border-color:#fecaca;background:#fff1f2}
+.risk-intelligence.good{border-color:#bbf7d0;background:#f0fdf4}
+.risk-intelligence.stable{border-color:#fde68a;background:#fffbeb}
+.risk-intelligence-title{display:flex;justify-content:space-between;gap:15px;align-items:center}
+.risk-intelligence-title span{font-size:11px;font-weight:900;letter-spacing:.12em;color:#2563eb}
+.risk-intelligence-title b{font-size:13px;color:#17365d}
+.risk-intelligence p{margin:9px 0 0;line-height:1.65;color:#334155}
+.risk-intelligence-grid{grid-template-columns:1fr 1fr}
+.year-trend-chart{
+  height:220px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-around;
+  gap:12px;
+  padding:12px 8px 0;
+}
+.year-trend-chart>div{height:100%;flex:1;display:grid;grid-template-rows:auto 1fr auto;gap:6px;text-align:center}
+.year-trend-chart i{display:flex;align-items:flex-end;justify-content:center;height:100%;background:#f1f5f9;border-radius:8px 8px 0 0;overflow:hidden}
+.year-trend-chart em{display:block;width:62%;min-height:4px;background:linear-gradient(180deg,#2f80ed,#1257b5);border-radius:6px 6px 0 0}
+.year-trend-chart b{font-size:13px;color:#17365d}
+.year-trend-chart span{font-size:12px;color:#64748b}
+.unit-compare-list>div{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:9px;padding:8px 0;border-bottom:1px solid #edf2f7}
+.unit-compare-list>div>b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#eaf2ff;color:#1769d2}
+.unit-compare-list>div strong{color:#17365d}
+
+@media(max-width:800px){
+  .favorite-risk-list{grid-template-columns:1fr}
+  .risk-intelligence-grid{grid-template-columns:1fr}
+  .risk-intelligence-title{align-items:flex-start;flex-direction:column}
+}
+
+@media print{
+  body.print-risk-drill>*:not(#riskDrilldownModal){display:none!important}
+  body.print-risk-drill #riskDrilldownModal{display:block!important;position:static!important}
+  body.print-risk-drill .risk-drill-backdrop,
+  body.print-risk-drill .risk-drill-toolbar,
+  body.print-risk-drill .risk-drill-footer,
+  body.print-risk-drill .risk-drill-close{display:none!important}
+  body.print-risk-drill .risk-drill-card{
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    box-shadow:none!important;
+    border-radius:0!important;
+  }
+  body.print-risk-drill .risk-drill-body{overflow:visible!important}
+  body.print-risk-drill .risk-drill-panel,
+  body.print-risk-drill .risk-intelligence,
+  body.print-risk-drill .risk-drill-kpis article{break-inside:avoid}
+}

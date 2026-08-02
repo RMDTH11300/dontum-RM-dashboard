@@ -66,6 +66,7 @@ function bind(){
       show('dashboard');
       await loadAllYears()
     }else{
+      delete state.allYearRows[state.year];
       await loadYear()
     }
   };
@@ -77,7 +78,16 @@ function bind(){
     $('#expandUnits').textContent=shouldOpen?'ย่อทั้งหมด':'ขยายทั้งหมด'
   };
   $('#clearUnits').onclick=()=>{state.selected.clear();renderUnits();apply()};
-  $('#unitSearch').oninput=renderUnits;$('#refresh').onclick=()=>state.year==='all'?loadAllYears():loadYear();
+  $('#unitSearch').oninput=renderUnits;
+  $('#refresh').onclick=async()=>{
+    state.allYearRows={};
+    state.rows=[];
+    state.filtered=[];
+    toast('กำลังโหลดข้อมูลล่าสุด...');
+    if(state.year==='all')await loadAllYears();
+    else await loadYear();
+    toast(`โหลดข้อมูลล่าสุดแล้ว ${state.rows.length.toLocaleString()} รายการ`)
+  };
   ['#q','#sev','#type','#month'].forEach(s=>$(s).addEventListener(s==='#q'?'input':'change',()=>{state.page=1;apply()}));
   $('#reset').onclick=()=>{$('#q').value='';$('#sev').value='';$('#type').value='';$('#month').value='';state.selected.clear();state.page=1;renderUnits();apply()};
   $('#csv').onclick=exportCsv;
